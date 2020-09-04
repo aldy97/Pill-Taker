@@ -1,29 +1,32 @@
 import React, { useState } from 'react';
-import Header from './components/common/header';
-import { Switch, View, StyleSheet } from 'react-native';
-const App = () => {
-  const [isEnabled, setIsEnabled] = useState(true);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+import { View, StyleSheet } from 'react-native';
+import Button from '@ant-design/react-native/lib/button';
 
-  return (
-    <View style={styles.container}>
-      <Switch
-        trackColor={{ false: '#767577', true: '#81b0ff' }}
-        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-        ios_backgroundColor='#3e3e3e'
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+const style = StyleSheet.create({
+  containerStyle: {
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  buttonStyle: {
+    marginTop: 100,
+    height: 100,
+    width: 300,
   },
 });
+
+function App() {
+  const [text, setText] = useState('not clicked');
+  return (
+    <View style={style.containerStyle}>
+      <Button
+        style={style.buttonStyle}
+        onPress={() => {
+          text === 'clicked' ? setText('not clicked') : setText('clicked');
+        }}
+      >
+        {text}
+      </Button>
+    </View>
+  );
+}
 
 export default App;
