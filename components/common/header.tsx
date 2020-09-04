@@ -17,12 +17,7 @@ const style = StyleSheet.create({
 function Header() {
   return (
     <View style={style.containerStyle}>
-      <Button
-        style={style.buttonStyle}
-        onPress={() => {
-          Actions.footer();
-        }}
-      >
+      <Button style={style.buttonStyle}>
         <Text>Go to footer</Text>
       </Button>
     </View>
