@@ -1,22 +1,30 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Button from '@ant-design/react-native/lib/button';
+import { Actions } from 'react-native-router-flux';
 
-const HeaderStyle = StyleSheet.create({
-  ViewStyle: {
-    backgroundColor: '#1e8feb',
+const style = StyleSheet.create({
+  containerStyle: {
+    alignItems: 'center',
   },
-  TextStyle: {
-    textAlign: 'center',
-    lineHeight: 120,
-    fontSize: 30,
-    color: '#fff',
+  buttonStyle: {
+    marginTop: 100,
+    height: 100,
+    width: 300,
   },
 });
 
 function Header() {
   return (
-    <View style={HeaderStyle.ViewStyle}>
-      <Text style={HeaderStyle.TextStyle}>React Native Demo</Text>
+    <View style={style.containerStyle}>
+      <Button
+        style={style.buttonStyle}
+        onPress={() => {
+          Actions.footer();
+        }}
+      >
+        <Text>Go to footer</Text>
+      </Button>
     </View>
   );
 }
