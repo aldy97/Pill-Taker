@@ -1,15 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
 import TabBar from '@ant-design/react-native/lib/tab-bar';
 import Icon from '@ant-design/react-native/lib/icon';
 import { Actions } from 'react-native-router-flux';
 
-type footerProps = {
-  selected: number;
-  setSelected: any;
-};
-
-function Footer({ selected, setSelected }: footerProps) {
+function Footer() {
   return (
     <TabBar
       unselectedTintColor='#949494'
@@ -18,18 +12,26 @@ function Footer({ selected, setSelected }: footerProps) {
     >
       <TabBar.Item
         title='Home'
+        icon={<Icon name='account-book' />}
         onPress={() => {
-          Actions.home();
+          if (Actions.currentScene !== 'home') Actions.home();
         }}
       ></TabBar.Item>
       <TabBar.Item
         title='Recent'
+        icon={<Icon name='account-book' />}
         onPress={() => {
-          Actions.edit();
+          if (Actions.currentScene !== 'edit') Actions.edit();
         }}
       ></TabBar.Item>
-      <TabBar.Item title='Notification'></TabBar.Item>
-      <TabBar.Item title='Settings'></TabBar.Item>
+      <TabBar.Item
+        title='Notification'
+        icon={<Icon name='account-book' />}
+      ></TabBar.Item>
+      <TabBar.Item
+        title='Settings'
+        icon={<Icon name='account-book' />}
+      ></TabBar.Item>
     </TabBar>
   );
 }

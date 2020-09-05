@@ -1,7 +1,7 @@
 import React from 'react';
 import ItemEditor, { ItemProps } from '../itemEditor';
 import medList from '../../mock/medList';
-import { Text, FlatList, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 //Second section in the footer: allows users to edit his/her perscription
 function Edit() {

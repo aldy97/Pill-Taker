@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AppRegistry, View, Text } from 'react-native';
 import * as firebase from 'firebase';
 import Constants from 'expo-constants';
@@ -8,12 +8,11 @@ import Footer from './components/common/footer';
 import getEnvVars from './config';
 
 function App() {
-  const [selected, setSelected] = useState(0);
   return (
     <View style={{ flex: 1 }}>
       <Routes />
       <View style={{ height: 70 }}>
-        <Footer selected={selected} setSelected={setSelected} />
+        <Footer />
       </View>
     </View>
   );
