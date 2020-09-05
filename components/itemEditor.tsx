@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-type ItemProps = {};
+export type ItemProps = {
+  name: string;
+  number: number;
+};
 const styles = StyleSheet.create({
   container: {
     padding: 10,
@@ -22,13 +25,13 @@ const styles = StyleSheet.create({
     borderColor: '#eee',
   },
 });
-function ItemEditor() {
+function ItemEditor({ name, number }: ItemProps) {
   return (
     <View style={styles.container}>
-      <Text>Med name</Text>
-      <Text>
+      <Text>{name}</Text>
+      <Text style={{}}>
         <Text style={{ ...styles.button }}>-</Text>
-        <Text>Daily Number</Text>
+        <Text>{number}</Text>
         <Text style={{ ...styles.button }}>+</Text>
       </Text>
     </View>

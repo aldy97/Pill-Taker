@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
-import Recent from './components/pages/recent';
+import Recent from './components/pages/Edit';
 
 const Routes = () => (
   <Router>
