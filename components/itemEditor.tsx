@@ -30,9 +30,7 @@ function ItemEditor({ name, number }: ItemProps) {
     <View style={styles.container}>
       <Text>{name}</Text>
       <Text style={{}}>
-        <Text style={{ ...styles.button }}>-</Text>
         <Text>{number}</Text>
-        <Text style={{ ...styles.button }}>+</Text>
       </Text>
     </View>
   );
