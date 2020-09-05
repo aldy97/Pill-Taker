@@ -9,7 +9,7 @@ function Home() {
   const renderItem = (obj: any) => {
     const item: Med = obj.item;
     return (
-      <Card style={{ marginTop: 20, width: '100%' }}>
+      <Card style={{ marginTop: 10, marginBottom: 10, width: '100%' }}>
         <Card.Header title={item.name} extra={<Button>Just had one</Button>} />
         <Card.Footer
           content={item.desc}
