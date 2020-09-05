@@ -25,7 +25,7 @@ function Footer({ selected, setSelected }: footerProps) {
       <TabBar.Item
         title='Recent'
         onPress={() => {
-          Actions.recent();
+          Actions.edit();
         }}
       ></TabBar.Item>
       <TabBar.Item title='Notification'></TabBar.Item>

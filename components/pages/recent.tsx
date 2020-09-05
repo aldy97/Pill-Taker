@@ -1,12 +1,14 @@
 import React from 'react';
+import ItemEditor from '../itemEditor';
 import { Text, View } from 'react-native';
 
-function Recent() {
+//Second section in the footer: allows users to edit his/her perscription
+function Edit() {
   return (
     <View>
-      <Text>Recent</Text>
+      <ItemEditor></ItemEditor>
     </View>
   );
 }
 
-export default Recent;
+export default Edit;
