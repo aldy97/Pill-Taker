@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import TabBar from '@ant-design/react-native/lib/tab-bar';
 import Icon from '@ant-design/react-native/lib/icon';
 import { Actions } from 'react-native-router-flux';
 
 function Footer() {
+  const [scene, setScene] = useState(Actions.currentScene);
   return (
     <TabBar
       unselectedTintColor='#949494'
@@ -12,16 +13,34 @@ function Footer() {
     >
       <TabBar.Item
         title='Home'
-        icon={<Icon name='account-book' />}
+        icon={
+          <Icon
+            name='account-book'
+            size='md'
+            color={scene === 'home' ? 'red' : 'grey'}
+          />
+        }
         onPress={() => {
-          if (Actions.currentScene !== 'home') Actions.home();
+          if (Actions.currentScene !== 'home') {
+            Actions.home();
+            setScene('home');
+          }
         }}
       ></TabBar.Item>
       <TabBar.Item
-        title='Recent'
-        icon={<Icon name='account-book' />}
+        title='Edit'
+        icon={
+          <Icon
+            name='account-book'
+            size='md'
+            color={Actions.currentScene === 'home' ? 'red' : 'grey'}
+          />
+        }
         onPress={() => {
-          if (Actions.currentScene !== 'edit') Actions.edit();
+          if (Actions.currentScene !== 'edit') {
+            Actions.edit();
+            setScene('edit');
+          }
         }}
       ></TabBar.Item>
       <TabBar.Item
