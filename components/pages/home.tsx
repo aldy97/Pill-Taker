@@ -1,35 +1,26 @@
 import React from 'react';
 import Button from '@ant-design/react-native/lib/button';
 import Card from '@ant-design/react-native/lib/card';
-import medList from '../../mock/medList';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-
-const style = StyleSheet.create({
-  containerStyle: {},
-  buttonStyle: {
-    height: 100,
-    width: '100%',
-  },
-});
+import medList, { Med } from '../../mock/medList';
+import { Text, FlatList } from 'react-native';
 
 function Home() {
+  const renderItem = ({ med }: Med) => (
+    <Card style={{ marginTop: 20, width: '100%' }}>
+      <Card.Header title={med.name} extra={<Button>Just had one</Button>} />
+      <Card.Footer
+        content={med.desc}
+        extra={<Text>Number: {med.number}</Text>}
+      />
+    </Card>
+  );
+
   return (
-    <ScrollView style={style.containerStyle}>
-      {medList.map((med, index) => {
-        return (
-          <Card style={{ marginTop: 20, width: '100%' }} key={index}>
-            <Card.Header
-              title={med.name}
-              extra={<Button>Just had one!</Button>}
-            />
-            <Card.Footer
-              content={med.desc}
-              extra={<div>Number: {med.number}</div>}
-            />
-          </Card>
-        );
-      })}
-    </ScrollView>
+    <FlatList
+      data={medList}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+    ></FlatList>
   );
 }
 

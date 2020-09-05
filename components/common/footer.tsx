@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import TabBar from '@ant-design/react-native/lib/tab-bar';
 import Icon from '@ant-design/react-native/lib/icon';
 import { Actions } from 'react-native-router-flux';
