@@ -7,8 +7,8 @@ function Notification() {
   const showSpec = (show: boolean) => {
     if (show) {
       return (
-        <View>
-          <Text>test</Text>
+        <View style={{ marginLeft: 10, marginTop: 10 }}>
+          <Text style={{ fontSize: 20 }}>Set time:</Text>
         </View>
       );
     }
@@ -18,7 +18,10 @@ function Notification() {
     <View>
       <View
         style={{
-          marginTop: 20,
+          paddingTop: 20,
+          paddingBottom: 20,
+          paddingLeft: 10,
+          paddingRight: 10,
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -26,11 +29,10 @@ function Notification() {
           borderBottomColor: '#eee',
         }}
       >
-        <Text style={{ fontSize: 24, marginLeft: 10 }}>
+        <Text style={{ fontSize: 24 }}>
           Turn {show ? 'off' : 'on'} notification
         </Text>
         <Switch
-          style={{ marginBottom: 20 }}
           checked={show}
           onChange={() => {
             setShow(!show);
