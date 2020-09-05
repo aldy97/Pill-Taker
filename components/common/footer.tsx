@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Button from '@ant-design/react-native/lib/button';
 import { Actions } from 'react-native-router-flux';
 
@@ -11,15 +11,36 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 1,
   },
+  textStyle: {
+    fontSize: 13,
+  },
 });
 
 function Footer() {
   return (
     <View style={styles.container}>
-      <Button style={styles.buttonStyle}>Section 1</Button>
-      <Button style={styles.buttonStyle}>Section 2</Button>
-      <Button style={styles.buttonStyle}>Section 3</Button>
-      <Button style={styles.buttonStyle}>Section 4</Button>
+      <Button
+        style={styles.buttonStyle}
+        onPress={() => {
+          Actions.home();
+        }}
+      >
+        <Text style={styles.textStyle}>Home</Text>
+      </Button>
+      <Button
+        style={styles.buttonStyle}
+        onPress={() => {
+          Actions.recent();
+        }}
+      >
+        <Text style={styles.textStyle}>Recent</Text>
+      </Button>
+      <Button style={styles.buttonStyle}>
+        <Text style={styles.textStyle}>Notification</Text>
+      </Button>
+      <Button style={styles.buttonStyle}>
+        <Text style={styles.textStyle}>Settings</Text>
+      </Button>
     </View>
   );
 }
