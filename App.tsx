@@ -8,7 +8,9 @@ function App() {
   return (
     <View style={{ flex: 1 }}>
       <Routes />
-      <Footer selected={selected} setSelected={setSelected} />
+      <View style={{ height: 50 }}>
+        <Footer selected={selected} setSelected={setSelected} />
+      </View>
     </View>
   );
 }
