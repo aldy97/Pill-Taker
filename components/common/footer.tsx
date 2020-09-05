@@ -1,47 +1,35 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import Button from '@ant-design/react-native/lib/button';
+import TabBar from '@ant-design/react-native/lib/tab-bar';
+import Icon from '@ant-design/react-native/lib/icon';
 import { Actions } from 'react-native-router-flux';
 
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  buttonStyle: {
-    flex: 1,
-  },
-  textStyle: {
-    fontSize: 13,
-  },
-});
+type footerProps = {
+  selected: number;
+  setSelected: any;
+};
 
-function Footer() {
+function Footer({ selected, setSelected }: footerProps) {
   return (
-    <View style={styles.container}>
-      <Button
-        style={styles.buttonStyle}
+    <TabBar
+      unselectedTintColor='#949494'
+      tintColor='#33A3F4'
+      barTintColor='#f5f5f5'
+    >
+      <TabBar.Item
+        title='Home'
         onPress={() => {
           Actions.home();
         }}
-      >
-        <Text style={styles.textStyle}>Home</Text>
-      </Button>
-      <Button
-        style={styles.buttonStyle}
+      ></TabBar.Item>
+      <TabBar.Item
+        title='Recent'
         onPress={() => {
           Actions.recent();
         }}
-      >
-        <Text style={styles.textStyle}>Recent</Text>
-      </Button>
-      <Button style={styles.buttonStyle}>
-        <Text style={styles.textStyle}>Notification</Text>
-      </Button>
-      <Button style={styles.buttonStyle}>
-        <Text style={styles.textStyle}>Settings</Text>
-      </Button>
-    </View>
+      ></TabBar.Item>
+      <TabBar.Item title='Notification'></TabBar.Item>
+      <TabBar.Item title='Settings'></TabBar.Item>
+    </TabBar>
   );
 }
 

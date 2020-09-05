@@ -5,7 +5,7 @@ import Recent from './components/pages/recent';
 
 const Routes = () => (
   <Router>
-    <Scene key='root'>
+    <Scene key='root' headerMode='float'>
       <Scene key='home' component={Home} title='Home' initial={true} />
       <Scene key='recent' component={Recent} title='Recent' />
     </Scene>

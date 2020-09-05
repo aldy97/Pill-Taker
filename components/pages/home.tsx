@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
 import Button from '@ant-design/react-native/lib/button';
+import Card from '@ant-design/react-native/lib/card';
+import medList from '../../mock/medList';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 const style = StyleSheet.create({
-  containerStyle: {
-    alignItems: 'center',
-    height: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: 'yellow',
-  },
+  containerStyle: {},
   buttonStyle: {
     height: 100,
     width: '100%',
@@ -16,13 +13,23 @@ const style = StyleSheet.create({
 });
 
 function Home() {
-  const [text, setText] = useState(' hi');
   return (
-    <View style={style.containerStyle}>
-      <Button style={style.buttonStyle}>
-        <Text>Go to footer!{text}</Text>
-      </Button>
-    </View>
+    <ScrollView style={style.containerStyle}>
+      {medList.map((med, index) => {
+        return (
+          <Card style={{ marginTop: 20, width: '100%' }} key={index}>
+            <Card.Header
+              title={med.name}
+              extra={<Button>Just had one!</Button>}
+            />
+            <Card.Footer
+              content={med.desc}
+              extra={<div>Number: {med.number}</div>}
+            />
+          </Card>
+        );
+      })}
+    </ScrollView>
   );
 }
 
