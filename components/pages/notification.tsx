@@ -6,7 +6,11 @@ function Notification() {
   const [show, setShow] = useState(true);
   const showSpec = (show: boolean) => {
     if (show) {
-      return <View></View>;
+      return (
+        <View>
+          <Text>test</Text>
+        </View>
+      );
     }
   };
 
@@ -18,10 +22,15 @@ function Notification() {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
+          borderBottomWidth: 1,
+          borderBottomColor: '#eee',
         }}
       >
-        <Text style={{ fontSize: 20 }}>Turn on/off notification</Text>
+        <Text style={{ fontSize: 24, marginLeft: 10 }}>
+          Turn {show ? 'off' : 'on'} notification
+        </Text>
         <Switch
+          style={{ marginBottom: 20 }}
           checked={show}
           onChange={() => {
             setShow(!show);
