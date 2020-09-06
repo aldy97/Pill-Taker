@@ -6,13 +6,18 @@ import Notification from './components/pages/notification';
 import Settings from './components/pages/settings';
 
 interface RoutesProps {
-  user: any
+  user: any;
 }
 
-const Routes = (props: RoutesProps) => (
+const Routes = ({ user }: RoutesProps) => (
   <Router>
     <Scene key='root'>
-      <Scene key='home' component={Home} title='Home' initial={true} />
+      <Scene
+        key='home'
+        component={() => <Home user={user} />}
+        title='Home'
+        initial={true}
+      />
       <Scene key='edit' component={Recent} title='Edit Prescription' />
       <Scene
         key='notification'
