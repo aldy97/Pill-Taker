@@ -4,6 +4,7 @@ import { Text, StyleSheet, View } from 'react-native';
 export type ItemProps = {
   name: string;
   number: number;
+  medicine: any;
 };
 const styles = StyleSheet.create({
   container: {
@@ -25,11 +26,11 @@ const styles = StyleSheet.create({
     borderColor: '#eee',
   },
 });
-function ItemEditor({ name, number }: ItemProps) {
+function ItemEditor({ medicine, name, number }: ItemProps) {
   return (
     <View style={styles.container}>
-      <Text>{name}</Text>
-      <Text>{number}</Text>
+      <Text>{medicine.name}</Text>
+      <Text>{medicine.number}</Text>
     </View>
   );
 }

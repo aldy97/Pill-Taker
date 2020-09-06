@@ -14,14 +14,16 @@ function Edit() {
       <TouchableOpacity
         onPress={() => {
           setVisible(true);
+          setCurrentMedicine(item);
         }}
       >
-        <ItemEditor name={item.name} number={item.number}></ItemEditor>
+        <ItemEditor medicine={item} name={item.name} number={item.number}></ItemEditor>
       </TouchableOpacity>
     );
   };
 
   const [visible, setVisible] = useState(false);
+  const [currentMedicine, setCurrentMedicine] = useState<any>(null);
   const onClose = () => {
     setVisible(false);
   };
@@ -38,7 +40,7 @@ function Edit() {
         keyExtractor={(item) => item.id.toString()}
       ></FlatList>
       <Modal
-        title='Title'
+        title={currentMedicine ? currentMedicine.name : ""}
         transparent
         onClose={onClose}
         maskClosable
@@ -47,8 +49,8 @@ function Edit() {
         footer={footerButtons}
       >
         <View style={{ paddingVertical: 20 }}>
-          <Text style={{ textAlign: 'center' }}>Content...</Text>
-          <Text style={{ textAlign: 'center' }}>Content...</Text>
+          <Text style={{ textAlign: 'center' }}>{currentMedicine ? currentMedicine.name : ""}</Text>
+          <Text style={{ textAlign: 'center' }}>{currentMedicine ? currentMedicine.number : ""}</Text>
         </View>
         <Button type='primary' onPress={onClose}>
           close modal
