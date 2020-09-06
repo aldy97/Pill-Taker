@@ -6,5 +6,5 @@ export type Med = {
   id: number;
 };
 
-const medList: Med[] = [];
+let medList: Med[] = [];
 export default medList;

@@ -34,7 +34,7 @@ function Edit({ user }: editProps) {
     return dailyReport;
   };
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   const [medName, setMedName] = useState('');
   const [desc, setDesc] = useState('');
@@ -53,14 +53,6 @@ function Edit({ user }: editProps) {
   useEffect(() => {
     console.log(data);
   }, [data]);
-
-  useEffect(() => {
-    console.log(medName);
-  }, [medName]);
-
-  useEffect(() => {
-    console.log('user: ' + user);
-  });
 
   const renderItem = (obj: any) => {
     const item: ItemProps = obj.item;
@@ -134,7 +126,15 @@ function Edit({ user }: editProps) {
         times_per_day: parseInt(timesPerDay, 10),
         uid: 'xiongfeng007',
       })
-      .then(db.collection('medicines').get());
+      .then(async () => {
+        db.collection('medicines')
+          .get()
+          .then((snapshot) => {
+            (snapshot as any).forEach((doc: any) => {
+              setData(data.concat(doc.data()));
+            });
+          });
+      });
   };
 
   //for creating unadded medicine
