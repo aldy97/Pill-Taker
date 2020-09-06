@@ -68,7 +68,7 @@ function App() {
   }
 }
 
-const env = getEnvVars()
+const env = getEnvVars();
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_FIREBASE_API_KEY,
@@ -78,11 +78,11 @@ const firebaseConfig = {
   storageBucket: process.env.EXPO_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.EXPO_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.EXPO_FIREBASE_APP_ID,
-  measurementId: process.env.EXPO_FIREBASE_MEASUREMENT_ID
+  measurementId: process.env.EXPO_FIREBASE_MEASUREMENT_ID,
 };
 
 if (firebase.apps.length === 0) {
-  firebase.initializeApp(firebaseConfig)
+  firebase.initializeApp(firebaseConfig);
 }
 
 export default App;

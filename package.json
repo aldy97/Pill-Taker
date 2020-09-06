@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@ant-design/icons-react-native": "^2.2.1",
     "@ant-design/react-native": "^4.0.5",
     "@react-native-community/async-storage": "^1.12.0",
     "@react-native-community/masked-view": "0.1.10",
@@ -30,6 +31,7 @@
     "react-native-router-flux": "^4.2.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "^1.0.0-alpha.23",
+    "react-native-vector-icons": "^7.0.0",
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {

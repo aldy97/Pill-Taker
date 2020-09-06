@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 
 export type ItemProps = {
   name: string;
@@ -29,9 +29,7 @@ function ItemEditor({ name, number }: ItemProps) {
   return (
     <View style={styles.container}>
       <Text>{name}</Text>
-      <Text style={{}}>
-        <Text>{number}</Text>
-      </Text>
+      <Text>{number}</Text>
     </View>
   );
 }
