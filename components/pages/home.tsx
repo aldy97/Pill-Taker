@@ -17,7 +17,7 @@ function Home() {
         console.log(doc.id, '=>', doc.data());
       });
     });
-  });
+  }, []);
 
   const renderItem = (obj: any) => {
     const item: Med = obj.item;
