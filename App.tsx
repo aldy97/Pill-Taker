@@ -10,43 +10,24 @@ import getEnvVars from './config';
 
 function App() {
   const [user, setUser] = useState<any>(null);
-
-  // const initAsync = async () => {
-  //   await GoogleSignIn.initAsync({ clientId: '925656945499-1tn3go9b8995su8t3kalk7lbb1kh27qj.apps.googleusercontent.com' });
-  //   _syncUserWithStateAsync();
-  // };
-
-  // const _syncUserWithStateAsync = async () => {
-  //   const resultUser = await GoogleSignIn.signInSilentlyAsync();
-  //   setUser(resultUser);
-  // };
-
   const signInAsync = async () => {
-    // try {
-    //     await GoogleSignIn.askForPlayServicesAsync();
-    //     const { type, user } = await GoogleSignIn.signInAsync();
-    //     if (type === 'success') {
-    //       _syncUserWithStateAsync();
-    //     }
-    // } catch ({ message }) {
-    //     alert('login: Error:' + message);
-    // }
-
     const result = await Google.logInAsync({
-      iosClientId: '925656945499-1tn3go9b8995su8t3kalk7lbb1kh27qj.apps.googleusercontent.com',
-      androidClientId: '925656945499-k93quothhqfmogq7tnglhatn4m9unhul.apps.googleusercontent.com',
-      scopes: ["profile", "email"]
+      iosClientId:
+        '925656945499-1tn3go9b8995su8t3kalk7lbb1kh27qj.apps.googleusercontent.com',
+      androidClientId:
+        '925656945499-k93quothhqfmogq7tnglhatn4m9unhul.apps.googleusercontent.com',
+      scopes: ['profile', 'email'],
     });
 
     if (result.type === 'success') {
       // Then you can use the Google REST API
-      setUser(result.user)
+      setUser(result.user);
     }
   };
 
   const onPress = () => {
-    signInAsync()
-  }
+    signInAsync();
+  };
 
   if (user) {
     return (
@@ -56,15 +37,22 @@ function App() {
           <Footer />
         </View>
       </View>
-    )
+    );
   } else {
     return (
       <View
-        style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignContent: 'center' }}
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignContent: 'center',
+        }}
       >
-        <Button type="primary" onPress={onPress}>Sign in with Google</Button>
+        <Button type='primary' onPress={onPress}>
+          Sign in with Google
+        </Button>
       </View>
-    )
+    );
   }
 }
 
