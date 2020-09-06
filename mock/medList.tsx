@@ -3,7 +3,7 @@ export type Med = {
   desc: string;
   totalCount: number;
   missedCount: number;
-  id: number;
+  id: number | string;
 };
 
 let medList: Med[] = [];

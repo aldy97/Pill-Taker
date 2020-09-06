@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ItemEditor, { ItemProps } from '../itemEditor';
-import medList from '../../mock/medList';
 import {
   FlatList,
   View,
@@ -47,30 +46,12 @@ function Edit({ user }: editProps) {
         setData(doc.data());
       });
     });
-    console.log(data);
   }, []);
 
   useEffect(() => {
     console.log(data);
   }, [data]);
 
-  const renderItem = (obj: any) => {
-    const item: ItemProps = obj.item;
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          setVisible(true);
-          setCurrentMedicine(item);
-        }}
-      >
-        <ItemEditor
-          medicine={item}
-          name={item.name}
-          number={item.number}
-        ></ItemEditor>
-      </TouchableOpacity>
-    );
-  };
   //modal for edit medicine
   const [visible, setVisible] = useState(false);
   //modal for add a new medicine
@@ -88,26 +69,7 @@ function Edit({ user }: editProps) {
     setVisible2(true);
   };
 
-  //for editing existing medicine
-  const footerButtons1 = [
-    { text: 'Cancel', onPress: () => console.log('cancel') },
-    {
-      text: 'Confirm',
-      onPress: () => {},
-    },
-  ];
-
-  type medicine = {
-    name: string;
-    desc: string;
-    doesPerTime: number;
-    timesPerDay: number;
-  };
-
-  const setMedicine = (
-    id: string,
-    { name, desc, doesPerTime, timesPerDay }: medicine
-  ) => {
+  const setMedicine = (id: string) => {
     db.collection('medicines').doc(id).set({
       name: name,
       description: desc,
@@ -130,12 +92,23 @@ function Edit({ user }: editProps) {
         db.collection('medicines')
           .get()
           .then((snapshot) => {
+            let array: any = [];
             (snapshot as any).forEach((doc: any) => {
-              setData(data.concat(doc.data()));
+              array.push(doc.data());
             });
+            setData(array);
           });
       });
   };
+
+  //for editing existing medicine
+  const footerButtons1 = [
+    { text: 'Cancel', onPress: () => console.log('cancel') },
+    {
+      text: 'Confirm',
+      onPress: () => setMedicine(),
+    },
+  ];
 
   //for creating unadded medicine
   const footerButtons2 = [
@@ -145,6 +118,24 @@ function Edit({ user }: editProps) {
       onPress: () => addMedicine(),
     },
   ];
+
+  const renderItem = (obj: any) => {
+    const item: ItemProps = obj.item;
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setVisible(true);
+          setCurrentMedicine(item);
+        }}
+      >
+        <ItemEditor
+          medicine={item}
+          name={item.name}
+          number={item.number}
+        ></ItemEditor>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View>
@@ -160,9 +151,9 @@ function Edit({ user }: editProps) {
         Add
       </Button>
       <FlatList
-        data={medList}
+        data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item: any) => item.id.toString()}
       ></FlatList>
       <Modal
         title={currentMedicine ? currentMedicine.name : ''}
