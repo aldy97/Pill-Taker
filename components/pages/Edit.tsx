@@ -27,7 +27,7 @@ function Edit() {
   };
   const footerButtons = [
     { text: 'Cancel', onPress: () => console.log('cancel') },
-    { text: 'Ok', onPress: () => console.log('ok') },
+    { text: 'Confirm', onPress: () => console.log('ok') },
   ];
 
   return (
