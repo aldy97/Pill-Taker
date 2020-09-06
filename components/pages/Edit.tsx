@@ -29,7 +29,7 @@ function Edit({ user }: editProps) {
   const getDailyReport = async () => {
     const dailyReport = db
       .collection('medicines')
-      .where('uid', '==', user.id)
+      .where('uid', '==', 'xiongfeng007')
       .get();
     return dailyReport;
   };
@@ -116,23 +116,25 @@ function Edit({ user }: editProps) {
     id: string,
     { name, desc, doesPerTime, timesPerDay }: medicine
   ) => {
-    db.collection('medicine').doc(id).set({
+    db.collection('medicines').doc(id).set({
       name: name,
       description: desc,
       dose_per_time: doesPerTime,
       times_per_day: timesPerDay,
-      uid: user.id,
+      uid: 'xiongfeng007',
     });
   };
 
   const addMedicine = () => {
-    db.collection('medicine').add({
-      name: medName,
-      description: desc,
-      dose_per_time: parseInt(doesPerTime, 10),
-      times_per_day: parseInt(timesPerDay, 10),
-      uid: user.id,
-    });
+    db.collection('medicines')
+      .add({
+        name: medName,
+        description: desc,
+        dose_per_time: parseInt(doesPerTime, 10),
+        times_per_day: parseInt(timesPerDay, 10),
+        uid: 'xiongfeng007',
+      })
+      .then(db.collection('medicines').get());
   };
 
   //for creating unadded medicine
@@ -218,7 +220,7 @@ function Edit({ user }: editProps) {
           <TextInput
             keyboardType='numeric'
             placeholder='Add does per time'
-            style={{ ...styles.textInput, marginBottom: -50 }}
+            style={{ ...styles.textInput, marginBottom: -40 }}
             onChangeText={(text: string) => {
               setDoesPerTime(text);
             }}
