@@ -17,7 +17,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.medhacks.medicinechecker",
+      "supportsTablet": true,
+      "config" : {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.925656945499-1ivkjq336kg6mjo74da338ibbv8vhnne"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
+    },
+    "android": {
+      "package": "com.medhacks.medicinechecker",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "925656945499",
+    "firebase_url": "https://medhacks-f4c6e.firebaseio.com",
+    "project_id": "medhacks-f4c6e",
+    "storage_bucket": "medhacks-f4c6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925656945499:android:b5c6e45bb2a50c8f35c07e",
+        "android_client_info": {
+          "package_name": "com.medhacks.medicinechecker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925656945499-k93quothhqfmogq7tnglhatn4m9unhul.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medhacks.medicinechecker",
+            "certificate_hash": "b532d4fc326024eef925e08b6334aeb3a7ecb390"
+          }
+        },
+        {
+          "client_id": "925656945499-gfjrdgdr3afsr04veckso99d6p4sq7ha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqSAyJUetvmoYyd5igPIfk_llnQjwI574"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925656945499-gfjrdgdr3afsr04veckso99d6p4sq7ha.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "925656945499-1ivkjq336kg6mjo74da338ibbv8vhnne.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.medhacks.medicinechecker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
