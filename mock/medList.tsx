@@ -5,3 +5,6 @@ export type Med = {
   missedCount: number;
   id: number;
 };
+
+const medList: Med[] = [];
+export default medList;

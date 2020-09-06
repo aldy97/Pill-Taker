@@ -13,7 +13,7 @@ function Home({ user }: HomeProps) {
   const getDailyReport = async () => {
     const dailyReport = db
       .collection('daily_reports')
-      .where('uid', '==', user)
+      .where('uid', '==', user.id)
       .get();
     return dailyReport;
   };
