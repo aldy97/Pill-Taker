@@ -43,6 +43,12 @@ function Footer() {
       ></TabBar.Item>
       <TabBar.Item
         title='Settings'
+        onPress={() => {
+          if (scene !== 'settings') {
+            Actions.settings();
+            setScene('settings');
+          }
+        }}
         icon={<Icon name='account-book' />}
       ></TabBar.Item>
     </TabBar>
