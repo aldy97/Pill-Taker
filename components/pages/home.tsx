@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Button from '@ant-design/react-native/lib/button';
 import Card from '@ant-design/react-native/lib/card';
 import { Med } from '../../mock/medList';
-import { Text, FlatList, View } from 'react-native';
+import {   
+  FlatList,
+  View,
+  Text,
+ } from 'react-native';
 import * as firebase from 'firebase';
 
 type HomeProps = {
@@ -10,23 +14,26 @@ type HomeProps = {
 };
 function Home({ user }: HomeProps) {
   const db = firebase.firestore();
+  
   const getDailyReport = async () => {
     const dailyReport = db
-      .collection('daily_reports')
-      .where('uid', '==', user.id)
+      .collection('medicines')
+      .where('time_stamp', '>=', 1599958884827)
+      .orderBy('time_stamp', 'desc')
       .get();
     return dailyReport;
   };
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     getDailyReport().then((snapshot) => {
+      let array: any = [];
       (snapshot as any).forEach((doc: any) => {
-        setData(doc.data());
+        array.push(doc.data());
+        setData(array);
       });
     });
-    console.log(data);
   }, []);
 
   useEffect(() => {
@@ -34,20 +41,19 @@ function Home({ user }: HomeProps) {
   }, [data]);
 
   const renderItem = (obj: any) => {
-    const item: Med = obj.item;
+    const item: any = obj.item;
     return (
       <Card
         style={{
           marginTop: 10,
           marginBottom: 10,
           width: '100%',
-          display: item.missedCount > 0 ? undefined : 'none',
         }}
       >
         <Card.Header title={item.name} extra={<Button>Just had one</Button>} />
         <Card.Footer
-          content={item.desc}
-          extra={<Text>Number: {item.missedCount}</Text>}
+          content={item.description}
+          extra={<Text>Times per day: {item.times_per_day}</Text>}
         />
       </Card>
     );
@@ -58,7 +64,7 @@ function Home({ user }: HomeProps) {
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item: any) => item.key}
       ></FlatList>
     </View>
   );

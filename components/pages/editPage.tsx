@@ -100,10 +100,6 @@ const EditPage = () => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   //for editing existing medicine
   const footerButtons1 = [
     { text: 'Cancel', onPress: () => console.log('cancel') },
