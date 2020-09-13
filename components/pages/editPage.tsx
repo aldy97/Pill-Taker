@@ -25,7 +25,8 @@ const EditPage = () => {
   const getDailyReport = async () => {
     const dailyReport = db
       .collection('medicines')
-      .where('uid', '==', 'xiongfeng007')
+      .where('time_stamp', '>=', 1599958884827)
+      .orderBy('time_stamp', 'desc')
       .get();
     return dailyReport;
   };
@@ -72,9 +73,12 @@ const EditPage = () => {
         dose_per_time: parseInt(doesPerTime, 10),
         times_per_day: parseInt(timesPerDay, 10),
         uid: 'xiongfeng007',
+        time_stamp: Date.now(),
       })
       .then(async () => {
         db.collection('medicines')
+          .where('time_stamp', '>=', 1599958884827)
+          .orderBy('time_stamp', 'desc')
           .get()
           .then((snapshot) => {
             let array: any = [];
