@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppRegistry, View } from 'react-native';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
 import Button from '@ant-design/react-native/lib/button';
-
 import Routes from './Routes';
 import Footer from './components/common/footer';
 import getEnvVars from './config';
