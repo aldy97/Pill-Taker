@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@ant-design/react-native/lib/button';
 import Card from '@ant-design/react-native/lib/card';
-import { Med } from '../../mock/medList';
-import {   
-  FlatList,
-  View,
-  Text,
- } from 'react-native';
+import { FlatList, View, Text } from 'react-native';
 import * as firebase from 'firebase';
+
+export type medicineProps = {
+  description: string;
+  dose_per_time: number;
+  name: string;
+  time_stamp: number;
+  times_per_day: number;
+};
 
 type HomeProps = {
   user: any;
 };
 function Home({ user }: HomeProps) {
   const db = firebase.firestore();
-  
+
   const getDailyReport = async () => {
     const dailyReport = db
       .collection('medicines')
@@ -22,6 +25,18 @@ function Home({ user }: HomeProps) {
       .orderBy('time_stamp', 'desc')
       .get();
     return dailyReport;
+  };
+
+  //use timeStamp as the unique id for medicine added
+  const handleBtnClick = async (timeStamp: number) => {
+    db.collection('medicines')
+      .where('time_stamp', '==', timeStamp)
+      .get()
+      .then((snapshot) => {
+        (snapshot as any).forEach((doc: any) => {
+          console.log(doc.data);
+        });
+      });
   };
 
   const [data, setData] = useState([]);
@@ -36,12 +51,8 @@ function Home({ user }: HomeProps) {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   const renderItem = (obj: any) => {
-    const item: any = obj.item;
+    const item: medicineProps = obj.item;
     return (
       <Card
         style={{
@@ -50,10 +61,22 @@ function Home({ user }: HomeProps) {
           width: '100%',
         }}
       >
-        <Card.Header title={item.name} extra={<Button>Just had one</Button>} />
+        <Card.Header
+          title={item.name}
+          extra={
+            <Button
+              onPress={() => {
+                handleBtnClick(item.time_stamp);
+              }}
+            >
+              Just had {item.dose_per_time}{' '}
+              {item.dose_per_time > 1 ? 'pills' : 'pill'}
+            </Button>
+          }
+        />
         <Card.Footer
           content={item.description}
-          extra={<Text>Times per day: {item.times_per_day}</Text>}
+          extra={<Text>Times remaining: {item.times_per_day}</Text>}
         />
       </Card>
     );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ItemEditor, { ItemProps } from '../itemEditor';
+import ItemEditor from '../itemEditor';
 import {
   FlatList,
   View,
@@ -8,6 +8,7 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native';
+import { medicineProps } from './home';
 import Modal from '@ant-design/react-native/lib/modal';
 import Button from '@ant-design/react-native/lib/button';
 import Provider from '@ant-design/react-native/lib/provider';
@@ -41,7 +42,7 @@ const EditPage = () => {
   const [visible, setVisible] = useState(false);
   //modal for add a new medicine
   const [visible2, setVisible2] = useState(false);
-  const [currentMedicine, setCurrentMedicine] = useState<any>(null);
+  const [currentMedicine, setCurrentMedicine] = useState<medicineProps>();
 
   const onClose = () => {
     setVisible(false);
@@ -119,7 +120,7 @@ const EditPage = () => {
   ];
 
   const renderItem = (obj: any) => {
-    const item: any = obj.item;
+    const item: medicineProps = obj.item;
     return (
       <TouchableOpacity
         onPress={() => {
@@ -153,6 +154,7 @@ const EditPage = () => {
       <Modal
         title={currentMedicine ? currentMedicine.name : ''}
         transparent
+        style={{ height: 250 }}
         onClose={onClose}
         maskClosable
         visible={visible}
@@ -161,13 +163,14 @@ const EditPage = () => {
       >
         <View style={{ paddingVertical: 20 }}>
           <Text style={{ textAlign: 'center' }}>
-            {currentMedicine ? currentMedicine.description : ''}
+            Description: {currentMedicine ? currentMedicine.description : ''}
           </Text>
           <Text style={{ textAlign: 'center' }}>
-            Does per time:{currentMedicine ? currentMedicine.dose_per_time : ''}
+            Does per time:{' '}
+            {currentMedicine ? currentMedicine.dose_per_time : ''}
           </Text>
           <Text style={{ textAlign: 'center' }}>
-            Time per day:{currentMedicine ? currentMedicine.times_per_day : ''}
+            Time per day: {currentMedicine ? currentMedicine.times_per_day : ''}
           </Text>
         </View>
         <Button type='primary' onPress={onClose}>
@@ -176,6 +179,8 @@ const EditPage = () => {
       </Modal>
       <Modal
         title='Enter medicine details'
+        style={{ height: 280, marginTop: -100 }}
+        popup
         transparent
         onClose={onCloseAddBtn}
         maskClosable
