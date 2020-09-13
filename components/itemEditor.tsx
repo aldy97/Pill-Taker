@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 
 export type ItemProps = {
-  name: string;
-  number: number;
+  name?: string;
+  number?: number;
   medicine: any;
 };
 const styles = StyleSheet.create({
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     borderColor: '#eee',
   },
 });
-function ItemEditor({ medicine, name, number }: ItemProps) {
+function ItemEditor({ medicine }: ItemProps) {
   return (
     <View style={styles.container}>
       <Text>{medicine.name}</Text>

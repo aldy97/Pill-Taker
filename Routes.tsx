@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
-import Edit from './components/pages/edit';
+import EditPage from './components/pages/editPage';
 import Notification from './components/pages/notification';
 import Settings from './components/pages/settings';
 
@@ -20,7 +20,7 @@ const Routes = ({ user }: RoutesProps) => (
       />
       <Scene
         key='edit'
-        component={() => <Edit></Edit>}
+        component={() => <EditPage></EditPage>}
         title='Edit Prescription'
       />
       <Scene
