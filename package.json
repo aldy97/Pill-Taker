@@ -33,6 +33,7 @@
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "^1.0.0-alpha.23",
     "react-native-swipe-gestures": "^1.0.5",
+    "react-native-swipeout": "^2.3.6",
     "react-native-vector-icons": "^7.0.0",
     "react-native-web": "~0.11.7"
   },

@@ -22,7 +22,7 @@ function Home({ user }: HomeProps) {
   const getDailyReport = async () => {
     const dailyReport = db
       .collection('medicines')
-      .where('time_stamp', '>=', 1599958884827)
+      .where('time_stamp', '>=', 1601001497285)
       .orderBy('time_stamp', 'desc')
       .get();
     return dailyReport;
@@ -30,7 +30,7 @@ function Home({ user }: HomeProps) {
 
   const fetchData = async () => {
     db.collection('medicines')
-      .where('time_stamp', '>=', 1599958884827)
+      .where('time_stamp', '>=', 1601001497285)
       .orderBy('time_stamp', 'desc')
       .get()
       .then((snapshot) => {

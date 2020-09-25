@@ -21,7 +21,6 @@ function App() {
     if (result.type === 'success') {
       // Then you can use the Google REST API
       setUser(result.user);
-      console.log(result.user);
     }
   };
 

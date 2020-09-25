@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { medicineProps } from './home';
+import Swipeout from 'react-native-swipeout';
 import Modal from '@ant-design/react-native/lib/modal';
 import Button from '@ant-design/react-native/lib/button';
 import Provider from '@ant-design/react-native/lib/provider';
@@ -26,7 +27,7 @@ const EditPage = () => {
   const getDailyReport = async () => {
     const dailyReport = db
       .collection('medicines')
-      .where('time_stamp', '>=', 1599958884827)
+      .where('time_stamp', '>=', 1601001497285)
       .orderBy('time_stamp', 'desc')
       .get();
     return dailyReport;
@@ -68,7 +69,7 @@ const EditPage = () => {
 
   const fetchData = async () => {
     db.collection('medicines')
-      .where('time_stamp', '>=', 1599958884827)
+      .where('time_stamp', '>=', 1601001497285)
       .orderBy('time_stamp', 'desc')
       .get()
       .then((snapshot) => {
@@ -130,17 +131,35 @@ const EditPage = () => {
     },
   ];
 
+  const swipeoutBtns = [
+    {
+      text: 'delete',
+      backgroundColor: 'red',
+      onPress: () => {
+        onDelete(currentMedicine ? currentMedicine.uid : 'error');
+      },
+    },
+  ];
+
   const renderItem = (obj: any) => {
     const item: medicineProps = obj.item;
     return (
-      <TouchableOpacity
-        onPress={() => {
-          setVisible(true);
+      <Swipeout
+        right={swipeoutBtns}
+        backgroundColor='#fff'
+        onOpen={() => {
           setCurrentMedicine(item);
         }}
       >
-        <ItemEditor medicine={item}></ItemEditor>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setVisible(true);
+            setCurrentMedicine(item);
+          }}
+        >
+          <ItemEditor medicine={item}></ItemEditor>
+        </TouchableOpacity>
+      </Swipeout>
     );
   };
 
@@ -186,6 +205,7 @@ const EditPage = () => {
         </View>
         <Button
           type='primary'
+          style={{ backgroundColor: 'red', borderColor: 'red' }}
           onPress={() => onDelete(currentMedicine ? currentMedicine.uid : '')}
         >
           Delete
