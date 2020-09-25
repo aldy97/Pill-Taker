@@ -97,6 +97,11 @@ const EditPage = () => {
       .then(fetchData);
   };
 
+  const onDelete = (uid: string) => {
+    setVisible(false);
+    db.collection('medicines').doc(uid).delete().then(fetchData);
+  };
+
   useEffect(() => {
     getDailyReport().then((snapshot) => {
       let array: any = [];
@@ -179,8 +184,11 @@ const EditPage = () => {
             Time per day: {currentMedicine ? currentMedicine.times_per_day : ''}
           </Text>
         </View>
-        <Button type='primary' onPress={onClose}>
-          close modal
+        <Button
+          type='primary'
+          onPress={() => onDelete(currentMedicine ? currentMedicine.uid : '')}
+        >
+          Delete
         </Button>
       </Modal>
       <Modal
