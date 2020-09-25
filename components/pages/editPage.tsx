@@ -66,6 +66,21 @@ const EditPage = () => {
     });
   };
 
+  const fetchData = async () => {
+    db.collection('medicines')
+      .where('time_stamp', '>=', 1599958884827)
+      .orderBy('time_stamp', 'desc')
+      .get()
+      .then((snapshot) => {
+        let array: any = [];
+        (snapshot as any).forEach((doc: any) => {
+          array.push(doc.data());
+        });
+        setData(array);
+      });
+  };
+
+  //add data first, then insert auto generated uid into its field
   const addMedicine = () => {
     db.collection('medicines')
       .add({
@@ -76,19 +91,10 @@ const EditPage = () => {
         uid: 'xiongfeng007',
         time_stamp: Date.now(),
       })
-      .then(async () => {
-        db.collection('medicines')
-          .where('time_stamp', '>=', 1599958884827)
-          .orderBy('time_stamp', 'desc')
-          .get()
-          .then((snapshot) => {
-            let array: any = [];
-            (snapshot as any).forEach((doc: any) => {
-              array.push(doc.data());
-            });
-            setData(array);
-          });
-      });
+      .then((snap) => {
+        db.collection('medicines').doc(snap.id).update({ uid: snap.id });
+      })
+      .then(fetchData);
   };
 
   useEffect(() => {

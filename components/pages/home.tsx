@@ -10,6 +10,7 @@ export type medicineProps = {
   name: string;
   time_stamp: number;
   times_per_day: number;
+  uid: string;
 };
 
 type HomeProps = {
@@ -27,16 +28,49 @@ function Home({ user }: HomeProps) {
     return dailyReport;
   };
 
-  //use timeStamp as the unique id for medicine added
-  const handleBtnClick = async (timeStamp: number) => {
+  const fetchData = async () => {
     db.collection('medicines')
-      .where('time_stamp', '==', timeStamp)
+      .where('time_stamp', '>=', 1599958884827)
+      .orderBy('time_stamp', 'desc')
       .get()
       .then((snapshot) => {
+        let array: any = [];
         (snapshot as any).forEach((doc: any) => {
-          console.log(doc.data);
+          array.push(doc.data());
         });
+        setData(array);
       });
+  };
+
+  //use timeStamp as the unique id for medicine added
+  // const handleBtnClick = async (timeStamp: number) => {
+  //   db.collection('medicines')
+  //     .where('time_stamp', '==', timeStamp)
+  //     .get()
+  //     .then((snapshot) => {
+  //       (snapshot as any).forEach((doc: any) => {
+  //         console.log(doc.data);
+  //       });
+  //     });
+  // };
+
+  //change medicine consumption status
+  const handleBtnPress = (uid: string) => {
+    let updatedTimePerDay: number = 0;
+    db.collection('medicines')
+      .doc(uid)
+      .get()
+      .then((snap) => {
+        updatedTimePerDay = (snap.data() as any).times_per_day - 1;
+        if (updatedTimePerDay < 0) {
+          updatedTimePerDay = 0;
+        }
+      });
+    console.log(updatedTimePerDay);
+    db.collection('medicines')
+      .doc(uid)
+      .update({ times_per_day: 100 })
+      .then(fetchData);
   };
 
   const [data, setData] = useState([]);
@@ -66,7 +100,7 @@ function Home({ user }: HomeProps) {
           extra={
             <Button
               onPress={() => {
-                handleBtnClick(item.time_stamp);
+                handleBtnPress(item.uid);
               }}
             >
               Just had {item.dose_per_time}{' '}
