@@ -160,7 +160,7 @@ const EditPage = () => {
       <Modal
         title={currentMedicine ? currentMedicine.name : ''}
         transparent
-        style={{ height: 250 }}
+        style={{ height: 250, width: 350 }}
         onClose={onClose}
         maskClosable
         visible={visible}

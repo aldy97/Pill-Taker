@@ -42,35 +42,22 @@ function Home({ user }: HomeProps) {
       });
   };
 
-  //use timeStamp as the unique id for medicine added
-  // const handleBtnClick = async (timeStamp: number) => {
-  //   db.collection('medicines')
-  //     .where('time_stamp', '==', timeStamp)
-  //     .get()
-  //     .then((snapshot) => {
-  //       (snapshot as any).forEach((doc: any) => {
-  //         console.log(doc.data);
-  //       });
-  //     });
-  // };
-
   //change medicine consumption status
-  const handleBtnPress = (uid: string) => {
+  const handleBtnPress = async (uid: string) => {
     let updatedTimePerDay: number = 0;
     db.collection('medicines')
       .doc(uid)
       .get()
       .then((snap) => {
         updatedTimePerDay = (snap.data() as any).times_per_day - 1;
-        if (updatedTimePerDay < 0) {
+        if (updatedTimePerDay <= 0) {
           updatedTimePerDay = 0;
         }
+        db.collection('medicines')
+          .doc(uid)
+          .update({ times_per_day: updatedTimePerDay })
+          .then(fetchData);
       });
-    console.log(updatedTimePerDay);
-    db.collection('medicines')
-      .doc(uid)
-      .update({ times_per_day: 100 })
-      .then(fetchData);
   };
 
   const [data, setData] = useState([]);
