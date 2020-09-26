@@ -12,6 +12,7 @@ import { medicineProps } from './home';
 import Swipeout from 'react-native-swipeout';
 import Modal from '@ant-design/react-native/lib/modal';
 import Button from '@ant-design/react-native/lib/button';
+import { Toast } from '@ant-design/react-native';
 import Provider from '@ant-design/react-native/lib/provider';
 import * as firebase from 'firebase';
 
@@ -35,6 +36,7 @@ const EditPage = () => {
 
   const [data, setData] = useState([]);
 
+  //fileds for adding new medicine
   const [medName, setMedName] = useState('');
   const [desc, setDesc] = useState('');
   const [timesPerDay, setTimesPerDay] = useState('');
@@ -122,12 +124,14 @@ const EditPage = () => {
     },
   ];
 
-  //for creating unadded medicine
+  //for adding new medicine
   const footerButtons2 = [
     { text: 'Cancel', onPress: () => console.log('cancel') },
     {
       text: 'Confirm',
-      onPress: () => addMedicine(),
+      onPress: () => {
+        addMedicine();
+      },
     },
   ];
 
@@ -146,7 +150,9 @@ const EditPage = () => {
     return (
       <Swipeout
         right={swipeoutBtns}
+        style={{ marginTop: 10 }}
         backgroundColor='#fff'
+        autoClose
         onOpen={() => {
           setCurrentMedicine(item);
         }}
@@ -157,7 +163,7 @@ const EditPage = () => {
             setCurrentMedicine(item);
           }}
         >
-          <ItemEditor medicine={item}></ItemEditor>
+          <ItemEditor medicine={item} style={{ height: 400 }}></ItemEditor>
         </TouchableOpacity>
       </Swipeout>
     );
