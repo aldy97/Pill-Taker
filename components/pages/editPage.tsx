@@ -41,12 +41,18 @@ const EditPage = () => {
   const [timesPerDay, setTimesPerDay] = useState('');
   const [doesPerTime, setDoesPerTime] = useState('');
 
+  //showing med detail
   const [visible, setVisible] = useState(false);
   //modal for add a new medicine
   const [visible2, setVisible2] = useState(false);
   //Adding med confirmation
   const [visible3, setVisible3] = useState(false);
+  //editting an added medication
+  const [visible4, setVisible4] = useState(false);
+
   const [currentMedicine, setCurrentMedicine] = useState<medicineProps>();
+
+  const [toastMsg, setToastMsg] = useState<String>();
 
   const onClose = () => {
     setVisible(false);
@@ -58,16 +64,6 @@ const EditPage = () => {
 
   const handleAddBtnPress = () => {
     setVisible2(true);
-  };
-
-  const setMedicine = (id: string) => {
-    db.collection('medicines').doc(id).set({
-      name: name,
-      description: desc,
-      dose_per_time: doesPerTime,
-      times_per_day: timesPerDay,
-      uid: 'xiongfeng007',
-    });
   };
 
   const fetchData = async () => {
@@ -101,6 +97,19 @@ const EditPage = () => {
       .then(fetchData);
   };
 
+  const editMedicine = () => {
+    db.collection('medicines')
+      .doc(currentMedicine ? currentMedicine.uid : '')
+      .update({
+        name: medName,
+        description: desc,
+        dose_per_time: parseInt(doesPerTime, 10),
+        times_per_day: parseInt(timesPerDay, 10),
+        time_stamp: Date.now(),
+      })
+      .then(fetchData);
+  };
+
   const onDelete = (uid: string) => {
     setVisible(false);
     db.collection('medicines').doc(uid).delete().then(fetchData);
@@ -118,10 +127,10 @@ const EditPage = () => {
 
   //for editing existing medicine
   const footerButtons1 = [
-    { text: 'Cancel', onPress: () => console.log('cancel') },
+    { text: 'Cancel', onPress: () => console.log('get here') },
     {
-      text: 'Confirm',
-      onPress: () => setMedicine('3'),
+      text: 'Edit',
+      onPress: () => setVisible4(true),
     },
   ];
 
@@ -132,16 +141,36 @@ const EditPage = () => {
       text: 'Confirm',
       onPress: () => {
         addMedicine();
+        setToastMsg('Medicine added');
         setVisible3(true);
       },
     },
   ];
 
+  //after medicine has been added/editted
   const footerButton3 = [
     {
-      text: 'Okay',
+      text: `${toastMsg}`,
       onPress: () => {
         setVisible3(false);
+      },
+    },
+  ];
+
+  //after editing medicine
+  const footerButton4 = [
+    {
+      text: 'Cancel',
+      onPress: () => {
+        setVisible4(false);
+      },
+    },
+    {
+      text: 'Confirm',
+      onPress: () => {
+        editMedicine();
+        setToastMsg('Medicine editted');
+        setVisible4(false);
       },
     },
   ];
@@ -281,6 +310,56 @@ const EditPage = () => {
         closable
         footer={footerButton3}
       ></Modal>
+      <Modal
+        title='Edit medicine'
+        style={{ height: 280, marginTop: -100 }}
+        popup
+        transparent
+        onClose={onCloseAddBtn}
+        maskClosable
+        visible={visible4}
+        closable
+        footer={footerButton4}
+      >
+        <View style={{ paddingVertical: 20 }}>
+          <TextInput
+            placeholder={currentMedicine ? currentMedicine.name : 'error'}
+            style={styles.textInput}
+            onChangeText={(text: string) => {
+              setMedName(text);
+            }}
+          ></TextInput>
+          <TextInput
+            placeholder={
+              currentMedicine ? currentMedicine.description : 'error'
+            }
+            style={styles.textInput}
+            onChangeText={(text: string) => {
+              setDesc(text);
+            }}
+          ></TextInput>
+          <TextInput
+            keyboardType='numeric'
+            placeholder={
+              currentMedicine ? `${currentMedicine.times_per_day}` : ''
+            }
+            onChangeText={(text: string) => {
+              setTimesPerDay(text);
+            }}
+            style={styles.textInput}
+          ></TextInput>
+          <TextInput
+            keyboardType='numeric'
+            placeholder={
+              currentMedicine ? `${currentMedicine.dose_per_time}` : ''
+            }
+            style={{ ...styles.textInput, marginBottom: -40 }}
+            onChangeText={(text: string) => {
+              setDoesPerTime(text);
+            }}
+          ></TextInput>
+        </View>
+      </Modal>
     </View>
   );
 };
