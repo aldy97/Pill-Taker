@@ -235,7 +235,6 @@ const EditPage = () => {
         onClose={onClose}
         maskClosable
         visible={visible}
-        closable
         footer={footerButtons1}
       >
         <View style={{ paddingVertical: 20 }}>
@@ -266,7 +265,6 @@ const EditPage = () => {
         onClose={onCloseAddBtn}
         maskClosable
         visible={visible2}
-        closable
         footer={footerButtons2}
       >
         <View style={{ paddingVertical: 20 }}>
@@ -308,7 +306,6 @@ const EditPage = () => {
         onClose={() => setVisible3(false)}
         maskClosable
         visible={visible3}
-        closable
         footer={footerButton3}
       ></Modal>
       <Modal
@@ -319,7 +316,6 @@ const EditPage = () => {
         onClose={onCloseAddBtn}
         maskClosable
         visible={visible4}
-        closable
         footer={footerButton4}
       >
         <View style={{ paddingVertical: 20 }}>

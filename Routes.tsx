@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
