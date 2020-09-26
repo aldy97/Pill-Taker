@@ -250,7 +250,7 @@ const EditPage = () => {
           </Text>
         </View>
         <Button
-          type='primary'
+          type='warning'
           style={{ backgroundColor: 'red', borderColor: 'red' }}
           onPress={() => onDelete(currentMedicine ? currentMedicine.uid : '')}
         >
@@ -320,14 +320,14 @@ const EditPage = () => {
       >
         <View style={{ paddingVertical: 20 }}>
           <TextInput
-            placeholder={currentMedicine ? currentMedicine.name : 'error'}
+            defaultValue={currentMedicine ? currentMedicine.name : 'error'}
             style={styles.textInput}
             onChangeText={(text: string) => {
               setMedName(text);
             }}
           ></TextInput>
           <TextInput
-            placeholder={
+            defaultValue={
               currentMedicine ? currentMedicine.description : 'error'
             }
             style={styles.textInput}
@@ -337,7 +337,7 @@ const EditPage = () => {
           ></TextInput>
           <TextInput
             keyboardType='numeric'
-            placeholder={
+            defaultValue={
               currentMedicine ? `${currentMedicine.times_per_day}` : ''
             }
             onChangeText={(text: string) => {
@@ -347,7 +347,7 @@ const EditPage = () => {
           ></TextInput>
           <TextInput
             keyboardType='numeric'
-            placeholder={
+            defaultValue={
               currentMedicine ? `${currentMedicine.dose_per_time}` : ''
             }
             style={{ ...styles.textInput, marginBottom: -40 }}
