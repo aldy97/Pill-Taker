@@ -12,7 +12,6 @@ import { medicineProps } from './home';
 import Swipeout from 'react-native-swipeout';
 import Modal from '@ant-design/react-native/lib/modal';
 import Button from '@ant-design/react-native/lib/button';
-import { Toast } from '@ant-design/react-native';
 import Provider from '@ant-design/react-native/lib/provider';
 import * as firebase from 'firebase';
 
@@ -45,6 +44,8 @@ const EditPage = () => {
   const [visible, setVisible] = useState(false);
   //modal for add a new medicine
   const [visible2, setVisible2] = useState(false);
+  //Adding med confirmation
+  const [visible3, setVisible3] = useState(false);
   const [currentMedicine, setCurrentMedicine] = useState<medicineProps>();
 
   const onClose = () => {
@@ -131,6 +132,16 @@ const EditPage = () => {
       text: 'Confirm',
       onPress: () => {
         addMedicine();
+        setVisible3(true);
+      },
+    },
+  ];
+
+  const footerButton3 = [
+    {
+      text: 'Okay',
+      onPress: () => {
+        setVisible3(false);
       },
     },
   ];
@@ -261,6 +272,15 @@ const EditPage = () => {
           ></TextInput>
         </View>
       </Modal>
+      <Modal
+        title='Medicine added'
+        transparent
+        onClose={onClose}
+        maskClosable
+        visible={visible3}
+        closable
+        footer={footerButton3}
+      ></Modal>
     </View>
   );
 };
