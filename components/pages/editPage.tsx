@@ -150,7 +150,7 @@ const EditPage = () => {
   //after medicine has been added/editted
   const footerButton3 = [
     {
-      text: `${toastMsg}`,
+      text: 'Ok',
       onPress: () => {
         setVisible3(false);
       },
@@ -171,6 +171,7 @@ const EditPage = () => {
         editMedicine();
         setToastMsg('Medicine editted');
         setVisible4(false);
+        setVisible3(true);
       },
     },
   ];
@@ -302,9 +303,9 @@ const EditPage = () => {
         </View>
       </Modal>
       <Modal
-        title='Medicine added'
+        title={`${toastMsg}`}
         transparent
-        onClose={onClose}
+        onClose={() => setVisible3(false)}
         maskClosable
         visible={visible3}
         closable
