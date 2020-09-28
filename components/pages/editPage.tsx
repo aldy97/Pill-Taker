@@ -36,10 +36,10 @@ const EditPage = () => {
   const [data, setData] = useState([]);
 
   //fileds for adding new medicine
-  const [medName, setMedName] = useState('');
-  const [desc, setDesc] = useState('');
-  const [timesPerDay, setTimesPerDay] = useState('');
-  const [doesPerTime, setDoesPerTime] = useState('');
+  const [medName, setMedName] = useState<string>('');
+  const [desc, setDesc] = useState<string>('');
+  const [timesPerDay, setTimesPerDay] = useState<string>('');
+  const [doesPerTime, setDoesPerTime] = useState<string>('');
 
   //showing med detail
   const [visible, setVisible] = useState(false);
@@ -62,7 +62,15 @@ const EditPage = () => {
     setVisible2(false);
   };
 
+  const resetStatus: () => void = () => {
+    setMedName('');
+    setDesc('');
+    setTimesPerDay('');
+    setDoesPerTime('');
+  };
+
   const handleAddBtnPress = () => {
+    resetStatus();
     setVisible2(true);
   };
 
@@ -80,21 +88,34 @@ const EditPage = () => {
       });
   };
 
+  const inputsAreLegal: () => boolean = () => {
+    return (
+      medName !== '' && desc !== '' && doesPerTime !== '' && timesPerDay !== ''
+    );
+  };
+
   //add data first, then insert auto generated uid into its field
   const addMedicine = () => {
-    db.collection('medicines')
-      .add({
-        name: medName,
-        description: desc,
-        dose_per_time: parseInt(doesPerTime, 10),
-        times_per_day: parseInt(timesPerDay, 10),
-        uid: 'xiongfeng007',
-        time_stamp: Date.now(),
-      })
-      .then((snap) => {
-        db.collection('medicines').doc(snap.id).update({ uid: snap.id });
-      })
-      .then(fetchData);
+    if (inputsAreLegal()) {
+      setToastMsg('Medicine added');
+      setVisible3(true);
+      db.collection('medicines')
+        .add({
+          name: medName,
+          description: desc,
+          dose_per_time: parseInt(doesPerTime, 10),
+          times_per_day: parseInt(timesPerDay, 10),
+          uid: '',
+          time_stamp: Date.now(),
+        })
+        .then((snap) => {
+          db.collection('medicines').doc(snap.id).update({ uid: snap.id });
+        })
+        .then(fetchData);
+    } else {
+      setToastMsg('Please fill every field');
+      setVisible3(true);
+    }
   };
 
   const editMedicine = () => {
@@ -136,13 +157,11 @@ const EditPage = () => {
 
   //for adding new medicine
   const footerButtons2 = [
-    { text: 'Cancel', onPress: () => console.log('cancel') },
+    { text: 'Cancel' },
     {
       text: 'Confirm',
       onPress: () => {
         addMedicine();
-        setToastMsg('Medicine added');
-        setVisible3(true);
       },
     },
   ];
@@ -269,14 +288,14 @@ const EditPage = () => {
       >
         <View style={{ paddingVertical: 20 }}>
           <TextInput
-            placeholder='Add medicine name'
+            placeholder='Medicine name'
             style={styles.textInput}
             onChangeText={(text: string) => {
               setMedName(text);
             }}
           ></TextInput>
           <TextInput
-            placeholder='Add medicine description'
+            placeholder='Medicine description'
             style={styles.textInput}
             onChangeText={(text: string) => {
               setDesc(text);
@@ -284,7 +303,7 @@ const EditPage = () => {
           ></TextInput>
           <TextInput
             keyboardType='numeric'
-            placeholder='Add times per day'
+            placeholder='Times per day'
             onChangeText={(text: string) => {
               setTimesPerDay(text);
             }}
@@ -292,7 +311,7 @@ const EditPage = () => {
           ></TextInput>
           <TextInput
             keyboardType='numeric'
-            placeholder='Add does per time'
+            placeholder='Does per time'
             style={{ ...styles.textInput, marginBottom: -40 }}
             onChangeText={(text: string) => {
               setDoesPerTime(text);

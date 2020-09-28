@@ -13,7 +13,6 @@ function Footer() {
     >
       <TabBar.Item
         title='Home'
-        icon={<Icon name='account-book' size='md' />}
         onPress={() => {
           if (scene !== 'home') {
             Actions.home();
@@ -23,7 +22,6 @@ function Footer() {
       ></TabBar.Item>
       <TabBar.Item
         title='Edit'
-        icon={<Icon name='account-book' size='md' />}
         onPress={() => {
           if (scene !== 'edit') {
             Actions.edit();
@@ -39,7 +37,6 @@ function Footer() {
             setScene('notification');
           }
         }}
-        icon={<Icon name='account-book' size='md' />}
       ></TabBar.Item>
       <TabBar.Item
         title='Settings'
@@ -49,7 +46,6 @@ function Footer() {
             setScene('settings');
           }
         }}
-        icon={<Icon name='account-book' />}
       ></TabBar.Item>
     </TabBar>
   );
