@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Button from '@ant-design/react-native/lib/button';
 import Card from '@ant-design/react-native/lib/card';
 import { FlatList, View, Text } from 'react-native';
+import ActivityIndicator from '@ant-design/react-native/lib/activity-indicator';
 import * as firebase from 'firebase';
 
 export type medicineProps = {
@@ -29,17 +30,13 @@ function Home({ user }: HomeProps) {
   };
 
   const fetchData = async () => {
-    db.collection('medicines')
-      .where('time_stamp', '>=', 1601001497285)
-      .orderBy('time_stamp', 'desc')
-      .get()
-      .then((snapshot) => {
-        let array: any = [];
-        (snapshot as any).forEach((doc: any) => {
-          array.push(doc.data());
-        });
-        setData(array);
+    getDailyReport().then((snapshot) => {
+      let array: any = [];
+      (snapshot as any).forEach((doc: any) => {
+        array.push(doc.data());
       });
+      setData(array);
+    });
   };
 
   //change medicine consumption status
@@ -61,7 +58,9 @@ function Home({ user }: HomeProps) {
   };
 
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  //issue: setData(array) only works when array is not empty
   useEffect(() => {
     getDailyReport().then((snapshot) => {
       let array: any = [];
@@ -70,7 +69,12 @@ function Home({ user }: HomeProps) {
         setData(array);
       });
     });
+    setTimeout(() => setIsLoading(false), 1000);
   }, []);
+
+  useEffect(() => {
+    console.log('loading? ' + isLoading);
+  });
 
   const renderItem = (obj: any) => {
     const item: medicineProps = obj.item;
@@ -103,7 +107,15 @@ function Home({ user }: HomeProps) {
     );
   };
 
-  return (
+  return isLoading ? (
+    <View style={{ marginTop: 100 }}>
+      <ActivityIndicator text='Loading...'></ActivityIndicator>
+    </View>
+  ) : data.length === 0 ? (
+    <View>
+      <Text>No Data</Text>
+    </View>
+  ) : (
     <View>
       <FlatList
         data={data}

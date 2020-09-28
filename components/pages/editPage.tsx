@@ -288,7 +288,7 @@ const EditPage = () => {
       </Modal>
       <Modal
         title='Enter medicine details'
-        style={{ height: 280, marginTop: -160 }}
+        style={{ height: 280, marginTop: -150 }}
         popup
         transparent
         onClose={onCloseAddBtn}
@@ -339,7 +339,7 @@ const EditPage = () => {
       ></Modal>
       <Modal
         title='Edit medicine'
-        style={{ height: 280, marginTop: -160 }}
+        style={{ height: 280, marginTop: -150 }}
         popup
         transparent
         onClose={onCloseAddBtn}
