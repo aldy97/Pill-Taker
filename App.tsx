@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import store from './store/index.js';
+import { Provider } from 'react-redux';
 import { AppRegistry, View } from 'react-native';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';

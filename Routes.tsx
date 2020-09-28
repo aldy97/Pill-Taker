@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
@@ -10,7 +11,7 @@ interface RoutesProps {
   user: any;
 }
 
-const Routes = ({ user }: RoutesProps) => (
+const Routes = ({ user }: RoutesProps, props) => (
   <Router>
     <Scene key='root'>
       <Scene
@@ -32,7 +33,9 @@ const Routes = ({ user }: RoutesProps) => (
               width: 30,
               marginRight: 10,
             }}
-            onPress={() => {}}
+            onPress={() => {
+              console.log(props.addModalOpen);
+            }}
           ></Button>
         )}
       />
@@ -51,4 +54,13 @@ const Routes = ({ user }: RoutesProps) => (
     </Scene>
   </Router>
 );
+
+const mapState = (state: any) => {
+  return {
+    addModalOpen: state.getIn(['reducer', 'addModalOpen']),
+  };
+};
+
+const mapDispatch = () => {};
+
 export default Routes;
