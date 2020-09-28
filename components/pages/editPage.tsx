@@ -126,7 +126,6 @@ const EditPage = () => {
         description: desc,
         dose_per_time: parseInt(doesPerTime, 10),
         times_per_day: parseInt(timesPerDay, 10),
-        time_stamp: Date.now(),
       })
       .then(fetchData);
   };
@@ -148,16 +147,26 @@ const EditPage = () => {
 
   //for editing existing medicine
   const footerButtons1 = [
-    { text: 'Cancel', onPress: () => console.log('get here') },
+    { text: 'Cancel', onPress: () => resetStatus() },
     {
       text: 'Edit',
-      onPress: () => setVisible4(true),
+      onPress: () => {
+        setMedName(currentMedicine ? currentMedicine.name : '');
+        setDesc(currentMedicine ? currentMedicine.description : '');
+        setDoesPerTime(
+          currentMedicine ? currentMedicine.dose_per_time.toString() : ''
+        );
+        setTimesPerDay(
+          currentMedicine ? currentMedicine.times_per_day.toString() : ''
+        );
+        setVisible4(true);
+      },
     },
   ];
 
   //for adding new medicine
   const footerButtons2 = [
-    { text: 'Cancel' },
+    { text: 'Cancel', onPress: () => resetStatus() },
     {
       text: 'Confirm',
       onPress: () => {
@@ -181,6 +190,7 @@ const EditPage = () => {
     {
       text: 'Cancel',
       onPress: () => {
+        resetStatus();
         setVisible4(false);
       },
     },
@@ -278,7 +288,7 @@ const EditPage = () => {
       </Modal>
       <Modal
         title='Enter medicine details'
-        style={{ height: 280, marginTop: -100 }}
+        style={{ height: 280, marginTop: -160 }}
         popup
         transparent
         onClose={onCloseAddBtn}
@@ -329,7 +339,7 @@ const EditPage = () => {
       ></Modal>
       <Modal
         title='Edit medicine'
-        style={{ height: 280, marginTop: -100 }}
+        style={{ height: 280, marginTop: -160 }}
         popup
         transparent
         onClose={onCloseAddBtn}
@@ -357,22 +367,22 @@ const EditPage = () => {
           <TextInput
             keyboardType='numeric'
             defaultValue={
+              currentMedicine ? `${currentMedicine.dose_per_time}` : ''
+            }
+            style={styles.textInput}
+            onChangeText={(text: string) => {
+              setDoesPerTime(text);
+            }}
+          ></TextInput>
+          <TextInput
+            keyboardType='numeric'
+            defaultValue={
               currentMedicine ? `${currentMedicine.times_per_day}` : ''
             }
             onChangeText={(text: string) => {
               setTimesPerDay(text);
             }}
-            style={styles.textInput}
-          ></TextInput>
-          <TextInput
-            keyboardType='numeric'
-            defaultValue={
-              currentMedicine ? `${currentMedicine.dose_per_time}` : ''
-            }
             style={{ ...styles.textInput, marginBottom: -40 }}
-            onChangeText={(text: string) => {
-              setDoesPerTime(text);
-            }}
           ></TextInput>
         </View>
       </Modal>

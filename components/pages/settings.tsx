@@ -13,25 +13,7 @@ function Settings() {
     { text: 'Cancel', onPress: () => console.log('cancel') },
     { text: 'Ok', onPress: () => console.log('ok') },
   ];
-  return (
-    <Modal
-      title='Title'
-      transparent
-      onClose={onClose}
-      maskClosable
-      visible={visible}
-      closable
-      footer={footerButtons}
-    >
-      <View style={{ paddingVertical: 20 }}>
-        <Text style={{ textAlign: 'center' }}>Content...</Text>
-        <Text style={{ textAlign: 'center' }}>Content...</Text>
-      </View>
-      <Button type='primary' onPress={onClose}>
-        close modal
-      </Button>
-    </Modal>
-  );
+  return <View></View>;
 }
 
 export default () => (
