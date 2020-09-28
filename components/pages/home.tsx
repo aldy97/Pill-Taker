@@ -68,7 +68,7 @@ function Home({ user }: HomeProps) {
         setData(array);
       });
     });
-    setTimeout(() => setIsLoading(false), 1000);
+    setTimeout(() => setIsLoading(false), 500);
   }, []);
 
   const renderItem = (obj: any) => {
@@ -106,14 +106,15 @@ function Home({ user }: HomeProps) {
     <View style={{ marginTop: 100 }}>
       <ActivityIndicator text='Loading...'></ActivityIndicator>
     </View>
-  ) : data.length === 0 ? (
-    <View>
-      <Text>No Data</Text>
-    </View>
   ) : (
     <View>
       <FlatList
         data={data}
+        ListEmptyComponent={
+          <View style={{ flex: 1 }}>
+            <Text style={{ textAlign: 'center', marginTop: 100 }}>No Data</Text>
+          </View>
+        }
         renderItem={renderItem}
         keyExtractor={(item: any) => item.key}
       ></FlatList>
