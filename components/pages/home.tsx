@@ -20,6 +20,9 @@ type HomeProps = {
 function Home({ user }: HomeProps) {
   const db = firebase.firestore();
 
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const getDailyReport = async () => {
     const dailyReport = db
       .collection('medicines')
@@ -57,10 +60,6 @@ function Home({ user }: HomeProps) {
       });
   };
 
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  //issue: setData(array) only works when array is not empty
   useEffect(() => {
     getDailyReport().then((snapshot) => {
       let array: any = [];
@@ -71,10 +70,6 @@ function Home({ user }: HomeProps) {
     });
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
-
-  useEffect(() => {
-    console.log('loading? ' + isLoading);
-  });
 
   const renderItem = (obj: any) => {
     const item: medicineProps = obj.item;
