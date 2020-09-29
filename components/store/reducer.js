@@ -6,7 +6,7 @@ const defaultState = {
 export default (state = defaultState, action) => {
   if (action.type === constants.TOGGLE_ADD_MODAL) {
     const newState = JSON.parse(JSON.stringify(state));
-    newState.addModalOpen = !defaultState.addModalOpen;
+    newState.addModalOpen = action.addModalOpen;
     return newState;
   }
   return state;

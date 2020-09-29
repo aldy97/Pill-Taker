@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import ItemEditor from '../itemEditor';
+import { handleAddBtnPress } from '../store/ActionsCreator.js';
+import { connect } from 'react-redux';
 import {
   FlatList,
   View,
@@ -24,9 +25,10 @@ const styles = StyleSheet.create({
 
 type EditPageProps = {
   addModalOpen: boolean;
+  toogle?: any;
 };
 
-const EditPage = ({ addModalOpen }: EditPageProps) => {
+const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
   const db = firebase.firestore();
 
   useEffect(() => {
@@ -76,11 +78,6 @@ const EditPage = ({ addModalOpen }: EditPageProps) => {
     setDesc('');
     setTimesPerDay('');
     setDoesPerTime('');
-  };
-
-  const handleAddBtnPress = () => {
-    resetStatus();
-    setVisible2(true);
   };
 
   const fetchData = async () => {
@@ -175,10 +172,11 @@ const EditPage = ({ addModalOpen }: EditPageProps) => {
 
   //for adding new medicine
   const footerButtons2 = [
-    { text: 'Cancel', onPress: () => resetStatus() },
+    { text: 'Cancel', onPress: () => toogle(!addModalOpen) },
     {
       text: 'Confirm',
       onPress: () => {
+        toogle(!addModalOpen);
         addMedicine();
       },
     },
@@ -250,17 +248,6 @@ const EditPage = ({ addModalOpen }: EditPageProps) => {
 
   return (
     <View>
-      <Button
-        style={{
-          width: '30%',
-          marginRight: 10,
-          marginTop: 10,
-          alignSelf: 'flex-end',
-        }}
-        onPress={handleAddBtnPress}
-      >
-        Add
-      </Button>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -302,7 +289,7 @@ const EditPage = ({ addModalOpen }: EditPageProps) => {
         transparent
         onClose={onCloseAddBtn}
         maskClosable
-        visible={visible2}
+        visible={addModalOpen}
         footer={footerButtons2}
       >
         <View style={{ paddingVertical: 20 }}>
@@ -399,8 +386,24 @@ const EditPage = ({ addModalOpen }: EditPageProps) => {
   );
 };
 
-export default ({ addModalOpen }: EditPageProps) => (
+const mapState = (state: any) => {
+  return {
+    addModalOpen: state.getIn(['reducer', 'addModalOpen']),
+  };
+};
+
+const mapDispatch = (dispatch) => ({
+  toogle(addModalOpen: boolean) {
+    const action = handleAddBtnPress(addModalOpen);
+    dispatch(action);
+  },
+});
+
+export default connect(
+  mapState,
+  mapDispatch
+)(({ addModalOpen, toogle }: EditPageProps) => (
   <Provider>
-    <EditPage addModalOpen={addModalOpen} />
+    <EditPage addModalOpen={addModalOpen} toogle={toogle} />
   </Provider>
-);
+));

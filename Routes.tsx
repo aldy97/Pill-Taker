@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { handleAddBtnPress } from './components/store/ActionsCreator.js';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
@@ -9,10 +10,10 @@ import Button from '@ant-design/react-native/lib/button';
 
 interface RoutesProps {
   user: any;
-  addModalOpen?: boolean;
+  toogle?: any;
 }
 
-const Routes = ({ user, addModalOpen }: RoutesProps) => {
+const Routes = ({ user, toogle }: RoutesProps) => {
   return (
     <Router>
       <Scene key='root'>
@@ -26,9 +27,7 @@ const Routes = ({ user, addModalOpen }: RoutesProps) => {
         <Scene
           left={() => null}
           key='edit'
-          component={() => (
-            <EditPage addModalOpen={addModalOpen as boolean}></EditPage>
-          )}
+          component={() => <EditPage></EditPage>}
           title='Edit Prescription'
           renderRightButton={() => (
             <Button
@@ -38,7 +37,7 @@ const Routes = ({ user, addModalOpen }: RoutesProps) => {
                 marginRight: 10,
               }}
               onPress={() => {
-                console.log('clicked');
+                toogle(true);
               }}
             ></Button>
           )}
@@ -60,12 +59,11 @@ const Routes = ({ user, addModalOpen }: RoutesProps) => {
   );
 };
 
-const mapState = (state: any) => {
-  return {
-    addModalOpen: state.getIn(['reducer', 'addModalOpen']),
-  };
-};
+const mapDispatch = (dispatch) => ({
+  toogle(addModalOpen) {
+    const action = handleAddBtnPress(addModalOpen);
+    dispatch(action);
+  },
+});
 
-const mapDispatch = (dispatch) => {};
-
-export default connect(mapState, null)(Routes);
+export default connect(null, mapDispatch)(Routes);
