@@ -9,51 +9,56 @@ import Button from '@ant-design/react-native/lib/button';
 
 interface RoutesProps {
   user: any;
+  addModalOpen?: boolean;
 }
 
-const Routes = ({ user }: RoutesProps, props) => (
-  <Router>
-    <Scene key='root'>
-      <Scene
-        left={() => null}
-        key='home'
-        component={() => <Home user={user} />}
-        title='Home'
-        initial
-      />
-      <Scene
-        left={() => null}
-        key='edit'
-        component={() => <EditPage></EditPage>}
-        title='Edit Prescription'
-        renderRightButton={() => (
-          <Button
-            style={{
-              height: 30,
-              width: 30,
-              marginRight: 10,
-            }}
-            onPress={() => {
-              console.log(props.addModalOpen);
-            }}
-          ></Button>
-        )}
-      />
-      <Scene
-        left={() => null}
-        key='notification'
-        component={Notification}
-        title='Notification Setting'
-      />
-      <Scene
-        left={() => null}
-        key='settings'
-        component={Settings}
-        title='Settings'
-      />
-    </Scene>
-  </Router>
-);
+const Routes = ({ user, addModalOpen }: RoutesProps) => {
+  return (
+    <Router>
+      <Scene key='root'>
+        <Scene
+          left={() => null}
+          key='home'
+          component={() => <Home user={user} />}
+          title='Home'
+          initial
+        />
+        <Scene
+          left={() => null}
+          key='edit'
+          component={() => (
+            <EditPage addModalOpen={addModalOpen as boolean}></EditPage>
+          )}
+          title='Edit Prescription'
+          renderRightButton={() => (
+            <Button
+              style={{
+                height: 30,
+                width: 30,
+                marginRight: 10,
+              }}
+              onPress={() => {
+                console.log('clicked');
+              }}
+            ></Button>
+          )}
+        />
+        <Scene
+          left={() => null}
+          key='notification'
+          component={Notification}
+          title='Notification Setting'
+        />
+        <Scene
+          left={() => null}
+          key='settings'
+          component={Settings}
+          title='Settings'
+        />
+      </Scene>
+    </Router>
+  );
+};
 
 const mapState = (state: any) => {
   return {
@@ -61,6 +66,6 @@ const mapState = (state: any) => {
   };
 };
 
-const mapDispatch = () => {};
+const mapDispatch = (dispatch) => {};
 
-export default Routes;
+export default connect(mapState, null)(Routes);

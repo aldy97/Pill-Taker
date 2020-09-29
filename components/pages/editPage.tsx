@@ -22,8 +22,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const EditPage = () => {
+type EditPageProps = {
+  addModalOpen: boolean;
+};
+
+const EditPage = ({ addModalOpen }: EditPageProps) => {
   const db = firebase.firestore();
+
+  useEffect(() => {
+    console.log('test:' + addModalOpen);
+  });
 
   const getDailyReport = async () => {
     const dailyReport = db
@@ -391,8 +399,8 @@ const EditPage = () => {
   );
 };
 
-export default (props: any) => (
+export default ({ addModalOpen }: EditPageProps) => (
   <Provider>
-    <EditPage />
+    <EditPage addModalOpen={addModalOpen} />
   </Provider>
 );

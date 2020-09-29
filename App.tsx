@@ -32,12 +32,14 @@ function App() {
 
   if (user) {
     return (
-      <View style={{ flex: 1 }}>
-        <Routes user={user} />
-        <View style={{ height: 70 }}>
-          <Footer />
+      <Provider store={store}>
+        <View style={{ flex: 1 }}>
+          <Routes user={user} />
+          <View style={{ height: 70 }}>
+            <Footer />
+          </View>
         </View>
-      </View>
+      </Provider>
     );
   } else {
     return (

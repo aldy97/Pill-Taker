@@ -68,7 +68,7 @@ function Home({ user }: HomeProps) {
         setData(array);
       });
     });
-    setTimeout(() => setIsLoading(false), 500);
+    setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
   const renderItem = (obj: any) => {
