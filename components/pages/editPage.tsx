@@ -100,7 +100,6 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
   const addMedicine = () => {
     if (inputsAreLegal()) {
       setToastMsg('Medicine added');
-      setVisible3(true);
       db.collection('medicines')
         .add({
           name: medName,
@@ -113,7 +112,10 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
         .then((snap) => {
           db.collection('medicines').doc(snap.id).update({ uid: snap.id });
         })
-        .then(fetchData);
+        .then(fetchData)
+        .then(() => {
+          setVisible3(true);
+        });
     } else {
       setToastMsg('Please fill every field');
       setVisible3(true);
@@ -129,7 +131,10 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
         dose_per_time: parseInt(doesPerTime, 10),
         times_per_day: parseInt(timesPerDay, 10),
       })
-      .then(fetchData);
+      .then(fetchData)
+      .then(() => {
+        setVisible3(true);
+      });
   };
 
   const onDelete = (uid: string) => {
@@ -211,7 +216,6 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
         editMedicine();
         setToastMsg('Medicine editted');
         setVisible4(false);
-        setVisible3(true);
         resetStatus();
       },
     },

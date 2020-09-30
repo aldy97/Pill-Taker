@@ -1,49 +1,52 @@
 import React, { useState } from 'react';
 import TabBar from '@ant-design/react-native/lib/tab-bar';
-import Icon from '@ant-design/react-native/lib/icon';
 import { Actions } from 'react-native-router-flux';
 
 function Footer() {
-  const [scene, setScene] = useState('home');
+  const [scene, setScene] = useState<number>(0);
   return (
     <TabBar
       unselectedTintColor='#949494'
-      tintColor='#33A3F4'
-      barTintColor='#f5f5f5'
+      tintColor='#292f31'
+      barTintColor='#eee'
     >
       <TabBar.Item
         title='Home'
+        selected={scene === 0}
         onPress={() => {
-          if (scene !== 'home') {
+          if (scene !== 0) {
             Actions.home();
-            setScene('home');
+            setScene(0);
           }
         }}
       ></TabBar.Item>
       <TabBar.Item
         title='Edit'
+        selected={scene === 1}
         onPress={() => {
-          if (scene !== 'edit') {
+          if (scene !== 1) {
             Actions.edit();
-            setScene('edit');
+            setScene(1);
           }
         }}
       ></TabBar.Item>
       <TabBar.Item
         title='Notification'
+        selected={scene === 2}
         onPress={() => {
-          if (scene !== 'notification') {
+          if (scene !== 2) {
             Actions.notification();
-            setScene('notification');
+            setScene(2);
           }
         }}
       ></TabBar.Item>
       <TabBar.Item
         title='Settings'
+        selected={scene === 3}
         onPress={() => {
-          if (scene !== 'settings') {
+          if (scene !== 3) {
             Actions.settings();
-            setScene('settings');
+            setScene(3);
           }
         }}
       ></TabBar.Item>

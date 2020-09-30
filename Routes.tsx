@@ -7,7 +7,6 @@ import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
 import Notification from './components/pages/notification';
 import Settings from './components/pages/settings';
-import Button from '@ant-design/react-native/lib/button';
 
 interface RoutesProps {
   user: any;
