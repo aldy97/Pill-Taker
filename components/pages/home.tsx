@@ -77,6 +77,7 @@ function Home({ user }: HomeProps) {
       <Card
         style={{
           width: '100%',
+          borderRadius: 0,
           borderTopWidth: 0,
         }}
       >

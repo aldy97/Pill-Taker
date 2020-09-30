@@ -3,6 +3,7 @@ import TabBar from '@ant-design/react-native/lib/tab-bar';
 import { Actions } from 'react-native-router-flux';
 
 function Footer() {
+  //default scene is Home, which corresponds to 0-index
   const [scene, setScene] = useState<number>(0);
   return (
     <TabBar

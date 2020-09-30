@@ -237,6 +237,7 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
       <Swipeout
         right={swipeoutBtns}
         backgroundColor='#fff'
+        close={currentMedicine ? currentMedicine.uid !== item.uid : false}
         autoClose
         onOpen={() => {
           setCurrentMedicine(item);
