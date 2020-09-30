@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
+import { IconFill } from '@ant-design/icons-react-native';
 import { handleAddBtnPress } from './components/store/ActionsCreator.js';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
 import Notification from './components/pages/notification';
 import Settings from './components/pages/settings';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 
 interface RoutesProps {
   user: any;
@@ -14,7 +17,29 @@ interface RoutesProps {
 }
 
 const Routes = ({ user, toogle }: RoutesProps) => {
-  return (
+  const [isReady, setIsReady] = useState<boolean>(false);
+
+  async function prep() {
+    await Font.loadAsync(
+      'antoutline',
+      // eslint-disable-next-line
+      require('@ant-design/icons-react-native/fonts/antoutline.ttf')
+    );
+
+    await Font.loadAsync(
+      'antfill',
+      // eslint-disable-next-line
+      require('@ant-design/icons-react-native/fonts/antfill.ttf')
+    );
+    // eslint-disable-next-line
+    setIsReady(true);
+  }
+
+  useEffect(() => {
+    prep();
+  }, []);
+
+  return isReady ? (
     <Router>
       <Scene key='root'>
         <Scene
@@ -33,20 +58,12 @@ const Routes = ({ user, toogle }: RoutesProps) => {
           navigationBarStyle={{ backgroundColor: '#eee' }}
           renderRightButton={() => (
             <TouchableOpacity
-              style={{
-                height: 30,
-                width: 30,
-                marginRight: 10,
-                borderWidth: 1,
-                borderRadius: 50,
-              }}
+              style={{ marginRight: 10 }}
               onPress={() => {
                 toogle(true);
               }}
             >
-              <View>
-                <Text style={{ textAlign: 'center', lineHeight: 25 }}>+</Text>
-              </View>
+              <IconFill name='plus-circle' size={30} />
             </TouchableOpacity>
           )}
         />
@@ -66,6 +83,8 @@ const Routes = ({ user, toogle }: RoutesProps) => {
         />
       </Scene>
     </Router>
+  ) : (
+    <AppLoading></AppLoading>
   );
 };
 
