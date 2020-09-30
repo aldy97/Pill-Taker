@@ -172,12 +172,19 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
 
   //for adding new medicine
   const footerButtons2 = [
-    { text: 'Cancel', onPress: () => toogle(!addModalOpen) },
+    {
+      text: 'Cancel',
+      onPress: () => {
+        resetStatus();
+        toogle(!addModalOpen);
+      },
+    },
     {
       text: 'Confirm',
       onPress: () => {
         toogle(!addModalOpen);
         addMedicine();
+        resetStatus();
       },
     },
   ];
@@ -188,6 +195,7 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
       text: 'Ok',
       onPress: () => {
         setVisible3(false);
+        resetStatus();
       },
     },
   ];
@@ -208,6 +216,7 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
         setToastMsg('Medicine editted');
         setVisible4(false);
         setVisible3(true);
+        resetStatus();
       },
     },
   ];
