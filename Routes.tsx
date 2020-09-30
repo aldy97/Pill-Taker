@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { handleAddBtnPress } from './components/store/ActionsCreator.js';
 import { Router, Scene } from 'react-native-router-flux';
@@ -23,23 +24,31 @@ const Routes = ({ user, toogle }: RoutesProps) => {
           component={() => <Home user={user} />}
           title='Home'
           initial
+          navigationBarStyle={{ backgroundColor: '#eee' }}
         />
         <Scene
           left={() => null}
           key='edit'
           component={() => <EditPage></EditPage>}
           title='Edit Prescription'
+          navigationBarStyle={{ backgroundColor: '#eee' }}
           renderRightButton={() => (
-            <Button
+            <TouchableOpacity
               style={{
                 height: 30,
                 width: 30,
                 marginRight: 10,
+                borderWidth: 1,
+                borderRadius: 50,
               }}
               onPress={() => {
                 toogle(true);
               }}
-            ></Button>
+            >
+              <View>
+                <Text style={{ textAlign: 'center', lineHeight: 25 }}>+</Text>
+              </View>
+            </TouchableOpacity>
           )}
         />
         <Scene
@@ -47,12 +56,14 @@ const Routes = ({ user, toogle }: RoutesProps) => {
           key='notification'
           component={Notification}
           title='Notification Setting'
+          navigationBarStyle={{ backgroundColor: '#eee' }}
         />
         <Scene
           left={() => null}
           key='settings'
           component={Settings}
           title='Settings'
+          navigationBarStyle={{ backgroundColor: '#eee' }}
         />
       </Scene>
     </Router>

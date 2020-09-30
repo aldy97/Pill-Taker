@@ -76,9 +76,8 @@ function Home({ user }: HomeProps) {
     return (
       <Card
         style={{
-          marginTop: 10,
-          marginBottom: 10,
           width: '100%',
+          borderTopWidth: 0,
         }}
       >
         <Card.Header

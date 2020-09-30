@@ -31,10 +31,6 @@ type EditPageProps = {
 const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
   const db = firebase.firestore();
 
-  useEffect(() => {
-    console.log('test:' + addModalOpen);
-  });
-
   const getDailyReport = async () => {
     const dailyReport = db
       .collection('medicines')
@@ -236,7 +232,6 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
     return (
       <Swipeout
         right={swipeoutBtns}
-        style={{ marginTop: 10 }}
         backgroundColor='#fff'
         autoClose
         onOpen={() => {
