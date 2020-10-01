@@ -15,7 +15,7 @@ function Settings({ user, setUser }: SettingsProps) {
     <View>
       <Card>
         <Card.Header
-          title={user.name}
+          extra={user.name}
           thumbStyle={{ width: 30, height: 30 }}
           thumb={user.photoUrl}
         />

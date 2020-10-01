@@ -114,7 +114,9 @@ function Home({ user }: HomeProps) {
         data={data}
         ListEmptyComponent={
           <View style={{ flex: 1 }}>
-            <Text style={{ textAlign: 'center', marginTop: 100 }}>No Data</Text>
+            <Text style={{ textAlign: 'center', marginTop: 100 }}>
+              No Medicine added
+            </Text>
           </View>
         }
         renderItem={renderItem}
