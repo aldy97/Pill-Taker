@@ -30,7 +30,7 @@ type EditPageProps = {
   toogle?: any;
 };
 
-const EditPage = ({ addModalOpen, toogle, user }: EditPageProps) => {
+const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   const db = firebase.firestore();
   const CONNECTION_NAME = 'medicine';
 

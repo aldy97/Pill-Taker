@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
+=======
+import * as Google from 'expo-google-app-auth';
+>>>>>>> 29f572989afd1c44f0bc6b67d72cdab454ad33e2
 import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import * as Google from 'expo-google-app-auth';
@@ -20,6 +24,7 @@ interface RoutesProps {
 const Routes = ({ user, toogle }: RoutesProps) => {
   const [isReady, setIsReady] = useState<boolean>(false);
 
+  //font loading
   async function prep() {
     await Font.loadAsync(
       'antoutline',
