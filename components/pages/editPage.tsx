@@ -32,16 +32,11 @@ type EditPageProps = {
 
 const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   const db = firebase.firestore();
-  const CONNECTION_NAME = 'medicine';
-  const DAILY_REPORTS = 'daily_reports';
+  const COLLECTION = user.name ? user.name : '';
 
-  const getDailyReport = async () => {
-    const dailyReport = db
-      .collection(CONNECTION_NAME)
-      .where('uid', '==', user.email)
-      // .orderBy('time_stamp', 'desc')
-      .get();
-    return dailyReport;
+  const getMed = async () => {
+    const getMed = db.collection(COLLECTION).get();
+    return getMed;
   };
 
   const [data, setData] = useState([]);
@@ -81,8 +76,7 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   };
 
   const fetchData = async () => {
-    db.collection(CONNECTION_NAME)
-      .where('uid', '==', user.email)
+    db.collection(COLLECTION)
       .get()
       .then((snapshot) => {
         let array: any = [];
@@ -104,37 +98,18 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
     if (inputsAreLegal()) {
       setToastMsg('Medicine added');
       //update collection medicine
-      db.collection(CONNECTION_NAME)
+      db.collection(COLLECTION)
         .add({
           name: medName,
           description: desc,
           dose_per_time: parseInt(doesPerTime, 10),
           times_per_day: parseInt(timesPerDay, 10),
+          current_times_remaining: parseInt(timesPerDay, 10),
           uid: user.email,
           time_stamp: Date.now(),
         })
         .then((snap) => {
-          db.collection(CONNECTION_NAME).doc(snap.id).update({ mid: snap.id });
-          let mid = snap.id;
-          //update collection dailyReports
-          db.collection(DAILY_REPORTS)
-            .add({
-              name: medName,
-              description: desc,
-              dose_per_time: parseInt(doesPerTime, 10),
-              times_per_day: parseInt(timesPerDay, 10),
-              uid: user.email,
-              time_stamp: Date.now(),
-            })
-            .then((snap) => {
-              db.collection(DAILY_REPORTS)
-                .doc(snap.id)
-                .update({ mid: snap.id });
-              //medicine in medicine collection gets its corresponding medicine id in daily_reports
-              db.collection(CONNECTION_NAME)
-                .doc(mid)
-                .update({ mid_in_daily_reports: snap.id });
-            });
+          db.collection(COLLECTION).doc(snap.id).update({ mid: snap.id });
         })
         .then(fetchData)
         .then(() => {
@@ -148,39 +123,28 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   };
 
   const editMedicine = () => {
-    db.collection(CONNECTION_NAME)
+    db.collection(COLLECTION)
       .doc(currentMedicine ? currentMedicine.mid : '')
       .update({
         name: medName,
         description: desc,
         dose_per_time: parseInt(doesPerTime, 10),
         times_per_day: parseInt(timesPerDay, 10),
+        current_times_remaining: parseInt(timesPerDay, 10),
       })
       .then(fetchData)
       .then(() => {
         setVisible3(true);
       });
-
-    db.collection(DAILY_REPORTS)
-      .doc(currentMedicine ? currentMedicine.mid_in_daily_reports : '')
-      .update({
-        name: medName,
-        description: desc,
-        dose_per_time: parseInt(doesPerTime, 10),
-        times_per_day: parseInt(timesPerDay, 10),
-      });
   };
 
   const onDelete = (mid: string) => {
     setVisible(false);
-    db.collection(CONNECTION_NAME).doc(mid).delete().then(fetchData);
-    db.collection(DAILY_REPORTS)
-      .doc(currentMedicine ? currentMedicine.mid_in_daily_reports : '')
-      .delete();
+    db.collection(COLLECTION).doc(mid).delete().then(fetchData);
   };
 
   useEffect(() => {
-    getDailyReport().then((snapshot) => {
+    getMed().then((snapshot) => {
       let array: any = [];
       (snapshot as any).forEach((doc: any) => {
         array.push(doc.data());

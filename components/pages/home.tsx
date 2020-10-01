@@ -12,9 +12,8 @@ export type medicineProps = {
   name: string;
   time_stamp: number;
   times_per_day: number;
-  uid: string;
+  current_times_remaining: number;
   mid: string;
-  mid_in_daily_reports: string;
 };
 
 type HomeProps = {
@@ -22,14 +21,14 @@ type HomeProps = {
 };
 function Home({ user }: HomeProps) {
   const db = firebase.firestore();
-  const DAILY_REPORTS = 'daily_reports';
+  const COLLECTION = user.name ? user.name : '';
 
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getDailyReport = async () => {
     const dailyReport = db
-      .collection(DAILY_REPORTS)
+      .collection(COLLECTION)
       .where('uid', '==', user.email)
       .get();
     return dailyReport;
@@ -48,17 +47,17 @@ function Home({ user }: HomeProps) {
   //change medicine consumption status
   const handleBtnPress = async (mid: string) => {
     let updatedTimePerDay: number = 0;
-    db.collection(DAILY_REPORTS)
+    db.collection(COLLECTION)
       .doc(mid)
       .get()
       .then((snap) => {
-        updatedTimePerDay = (snap.data() as any).times_per_day - 1;
+        updatedTimePerDay = (snap.data() as any).current_times_remaining - 1;
         if (updatedTimePerDay <= 0) {
           updatedTimePerDay = 0;
         }
-        db.collection(DAILY_REPORTS)
+        db.collection(COLLECTION)
           .doc(mid)
-          .update({ times_per_day: updatedTimePerDay })
+          .update({ current_times_remaining: updatedTimePerDay })
           .then(fetchData);
       });
   };
@@ -99,7 +98,7 @@ function Home({ user }: HomeProps) {
         />
         <Card.Footer
           content={item.description}
-          extra={<Text>Times remaining: {item.times_per_day}</Text>}
+          extra={<Text>Times remaining: {item.current_times_remaining}</Text>}
         />
       </Card>
     );
