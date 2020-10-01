@@ -15,6 +15,7 @@ import Swipeout from 'react-native-swipeout';
 import Modal from '@ant-design/react-native/lib/modal';
 import Button from '@ant-design/react-native/lib/button';
 import Provider from '@ant-design/react-native/lib/provider';
+import moment from 'moment';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
 
@@ -105,8 +106,7 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
           dose_per_time: parseInt(doesPerTime, 10),
           times_per_day: parseInt(timesPerDay, 10),
           current_times_remaining: parseInt(timesPerDay, 10),
-          uid: user.email,
-          time_stamp: Date.now(),
+          time_created: moment().format('YYYY-MM-DD'),
         })
         .then((snap) => {
           db.collection(COLLECTION).doc(snap.id).update({ mid: snap.id });
@@ -131,6 +131,7 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
         dose_per_time: parseInt(doesPerTime, 10),
         times_per_day: parseInt(timesPerDay, 10),
         current_times_remaining: parseInt(timesPerDay, 10),
+        time_updated: moment().format('YYYY-MM-DD'),
       })
       .then(fetchData)
       .then(() => {
@@ -227,7 +228,6 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
       text: 'delete',
       backgroundColor: 'red',
       onPress: () => {
-        console.log(currentMedicine ? currentMedicine.mid : '');
         onDelete(currentMedicine ? currentMedicine.mid : 'error');
       },
     },

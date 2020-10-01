@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@ant-design/react-native/lib/button';
+import moment from 'moment';
 import * as Google from 'expo-google-app-auth';
 import Card from '@ant-design/react-native/lib/card';
 import { FlatList, View, Text } from 'react-native';
@@ -10,7 +11,8 @@ export type medicineProps = {
   description: string;
   dose_per_time: number;
   name: string;
-  time_stamp: number;
+  time_created: string;
+  time_updated: string;
   times_per_day: number;
   current_times_remaining: number;
   mid: string;
@@ -27,10 +29,7 @@ function Home({ user }: HomeProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getDailyReport = async () => {
-    const dailyReport = db
-      .collection(COLLECTION)
-      .where('uid', '==', user.email)
-      .get();
+    const dailyReport = db.collection(COLLECTION).get();
     return dailyReport;
   };
 
@@ -57,7 +56,9 @@ function Home({ user }: HomeProps) {
         }
         db.collection(COLLECTION)
           .doc(mid)
-          .update({ current_times_remaining: updatedTimePerDay })
+          .update({
+            current_times_remaining: updatedTimePerDay,
+          })
           .then(fetchData);
       });
   };
@@ -73,8 +74,21 @@ function Home({ user }: HomeProps) {
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
+  const resetTimesRemaining = (item: medicineProps): void => {
+    if (item.time_updated !== moment().format('YYYY-MM-DD')) {
+      db.collection(COLLECTION)
+        .doc(item.mid)
+        .update({
+          time_updated: moment().format('YYYY-MM-DD'),
+          current_times_remaining: item.times_per_day,
+        });
+      console.log('reset success!');
+    }
+  };
+
   const renderItem = (obj: any) => {
     const item: medicineProps = obj.item;
+    resetTimesRemaining(item);
     return (
       <Card
         style={{
