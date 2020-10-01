@@ -103,7 +103,6 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   const addMedicine = () => {
     if (inputsAreLegal()) {
       setToastMsg('Medicine added');
-      let mid: string = '';
       //update collection medicine
       db.collection(CONNECTION_NAME)
         .add({
@@ -116,28 +115,30 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
         })
         .then((snap) => {
           db.collection(CONNECTION_NAME).doc(snap.id).update({ mid: snap.id });
-          mid = snap.id;
+          let mid = snap.id;
+          //update collection dailyReports
+          db.collection(DAILY_REPORTS)
+            .add({
+              name: medName,
+              description: desc,
+              dose_per_time: parseInt(doesPerTime, 10),
+              times_per_day: parseInt(timesPerDay, 10),
+              uid: user.email,
+              time_stamp: Date.now(),
+            })
+            .then((snap) => {
+              db.collection(DAILY_REPORTS)
+                .doc(snap.id)
+                .update({ mid: snap.id });
+              //medicine in medicine collection gets its corresponding medicine id in daily_reports
+              db.collection(CONNECTION_NAME)
+                .doc(mid)
+                .update({ mid_in_daily_reports: snap.id });
+            });
         })
         .then(fetchData)
         .then(() => {
           setVisible3(true);
-        });
-      //update collection dailyReports
-      db.collection(DAILY_REPORTS)
-        .add({
-          name: medName,
-          description: desc,
-          dose_per_time: parseInt(doesPerTime, 10),
-          times_per_day: parseInt(timesPerDay, 10),
-          uid: user.email,
-          time_stamp: Date.now(),
-        })
-        .then((snap) => {
-          db.collection(DAILY_REPORTS).doc(snap.id).update({ mid: snap.id });
-          //medicine in medicine collection gets its corresponding medicine id in daily_reports
-          db.collection(CONNECTION_NAME)
-            .doc(mid)
-            .update({ mid_in_daily_reports: snap.id });
         });
     } else {
       //if inputs are not legal, then show error message modal
