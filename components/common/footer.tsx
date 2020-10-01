@@ -11,6 +11,7 @@ function Footer() {
 
   const [isReady, setIsReady] = useState<boolean>(false);
 
+  //font loading
   async function prep() {
     await Font.loadAsync(
       'antoutline',

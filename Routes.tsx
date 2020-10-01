@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import * as Google from 'expo-google-app-auth';
+import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { IconFill } from '@ant-design/icons-react-native';
 import { handleAddBtnPress } from './components/store/ActionsCreator.js';
@@ -12,13 +13,14 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
 interface RoutesProps {
-  user: any;
+  user: Google.GoogleUser;
   toogle?: any;
 }
 
 const Routes = ({ user, toogle }: RoutesProps) => {
   const [isReady, setIsReady] = useState<boolean>(false);
 
+  //font loading
   async function prep() {
     await Font.loadAsync(
       'antoutline',
@@ -53,7 +55,7 @@ const Routes = ({ user, toogle }: RoutesProps) => {
         <Scene
           left={() => null}
           key='edit'
-          component={() => <EditPage></EditPage>}
+          component={() => <EditPage user={user}></EditPage>}
           title='Edit Prescription'
           navigationBarStyle={{ backgroundColor: '#eee' }}
           renderRightButton={() => (

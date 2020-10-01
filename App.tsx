@@ -10,7 +10,7 @@ import Footer from './components/common/footer';
 import getEnvVars from './config';
 
 function App() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<Google.GoogleUser>();
   const signInAsync = async () => {
     const result = await Google.logInAsync({
       iosClientId:

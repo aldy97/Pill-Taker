@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@ant-design/react-native/lib/button';
+import * as Google from 'expo-google-app-auth';
 import Card from '@ant-design/react-native/lib/card';
 import { FlatList, View, Text } from 'react-native';
 import ActivityIndicator from '@ant-design/react-native/lib/activity-indicator';
@@ -11,11 +12,12 @@ export type medicineProps = {
   name: string;
   time_stamp: number;
   times_per_day: number;
-  uid: string;
+  uid: string; //user's email as user id
+  mid: string; //medicine's id
 };
 
 type HomeProps = {
-  user: any;
+  user: Google.GoogleUser;
 };
 function Home({ user }: HomeProps) {
   const db = firebase.firestore();
@@ -26,7 +28,7 @@ function Home({ user }: HomeProps) {
   const getDailyReport = async () => {
     const dailyReport = db
       .collection('medicines')
-      .where('time_stamp', '>=', 1601001497285)
+      .where('uid', '==', user.email)
       .orderBy('time_stamp', 'desc')
       .get();
     return dailyReport;
@@ -43,10 +45,10 @@ function Home({ user }: HomeProps) {
   };
 
   //change medicine consumption status
-  const handleBtnPress = async (uid: string) => {
+  const handleBtnPress = async (mid: string) => {
     let updatedTimePerDay: number = 0;
     db.collection('medicines')
-      .doc(uid)
+      .doc(mid)
       .get()
       .then((snap) => {
         updatedTimePerDay = (snap.data() as any).times_per_day - 1;
@@ -54,7 +56,7 @@ function Home({ user }: HomeProps) {
           updatedTimePerDay = 0;
         }
         db.collection('medicines')
-          .doc(uid)
+          .doc(mid)
           .update({ times_per_day: updatedTimePerDay })
           .then(fetchData);
       });
@@ -86,7 +88,7 @@ function Home({ user }: HomeProps) {
           extra={
             <Button
               onPress={() => {
-                handleBtnPress(item.uid);
+                handleBtnPress(item.mid);
               }}
             >
               Just had {item.dose_per_time}{' '}
