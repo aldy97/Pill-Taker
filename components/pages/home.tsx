@@ -14,6 +14,7 @@ export type medicineProps = {
   times_per_day: number;
   uid: string;
   mid: string;
+  mid_in_daily_reports: string;
 };
 
 type HomeProps = {
@@ -21,14 +22,14 @@ type HomeProps = {
 };
 function Home({ user }: HomeProps) {
   const db = firebase.firestore();
-  const CONNECTION_NAME = 'medicine';
+  const DAILY_REPORTS = 'daily_reports';
 
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getDailyReport = async () => {
     const dailyReport = db
-      .collection(CONNECTION_NAME)
+      .collection(DAILY_REPORTS)
       .where('uid', '==', user.email)
       .get();
     return dailyReport;
@@ -47,7 +48,7 @@ function Home({ user }: HomeProps) {
   //change medicine consumption status
   const handleBtnPress = async (mid: string) => {
     let updatedTimePerDay: number = 0;
-    db.collection(CONNECTION_NAME)
+    db.collection(DAILY_REPORTS)
       .doc(mid)
       .get()
       .then((snap) => {
@@ -55,7 +56,7 @@ function Home({ user }: HomeProps) {
         if (updatedTimePerDay <= 0) {
           updatedTimePerDay = 0;
         }
-        db.collection(CONNECTION_NAME)
+        db.collection(DAILY_REPORTS)
           .doc(mid)
           .update({ times_per_day: updatedTimePerDay })
           .then(fetchData);

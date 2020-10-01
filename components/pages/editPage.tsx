@@ -33,6 +33,7 @@ type EditPageProps = {
 const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   const db = firebase.firestore();
   const CONNECTION_NAME = 'medicine';
+  const DAILY_REPORTS = 'daily_reports';
 
   const getDailyReport = async () => {
     const dailyReport = db
@@ -102,6 +103,8 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   const addMedicine = () => {
     if (inputsAreLegal()) {
       setToastMsg('Medicine added');
+      let mid: string = '';
+      //update collection medicine
       db.collection(CONNECTION_NAME)
         .add({
           name: medName,
@@ -113,12 +116,31 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
         })
         .then((snap) => {
           db.collection(CONNECTION_NAME).doc(snap.id).update({ mid: snap.id });
+          mid = snap.id;
         })
         .then(fetchData)
         .then(() => {
           setVisible3(true);
         });
+      //update collection dailyReports
+      db.collection(DAILY_REPORTS)
+        .add({
+          name: medName,
+          description: desc,
+          dose_per_time: parseInt(doesPerTime, 10),
+          times_per_day: parseInt(timesPerDay, 10),
+          uid: user.email,
+          time_stamp: Date.now(),
+        })
+        .then((snap) => {
+          db.collection(DAILY_REPORTS).doc(snap.id).update({ mid: snap.id });
+          //medicine in medicine collection gets its corresponding medicine id in daily_reports
+          db.collection(CONNECTION_NAME)
+            .doc(mid)
+            .update({ mid_in_daily_reports: snap.id });
+        });
     } else {
+      //if inputs are not legal, then show error message modal
       setToastMsg('Please fill every field');
       setVisible3(true);
     }
@@ -137,11 +159,23 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
       .then(() => {
         setVisible3(true);
       });
+
+    db.collection(DAILY_REPORTS)
+      .doc(currentMedicine ? currentMedicine.mid_in_daily_reports : '')
+      .update({
+        name: medName,
+        description: desc,
+        dose_per_time: parseInt(doesPerTime, 10),
+        times_per_day: parseInt(timesPerDay, 10),
+      });
   };
 
   const onDelete = (mid: string) => {
     setVisible(false);
     db.collection(CONNECTION_NAME).doc(mid).delete().then(fetchData);
+    db.collection(DAILY_REPORTS)
+      .doc(currentMedicine ? currentMedicine.mid_in_daily_reports : '')
+      .delete();
   };
 
   useEffect(() => {
