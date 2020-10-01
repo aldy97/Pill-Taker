@@ -1,23 +1,40 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import Button from '@ant-design/react-native/lib/button';
-import Modal from '@ant-design/react-native/lib/modal';
 import Provider from '@ant-design/react-native/lib/provider';
+import Card from '@ant-design/react-native/lib/card';
+import * as Google from 'expo-google-app-auth';
 
-function Settings() {
-  const [visible, setVisible] = useState(true);
-  const onClose = () => {
-    setVisible(false);
-  };
-  const footerButtons = [
-    { text: 'Cancel', onPress: () => console.log('cancel') },
-    { text: 'Ok', onPress: () => console.log('ok') },
-  ];
-  return <View></View>;
+type SettingsProps = {
+  user: Google.GoogleUser;
+  setUser: any;
+};
+
+function Settings({ user, setUser }: SettingsProps) {
+  return (
+    <View>
+      <Card>
+        <Card.Header
+          title={user.name}
+          thumbStyle={{ width: 30, height: 30 }}
+          thumb={user.photoUrl}
+        />
+      </Card>
+      <Button
+        style={{ marginTop: 10 }}
+        type='warning'
+        onPress={() => {
+          setUser();
+        }}
+      >
+        Sign out
+      </Button>
+    </View>
+  );
 }
 
-export default () => (
+export default ({ user, setUser }: SettingsProps) => (
   <Provider>
-    <Settings />
+    <Settings user={user} setUser={setUser} />
   </Provider>
 );

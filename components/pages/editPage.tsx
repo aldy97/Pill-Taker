@@ -228,6 +228,7 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
       text: 'delete',
       backgroundColor: 'red',
       onPress: () => {
+        console.log(currentMedicine ? currentMedicine.mid : '');
         onDelete(currentMedicine ? currentMedicine.mid : 'error');
       },
     },

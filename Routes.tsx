@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
-=======
-import * as Google from 'expo-google-app-auth';
->>>>>>> 29f572989afd1c44f0bc6b67d72cdab454ad33e2
 import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import * as Google from 'expo-google-app-auth';
@@ -18,10 +14,11 @@ import { AppLoading } from 'expo';
 
 interface RoutesProps {
   user: Google.GoogleUser;
+  setUser: any;
   toogle?: any;
 }
 
-const Routes = ({ user, toogle }: RoutesProps) => {
+const Routes = ({ user, toogle, setUser }: RoutesProps) => {
   const [isReady, setIsReady] = useState<boolean>(false);
 
   //font loading
@@ -83,7 +80,7 @@ const Routes = ({ user, toogle }: RoutesProps) => {
         <Scene
           left={() => null}
           key='settings'
-          component={Settings}
+          component={() => <Settings user={user} setUser={setUser}></Settings>}
           title='Settings'
           navigationBarStyle={{ backgroundColor: '#eee' }}
         />

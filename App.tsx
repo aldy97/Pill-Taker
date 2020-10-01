@@ -34,7 +34,7 @@ function App() {
     return (
       <Provider store={store}>
         <View style={{ flex: 1 }}>
-          <Routes user={user} />
+          <Routes user={user} setUser={setUser} />
           <View style={{ height: 70 }}>
             <Footer />
           </View>
@@ -52,7 +52,7 @@ function App() {
         }}
       >
         <Button type='primary' onPress={onPress}>
-          Sign in with Google
+          Sign in Using Google Account
         </Button>
       </View>
     );
