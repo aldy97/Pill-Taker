@@ -36,13 +36,13 @@ function Footer() {
     return isReady ? (
       <TabBar
         unselectedTintColor='#949494'
-        tintColor='#292f31'
+        tintColor='#0e9dec'
         barTintColor='#eee'
       >
         <TabBar.Item
           title='Home'
           icon={
-            <IconFill name='home' color={scene === 0 ? '#292f31' : '#949494'} />
+            <IconFill name='home' color={scene === 0 ? '#0e9dec' : '#949494'} />
           }
           selected={scene === 0}
           onPress={() => {
@@ -55,7 +55,7 @@ function Footer() {
         <TabBar.Item
           title='Edit'
           icon={
-            <IconFill name='edit' color={scene === 1 ? '#292f31' : '#949494'} />
+            <IconFill name='edit' color={scene === 1 ? '#0e9dec' : '#949494'} />
           }
           selected={scene === 1}
           onPress={() => {
@@ -70,7 +70,7 @@ function Footer() {
           icon={
             <IconFill
               name='notification'
-              color={scene === 2 ? '#292f31' : '#949494'}
+              color={scene === 2 ? '#0e9dec' : '#949494'}
             />
           }
           selected={scene === 2}
@@ -86,7 +86,7 @@ function Footer() {
           icon={
             <IconFill
               name='setting'
-              color={scene === 3 ? '#292f31' : '#949494'}
+              color={scene === 3 ? '#0e9dec' : '#949494'}
             />
           }
           selected={scene === 3}

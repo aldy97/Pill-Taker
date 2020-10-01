@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Text } from 'react-native';
 import store from './store/index.js';
 import { Provider } from 'react-redux';
 import { AppRegistry, View } from 'react-native';
+import { IconFill } from '@ant-design/icons-react-native';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
 import Button from '@ant-design/react-native/lib/button';
 import Routes from './Routes';
 import Footer from './components/common/footer';
 import getEnvVars from './config';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 
 function App() {
   const [user, setUser] = useState<Google.GoogleUser>();
+
+  const [isReady, setIsReady] = useState<boolean>(false);
+
+  //font loading
+  async function prep() {
+    await Font.loadAsync(
+      'antoutline',
+      require('@ant-design/icons-react-native/fonts/antoutline.ttf')
+    );
+    await Font.loadAsync(
+      'antfill',
+      require('@ant-design/icons-react-native/fonts/antfill.ttf')
+    );
+    setIsReady(true);
+  }
+
+  useEffect(() => {
+    prep();
+  }, []);
+
   const signInAsync = async () => {
     const result = await Google.logInAsync({
       iosClientId:
@@ -42,7 +66,7 @@ function App() {
       </Provider>
     );
   } else {
-    return (
+    return isReady ? (
       <View
         style={{
           flex: 1,
@@ -51,10 +75,33 @@ function App() {
           alignContent: 'center',
         }}
       >
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 30,
+            color: '#0e9dec',
+            marginBottom: 10,
+          }}
+        >
+          Pills Taker
+        </Text>
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 15,
+            color: '#0e9dec',
+            marginBottom: 10,
+          }}
+        >
+          Keep track of your daily pill-taking plan
+        </Text>
         <Button type='primary' onPress={onPress}>
-          Sign in Using Google Account
+          <IconFill name='google-circle' color='#fff' size={20}></IconFill>
+          Sign in With Google
         </Button>
       </View>
+    ) : (
+      <AppLoading></AppLoading>
     );
   }
 }

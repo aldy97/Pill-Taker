@@ -102,6 +102,7 @@ function Home({ user }: HomeProps) {
           extra={
             <Button
               disabled={item.current_times_remaining === 0}
+              type='primary'
               onPress={() => {
                 handleBtnPress(item.mid);
               }}
