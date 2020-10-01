@@ -96,7 +96,6 @@ function App() {
           Keep track of your daily pill-taking plan
         </Text>
         <Button type='primary' onPress={onPress}>
-          <IconFill name='google-circle' color='#fff' size={20}></IconFill>
           Sign in With Google
         </Button>
       </View>

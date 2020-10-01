@@ -8,7 +8,9 @@ function Notification() {
     if (show) {
       return (
         <View style={{ marginLeft: 10, marginTop: 10 }}>
-          <Text style={{ fontSize: 20 }}>Set time:</Text>
+          <Text style={{ fontSize: 20 }}>
+            This function is currently under construction
+          </Text>
         </View>
       );
     }
@@ -39,7 +41,7 @@ function Notification() {
           }}
         ></Switch>
       </View>
-      {showSpec(show)}
+      {showSpec(true)}
     </View>
   );
 }
