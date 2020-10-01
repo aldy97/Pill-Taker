@@ -1,7 +1,6 @@
 import * as constants from '../store/Constants';
 const defaultState = {
   addModalOpen: false,
-  dailyReportsNeedUpdate: false,
 };
 
 export default (state = defaultState, action) => {

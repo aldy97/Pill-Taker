@@ -68,8 +68,8 @@ function Home({ user }: HomeProps) {
       let array: any = [];
       (snapshot as any).forEach((doc: any) => {
         array.push(doc.data());
-        setData(array);
       });
+      setData(array);
     });
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
@@ -101,6 +101,7 @@ function Home({ user }: HomeProps) {
           title={item.name}
           extra={
             <Button
+              disabled={item.current_times_remaining === 0}
               onPress={() => {
                 handleBtnPress(item.mid);
               }}
