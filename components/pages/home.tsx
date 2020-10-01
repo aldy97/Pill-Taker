@@ -4,6 +4,7 @@ import Card from '@ant-design/react-native/lib/card';
 import { FlatList, View, Text } from 'react-native';
 import ActivityIndicator from '@ant-design/react-native/lib/activity-indicator';
 import * as firebase from 'firebase';
+import * as Google from 'expo-google-app-auth';
 
 export type medicineProps = {
   description: string;
@@ -12,22 +13,23 @@ export type medicineProps = {
   time_stamp: number;
   times_per_day: number;
   uid: string;
+  mid: string;
 };
 
 type HomeProps = {
-  user: any;
+  user: Google.GoogleUser;
 };
 function Home({ user }: HomeProps) {
   const db = firebase.firestore();
+  const CONNECTION_NAME = 'medicine';
 
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getDailyReport = async () => {
     const dailyReport = db
-      .collection('medicines')
-      .where('time_stamp', '>=', 1601001497285)
-      .orderBy('time_stamp', 'desc')
+      .collection(CONNECTION_NAME)
+      .where('uid', '==', user.email)
       .get();
     return dailyReport;
   };
@@ -43,18 +45,18 @@ function Home({ user }: HomeProps) {
   };
 
   //change medicine consumption status
-  const handleBtnPress = async (uid: string) => {
+  const handleBtnPress = async (mid: string) => {
     let updatedTimePerDay: number = 0;
-    db.collection('medicines')
-      .doc(uid)
+    db.collection(CONNECTION_NAME)
+      .doc(mid)
       .get()
       .then((snap) => {
         updatedTimePerDay = (snap.data() as any).times_per_day - 1;
         if (updatedTimePerDay <= 0) {
           updatedTimePerDay = 0;
         }
-        db.collection('medicines')
-          .doc(uid)
+        db.collection(CONNECTION_NAME)
+          .doc(mid)
           .update({ times_per_day: updatedTimePerDay })
           .then(fetchData);
       });
@@ -86,7 +88,7 @@ function Home({ user }: HomeProps) {
           extra={
             <Button
               onPress={() => {
-                handleBtnPress(item.uid);
+                handleBtnPress(item.mid);
               }}
             >
               Just had {item.dose_per_time}{' '}

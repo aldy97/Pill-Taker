@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import * as Google from 'expo-google-app-auth';
 import { IconFill } from '@ant-design/icons-react-native';
 import { handleAddBtnPress } from './components/store/ActionsCreator.js';
 import { Router, Scene } from 'react-native-router-flux';
@@ -12,7 +13,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
 interface RoutesProps {
-  user: any;
+  user: Google.GoogleUser;
   toogle?: any;
 }
 
@@ -53,7 +54,7 @@ const Routes = ({ user, toogle }: RoutesProps) => {
         <Scene
           left={() => null}
           key='edit'
-          component={() => <EditPage></EditPage>}
+          component={() => <EditPage user={user}></EditPage>}
           title='Edit Prescription'
           navigationBarStyle={{ backgroundColor: '#eee' }}
           renderRightButton={() => (

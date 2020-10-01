@@ -16,6 +16,7 @@ import Modal from '@ant-design/react-native/lib/modal';
 import Button from '@ant-design/react-native/lib/button';
 import Provider from '@ant-design/react-native/lib/provider';
 import * as firebase from 'firebase';
+import * as Google from 'expo-google-app-auth';
 
 const styles = StyleSheet.create({
   textInput: {
@@ -25,17 +26,19 @@ const styles = StyleSheet.create({
 
 type EditPageProps = {
   addModalOpen: boolean;
+  user: Google.GoogleUser;
   toogle?: any;
 };
 
-const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
+const EditPage = ({ addModalOpen, toogle, user }: EditPageProps) => {
   const db = firebase.firestore();
+  const CONNECTION_NAME = 'medicine';
 
   const getDailyReport = async () => {
     const dailyReport = db
-      .collection('medicines')
-      .where('time_stamp', '>=', 1601001497285)
-      .orderBy('time_stamp', 'desc')
+      .collection(CONNECTION_NAME)
+      .where('uid', '==', user.email)
+      // .orderBy('time_stamp', 'desc')
       .get();
     return dailyReport;
   };
@@ -77,9 +80,8 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
   };
 
   const fetchData = async () => {
-    db.collection('medicines')
-      .where('time_stamp', '>=', 1601001497285)
-      .orderBy('time_stamp', 'desc')
+    db.collection(CONNECTION_NAME)
+      .where('uid', '==', user.email)
       .get()
       .then((snapshot) => {
         let array: any = [];
@@ -96,21 +98,21 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
     );
   };
 
-  //add data first, then insert auto generated uid into its field
+  //add data first, then insert auto generated mid into its field
   const addMedicine = () => {
     if (inputsAreLegal()) {
       setToastMsg('Medicine added');
-      db.collection('medicines')
+      db.collection(CONNECTION_NAME)
         .add({
           name: medName,
           description: desc,
           dose_per_time: parseInt(doesPerTime, 10),
           times_per_day: parseInt(timesPerDay, 10),
-          uid: '',
+          uid: user.email,
           time_stamp: Date.now(),
         })
         .then((snap) => {
-          db.collection('medicines').doc(snap.id).update({ uid: snap.id });
+          db.collection(CONNECTION_NAME).doc(snap.id).update({ mid: snap.id });
         })
         .then(fetchData)
         .then(() => {
@@ -123,8 +125,8 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
   };
 
   const editMedicine = () => {
-    db.collection('medicines')
-      .doc(currentMedicine ? currentMedicine.uid : '')
+    db.collection(CONNECTION_NAME)
+      .doc(currentMedicine ? currentMedicine.mid : '')
       .update({
         name: medName,
         description: desc,
@@ -137,9 +139,9 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
       });
   };
 
-  const onDelete = (uid: string) => {
+  const onDelete = (mid: string) => {
     setVisible(false);
-    db.collection('medicines').doc(uid).delete().then(fetchData);
+    db.collection(CONNECTION_NAME).doc(mid).delete().then(fetchData);
   };
 
   useEffect(() => {
@@ -226,7 +228,7 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
       text: 'delete',
       backgroundColor: 'red',
       onPress: () => {
-        onDelete(currentMedicine ? currentMedicine.uid : 'error');
+        onDelete(currentMedicine ? currentMedicine.mid : 'error');
       },
     },
   ];
@@ -237,7 +239,7 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
       <Swipeout
         right={swipeoutBtns}
         backgroundColor='#fff'
-        close={currentMedicine ? currentMedicine.uid !== item.uid : false}
+        close={currentMedicine ? currentMedicine.mid !== item.mid : false}
         autoClose
         onOpen={() => {
           setCurrentMedicine(item);
@@ -286,7 +288,7 @@ const EditPage = ({ addModalOpen, toogle }: EditPageProps) => {
         <Button
           type='warning'
           style={{ backgroundColor: 'red', borderColor: 'red' }}
-          onPress={() => onDelete(currentMedicine ? currentMedicine.uid : '')}
+          onPress={() => onDelete(currentMedicine ? currentMedicine.mid : '')}
         >
           Delete
         </Button>
@@ -411,8 +413,8 @@ const mapDispatch = (dispatch) => ({
 export default connect(
   mapState,
   mapDispatch
-)(({ addModalOpen, toogle }: EditPageProps) => (
+)(({ addModalOpen, toogle, user }: EditPageProps) => (
   <Provider>
-    <EditPage addModalOpen={addModalOpen} toogle={toogle} />
+    <EditPage addModalOpen={addModalOpen} toogle={toogle} user={user} />
   </Provider>
 ));
