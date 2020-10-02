@@ -68,6 +68,7 @@ function Home({ user }: HomeProps) {
       let array: any = [];
       (snapshot as any).forEach((doc: any) => {
         array.push(doc.data());
+        console.log(doc.data().time_updated);
       });
       setData(array);
     });
@@ -81,7 +82,8 @@ function Home({ user }: HomeProps) {
         .update({
           time_updated: moment().format('YYYY-MM-DD'),
           current_times_remaining: item.times_per_day,
-        });
+        })
+        .then(fetchData);
       console.log('reset success!');
     }
   };
