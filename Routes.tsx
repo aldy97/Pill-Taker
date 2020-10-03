@@ -3,7 +3,10 @@ import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import * as Google from 'expo-google-app-auth';
 import { IconFill } from '@ant-design/icons-react-native';
-import { handleAddBtnPress } from './components/store/ActionsCreator.js';
+import {
+  handleAddBtnPress,
+  handleShowTimePickerBtnPress,
+} from './components/store/ActionsCreator.js';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
@@ -16,9 +19,17 @@ interface RoutesProps {
   user: Google.GoogleUser;
   setUser: any;
   toogle?: any;
+  toogleTimePicker?: any;
+  showTimePicker?: any;
 }
 
-const Routes = ({ user, toogle, setUser }: RoutesProps) => {
+const Routes = ({
+  user,
+  toogle,
+  setUser,
+  toogleTimePicker,
+  showTimePicker,
+}: RoutesProps) => {
   const [isReady, setIsReady] = useState<boolean>(false);
 
   //font loading
@@ -73,9 +84,19 @@ const Routes = ({ user, toogle, setUser }: RoutesProps) => {
         <Scene
           left={() => null}
           key='notification'
-          component={Notification}
+          component={() => <Notification user={user} />}
           title='Notification'
           navigationBarStyle={{ backgroundColor: '#eee' }}
+          renderRightButton={() => (
+            <TouchableOpacity
+              style={{ marginRight: 10 }}
+              onPress={() => {
+                toogleTimePicker(true);
+              }}
+            >
+              <IconFill name='plus-circle' size={30} />
+            </TouchableOpacity>
+          )}
         />
         <Scene
           left={() => null}
@@ -91,9 +112,14 @@ const Routes = ({ user, toogle, setUser }: RoutesProps) => {
   );
 };
 
-const mapDispatch = (dispatch) => ({
-  toogle(addModalOpen) {
+const mapDispatch = (dispatch: any) => ({
+  toogle(addModalOpen: boolean) {
     const action = handleAddBtnPress(addModalOpen);
+    dispatch(action);
+  },
+
+  toogleTimePicker(show: boolean) {
+    const action = handleShowTimePickerBtnPress(show);
     dispatch(action);
   },
 });
