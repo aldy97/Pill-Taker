@@ -100,10 +100,6 @@ function Notification({
       .then(fetchData);
   };
 
-  const getNotificationIsOn = () => {
-    return true;
-  };
-
   const swipeoutBtns = [
     {
       text: 'delete',
