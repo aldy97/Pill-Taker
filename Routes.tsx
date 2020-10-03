@@ -74,7 +74,7 @@ const Routes = ({ user, toogle, setUser }: RoutesProps) => {
           left={() => null}
           key='notification'
           component={Notification}
-          title='Notification Setting'
+          title='Notification'
           navigationBarStyle={{ backgroundColor: '#eee' }}
         />
         <Scene

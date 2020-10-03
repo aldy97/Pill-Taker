@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import Switch from '@ant-design/react-native/lib/switch';
 import { View, Text } from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 function Notification() {
   const [show, setShow] = useState(true);
-  const showSpec = (show: boolean) => {
-    if (show) {
-      return (
-        <View style={{ marginLeft: 10, marginTop: 10 }}>
-          <Text style={{ fontSize: 20 }}>
-            This function is currently under construction
-          </Text>
-        </View>
-      );
-    }
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(true);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    console.warn('A date has been picked: ', date);
+    hideDatePicker();
   };
 
   return (
@@ -32,7 +36,7 @@ function Notification() {
         }}
       >
         <Text style={{ fontSize: 24 }}>
-          Turn {show ? 'off' : 'on'} notification
+          All Notifications: {show ? 'On' : 'Off'}
         </Text>
         <Switch
           checked={show}
@@ -41,7 +45,12 @@ function Notification() {
           }}
         ></Switch>
       </View>
-      {showSpec(true)}
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode='time'
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
     </View>
   );
 }
