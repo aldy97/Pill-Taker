@@ -40,7 +40,6 @@ function Notification({
   showTimePicker,
   toogleTimePicker,
 }: notificationProps) {
-  const [showNotification, setShowNotification] = useState(true);
   const [data, setData] = useState([]);
   const [alarmSelected, setAlarmSelected] = useState<alarmProps>();
   const [showAddNotesModal, setShowAddNotesModal] = useState<boolean>(false);
@@ -75,10 +74,6 @@ function Notification({
     });
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  });
-
   const handleConfirm = (date: any) => {
     db.collection(COLLECTION)
       .add({
@@ -94,8 +89,19 @@ function Notification({
       });
   };
 
-  const onDelete = (id: string) => {
+  const onDelete = (id: string): void => {
     db.collection(COLLECTION).doc(id).delete().then(fetchData);
+  };
+
+  const switchNotifications = (id: string, current: boolean): void => {
+    db.collection(COLLECTION)
+      .doc(id)
+      .update({ notification_on: !current })
+      .then(fetchData);
+  };
+
+  const getNotificationIsOn = () => {
+    return true;
   };
 
   const swipeoutBtns = [
@@ -110,7 +116,8 @@ function Notification({
 
   const renderItem = (obj: any) => {
     const item: alarmProps = obj.item;
-    const time: string = item.time.split(' ')[4];
+    const time: string = item.time.split(' ')[4].substring(0, 5);
+    const notificationIsOn = item.notification_on;
     return (
       <Swipeout
         right={swipeoutBtns}
@@ -124,9 +131,11 @@ function Notification({
         <View style={styles.style}>
           <Text style={{ fontSize: 24 }}>{time}</Text>
           <Switch
-            checked={showNotification}
+            checked={notificationIsOn}
             onChange={() => {
-              setShowNotification(!showNotification);
+              console.log(item.id);
+              !notificationIsOn;
+              switchNotifications(item.id, item.notification_on);
             }}
           ></Switch>
         </View>
@@ -136,30 +145,6 @@ function Notification({
 
   return (
     <View>
-      <View
-        style={{
-          marginBottom: 20,
-          paddingTop: 20,
-          paddingBottom: 20,
-          paddingLeft: 10,
-          paddingRight: 10,
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          borderBottomWidth: 1,
-          borderBottomColor: '#eee',
-        }}
-      >
-        <Text style={{ fontSize: 24 }}>
-          Turn all notifications {showNotification ? 'off' : 'on'}
-        </Text>
-        <Switch
-          checked={showNotification}
-          onChange={() => {
-            setShowNotification(!showNotification);
-          }}
-        ></Switch>
-      </View>
       <DateTimePickerModal
         isVisible={showTimePicker}
         mode='time'
