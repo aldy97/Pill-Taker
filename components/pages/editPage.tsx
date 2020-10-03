@@ -36,8 +36,8 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   const COLLECTION = user.name ? user.name : '';
 
   const getMed = async () => {
-    const getMed = db.collection(COLLECTION).get();
-    return getMed;
+    const med = db.collection(COLLECTION).get();
+    return med;
   };
 
   const [data, setData] = useState([]);

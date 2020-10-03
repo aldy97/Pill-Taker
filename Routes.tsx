@@ -20,16 +20,9 @@ interface RoutesProps {
   setUser: any;
   toogle?: any;
   toogleTimePicker?: any;
-  showTimePicker?: any;
 }
 
-const Routes = ({
-  user,
-  toogle,
-  setUser,
-  toogleTimePicker,
-  showTimePicker,
-}: RoutesProps) => {
+const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
   const [isReady, setIsReady] = useState<boolean>(false);
 
   //font loading

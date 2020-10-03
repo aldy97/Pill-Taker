@@ -68,7 +68,6 @@ function Home({ user }: HomeProps) {
       let array: any = [];
       (snapshot as any).forEach((doc: any) => {
         array.push(doc.data());
-        console.log(doc.data().time_updated);
       });
       setData(array);
     });
