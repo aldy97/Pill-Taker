@@ -76,7 +76,7 @@ function Footer() {
           selected={scene === 2}
           onPress={() => {
             if (scene !== 2) {
-              Actions.notification();
+              Actions.medDetail();
               setScene(2);
             }
           }}

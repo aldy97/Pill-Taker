@@ -7,7 +7,7 @@ import Modal from '@ant-design/react-native/lib/modal';
 import Provider from '@ant-design/react-native/lib/provider';
 import Checkbox from '@ant-design/react-native/lib/checkbox';
 import Swipeout from 'react-native-swipeout';
-import { View, Text, FlatList, StyleSheet, Platform } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect } from 'react-redux';
 import { handleShowTimePickerBtnPress } from '../store/ActionsCreator.js';

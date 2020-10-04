@@ -7,11 +7,13 @@ import {
   handleAddBtnPress,
   handleShowTimePickerBtnPress,
 } from './components/store/ActionsCreator.js';
+import { Actions } from 'react-native-router-flux';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
 import Notification from './components/pages/notification';
 import Settings from './components/pages/settings';
+import MedDetail from './components/pages/medDetail';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
@@ -67,7 +69,7 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
             <TouchableOpacity
               style={{ marginRight: 10 }}
               onPress={() => {
-                toogle(true);
+                Actions.medDetail();
               }}
             >
               <IconFill name='plus-circle' size={30} />
@@ -97,6 +99,12 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
           component={() => <Settings user={user} setUser={setUser}></Settings>}
           title='Settings'
           navigationBarStyle={{ backgroundColor: '#eee' }}
+        />
+        <Scene
+          back
+          key='medDetail'
+          title='Medicine Detail'
+          component={MedDetail}
         />
       </Scene>
     </Router>
