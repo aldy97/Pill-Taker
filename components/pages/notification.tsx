@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Switch from '@ant-design/react-native/lib/switch';
 import Modal from '@ant-design/react-native/lib/modal';
 import Provider from '@ant-design/react-native/lib/provider';
+import Checkbox from '@ant-design/react-native/lib/checkbox';
 import Swipeout from 'react-native-swipeout';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect } from 'react-redux';
 import { handleShowTimePickerBtnPress } from '../store/ActionsCreator.js';
+import { medicineProps } from './home';
 import * as Google from 'expo-google-app-auth';
 import * as firebase from 'firebase';
 
@@ -42,15 +44,27 @@ function Notification({
   showTimePicker,
   toogleTimePicker,
 }: notificationProps) {
+  //data about alarms
   const [data, setData] = useState([]);
+
+  //data about meds
+  const [medData, setMedData] = useState([]);
+
   const [alarmSelected, setAlarmSelected] = useState<alarmProps>();
+
+  //pops up when a new alarm is set
   const [showAddAlarmSuccModal, setShowAddAlarmSuccModal] = useState(false);
 
-  const COLLECTION = user.name ? user.name + ' Alarms' : 'error';
+  const [showMedCheckBox, setShowMedCheckBox] = useState<boolean>(true);
+
+  const ALARM_COLLECTION = user.name ? user.name + ' Alarms' : 'error';
+  const MED_COLLECTION = user.name ? user.name : 'error';
   const db = firebase.firestore();
 
+  const CheckboxItem = Checkbox.CheckboxItem;
+
   const fetchData = async () => {
-    db.collection(COLLECTION)
+    db.collection(ALARM_COLLECTION)
       .get()
       .then((snapshot) => {
         let array: any = [];
@@ -61,19 +75,32 @@ function Notification({
       });
   };
 
+  const fetchMedData = async () => {
+    db.collection(MED_COLLECTION)
+      .get()
+      .then((snapshot) => {
+        let array: any = [];
+        (snapshot as any).forEach((doc: any) => {
+          array.push(doc.data());
+        });
+        setMedData(array);
+      });
+  };
+
   useEffect(() => {
     fetchData();
+    fetchMedData();
   }, []);
 
   //add a new alarm
   const handleConfirm = (date: any) => {
-    db.collection(COLLECTION)
+    db.collection(ALARM_COLLECTION)
       .add({
         time: date.toString(),
         notification_on: true,
       })
       .then((snap) => {
-        db.collection(COLLECTION).doc(snap.id).update({ id: snap.id });
+        db.collection(ALARM_COLLECTION).doc(snap.id).update({ id: snap.id });
       })
       .then(fetchData)
       .then(() => {
@@ -83,11 +110,11 @@ function Notification({
   };
 
   const onDelete = (id: string): void => {
-    db.collection(COLLECTION).doc(id).delete().then(fetchData);
+    db.collection(ALARM_COLLECTION).doc(id).delete().then(fetchData);
   };
 
   const switchNotifications = (id: string, current: boolean): void => {
-    db.collection(COLLECTION)
+    db.collection(ALARM_COLLECTION)
       .doc(id)
       .update({ notification_on: !current })
       .then(fetchData);
@@ -141,6 +168,19 @@ function Notification({
     );
   };
 
+  const renderMed = (obj: any) => {
+    const item: medicineProps = obj.item;
+    return (
+      <CheckboxItem
+        onChange={() => {
+          console.warn(item.mid);
+        }}
+      >
+        {item.name}
+      </CheckboxItem>
+    );
+  };
+
   return (
     <View>
       <DateTimePickerModal
@@ -163,6 +203,20 @@ function Notification({
         renderItem={renderItem}
         keyExtractor={(item: any) => item.key}
       ></FlatList>
+      <Modal
+        title='Select medicines'
+        transparent
+        onClose={() => setShowMedCheckBox(false)}
+        maskClosable
+        visible={showMedCheckBox}
+        footer={footerButton3}
+      >
+        <FlatList
+          data={medData}
+          renderItem={renderMed}
+          keyExtractor={(item: any) => item.key}
+        ></FlatList>
+      </Modal>
       <Modal
         title='Alarm added'
         transparent
