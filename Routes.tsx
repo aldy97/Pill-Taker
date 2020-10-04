@@ -48,7 +48,7 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
 
   return isReady ? (
     <Router>
-      <Scene key='root'>
+      <Scene key='root' panHandlers={null}>
         <Scene
           left={() => null}
           key='home'

@@ -45,7 +45,6 @@ function Notification({
   const [data, setData] = useState([]);
   const [alarmSelected, setAlarmSelected] = useState<alarmProps>();
   const [showAddAlarmSuccModal, setShowAddAlarmSuccModal] = useState(false);
-  const [showAddNotesModal, setShowAddNotesModal] = useState<boolean>(false);
 
   const COLLECTION = user.name ? user.name + ' Alarms' : 'error';
   const db = firebase.firestore();
