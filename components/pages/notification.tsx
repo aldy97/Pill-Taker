@@ -1,16 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 import Switch from '@ant-design/react-native/lib/switch';
 import Modal from '@ant-design/react-native/lib/modal';
 import Provider from '@ant-design/react-native/lib/provider';
 import Checkbox from '@ant-design/react-native/lib/checkbox';
 import Swipeout from 'react-native-swipeout';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Platform } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { connect } from 'react-redux';
 import { handleShowTimePickerBtnPress } from '../store/ActionsCreator.js';
 import { medicineProps } from './home';
 import * as Google from 'expo-google-app-auth';
 import * as firebase from 'firebase';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const styles = StyleSheet.create({
   style: {
@@ -62,6 +73,83 @@ function Notification({
   const db = firebase.firestore();
 
   const CheckboxItem = Checkbox.CheckboxItem;
+
+  //for expo-notification set up
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/dashboard/notifications
+  async function sendPushNotification(expoPushToken) {
+    const message = {
+      to: expoPushToken,
+      sound: 'default',
+      title: 'Original Title',
+      body: 'And here is the body!',
+      data: { data: 'goes here' },
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  }
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
+      );
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Permissions.askAsync(
+          Permissions.NOTIFICATIONS
+        );
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+    return token;
+  }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    (notificationListener.current as any) = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        setNotification(notification as any);
+      }
+    );
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    (responseListener.current as any) = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log(response);
+      }
+    );
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener as any);
+      Notifications.removeNotificationSubscription(responseListener as any);
+    };
+  }, []);
 
   const fetchData = async () => {
     db.collection(ALARM_COLLECTION)
