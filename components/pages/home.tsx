@@ -50,7 +50,8 @@ function Home({ user }: HomeProps) {
       .doc(mid)
       .get()
       .then((snap) => {
-        updatedTimePerDay = (snap.data() as any).current_times_remaining - 1;
+        updatedTimePerDay =
+          (snap.data() as medicineProps).current_times_remaining - 1;
         if (updatedTimePerDay <= 0) {
           updatedTimePerDay = 0;
         }
@@ -64,13 +65,7 @@ function Home({ user }: HomeProps) {
   };
 
   useEffect(() => {
-    getDailyReport().then((snapshot) => {
-      let array: any = [];
-      (snapshot as any).forEach((doc: any) => {
-        array.push(doc.data());
-      });
-      setData(array);
-    });
+    fetchData();
     setTimeout(() => setIsLoading(false), 1000);
   }, []);
 
@@ -83,7 +78,6 @@ function Home({ user }: HomeProps) {
           current_times_remaining: item.times_per_day,
         })
         .then(fetchData);
-      console.log('reset success!');
     }
   };
 

@@ -35,11 +35,6 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   const db = firebase.firestore();
   const COLLECTION = user.name ? user.name : '';
 
-  const getMed = async () => {
-    const med = db.collection(COLLECTION).get();
-    return med;
-  };
-
   const [data, setData] = useState([]);
 
   //fileds for adding new medicine
@@ -145,13 +140,7 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   };
 
   useEffect(() => {
-    getMed().then((snapshot) => {
-      let array: any = [];
-      (snapshot as any).forEach((doc: any) => {
-        array.push(doc.data());
-        setData(array);
-      });
-    });
+    fetchData();
   }, []);
 
   //for editing existing medicine

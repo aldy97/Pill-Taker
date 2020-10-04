@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Switch from '@ant-design/react-native/lib/switch';
+import Modal from '@ant-design/react-native/lib/modal';
+import Provider from '@ant-design/react-native/lib/provider';
 import Swipeout from 'react-native-swipeout';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -42,15 +44,11 @@ function Notification({
 }: notificationProps) {
   const [data, setData] = useState([]);
   const [alarmSelected, setAlarmSelected] = useState<alarmProps>();
+  const [showAddAlarmSuccModal, setShowAddAlarmSuccModal] = useState(false);
   const [showAddNotesModal, setShowAddNotesModal] = useState<boolean>(false);
 
   const COLLECTION = user.name ? user.name + ' Alarms' : 'error';
   const db = firebase.firestore();
-
-  const getAlarms = async () => {
-    const alarms = db.collection(COLLECTION).get();
-    return alarms;
-  };
 
   const fetchData = async () => {
     db.collection(COLLECTION)
@@ -59,21 +57,16 @@ function Notification({
         let array: any = [];
         (snapshot as any).forEach((doc: any) => {
           array.push(doc.data());
-          setData(array);
         });
+        setData(array);
       });
   };
 
   useEffect(() => {
-    getAlarms().then((snapshot) => {
-      let array: any = [];
-      (snapshot as any).forEach((doc: any) => {
-        array.push(doc.data());
-        setData(array);
-      });
-    });
+    fetchData();
   }, []);
 
+  //add a new alarm
   const handleConfirm = (date: any) => {
     db.collection(COLLECTION)
       .add({
@@ -86,6 +79,7 @@ function Notification({
       .then(fetchData)
       .then(() => {
         toogleTimePicker(false);
+        setShowAddAlarmSuccModal(true);
       });
   };
 
@@ -100,9 +94,14 @@ function Notification({
       .then(fetchData);
   };
 
-  const getNotificationIsOn = () => {
-    return true;
-  };
+  const footerButton3 = [
+    {
+      text: 'Ok',
+      onPress: () => {
+        setShowAddAlarmSuccModal(false);
+      },
+    },
+  ];
 
   const swipeoutBtns = [
     {
@@ -165,6 +164,14 @@ function Notification({
         renderItem={renderItem}
         keyExtractor={(item: any) => item.key}
       ></FlatList>
+      <Modal
+        title='Alarm added'
+        transparent
+        onClose={() => setShowAddAlarmSuccModal(false)}
+        maskClosable
+        visible={showAddAlarmSuccModal}
+        footer={footerButton3}
+      ></Modal>
     </View>
   );
 }
@@ -182,4 +189,15 @@ const mapDispatch = (dispatch: any) => ({
   },
 });
 
-export default connect(mapState, mapDispatch)(Notification);
+export default connect(
+  mapState,
+  mapDispatch
+)(({ user, showTimePicker, toogleTimePicker }: notificationProps) => (
+  <Provider>
+    <Notification
+      user={user}
+      showTimePicker={showTimePicker}
+      toogleTimePicker={toogleTimePicker}
+    ></Notification>
+  </Provider>
+));
