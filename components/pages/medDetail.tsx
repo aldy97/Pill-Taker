@@ -65,13 +65,12 @@ function MedDetail({
           times_per_day: parseInt(timesPerDay, 10),
           current_times_remaining: parseInt(timesPerDay, 10),
           time_created: moment().format('YYYY-MM-DD'),
+          time_updated: moment().format('YYYY-MM-DD'),
         })
         .then((snap) => {
           db.collection(COLLECTION).doc(snap.id).update({ mid: snap.id });
         })
-        .then(() => {
-          fetchHomeData;
-        });
+        .then(fetchHomeData);
     }
   };
 
