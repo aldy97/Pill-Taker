@@ -22,6 +22,7 @@ export type medicineProps = {
 type HomeProps = {
   user: Google.GoogleUser;
 };
+
 function Home({ user }: HomeProps) {
   const db = firebase.firestore();
   const COLLECTION = user.name ? user.name : '';
@@ -45,7 +46,7 @@ function Home({ user }: HomeProps) {
   };
 
   //change medicine consumption status
-  const handleBtnPress = async (mid: string) => {
+  const handleConsumePillsBtnPress = async (mid: string) => {
     let updatedTimePerDay: number = 0;
     db.collection(COLLECTION)
       .doc(mid)
@@ -100,7 +101,7 @@ function Home({ user }: HomeProps) {
               disabled={item.current_times_remaining === 0}
               type='primary'
               onPress={() => {
-                handleBtnPress(item.mid);
+                handleConsumePillsBtnPress(item.mid);
               }}
             >
               Just had {item.dose_per_time}{' '}

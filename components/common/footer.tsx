@@ -66,7 +66,7 @@ function Footer() {
           }}
         ></TabBar.Item>
         <TabBar.Item
-          title='Settings'
+          title='Setting'
           icon={
             <IconFill
               name='setting'

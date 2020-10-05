@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, TextInput, View } from 'react-native';
+import { ScrollView, TextInput } from 'react-native';
 import Button from '@ant-design/react-native/lib/button';
 import InputItem from '@ant-design/react-native/lib/input-item';
 import List from '@ant-design/react-native/lib/list';
@@ -10,23 +10,37 @@ import moment from 'moment';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
 
+//when the component is mounted due to add a new one, medicine props wont be received.
 type medDetailProps = {
-  medicine?: medicineProps;
-  deleteMedicine?: any;
-  setShowAddMed?: any;
   user: Google.GoogleUser;
+  medicine?: medicineProps;
+  setShowAddMed?: any; //received when a med being editted or viewed in editPage
+  fetchData?: any;
 };
 
-function MedDetail({ medicine, setShowAddMed, user }: medDetailProps) {
+function MedDetail({
+  medicine,
+  setShowAddMed,
+  user,
+  fetchData,
+}: medDetailProps) {
   const db = firebase.firestore();
   const COLLECTION = user.name ? user.name : '';
 
+  //only used when a medicine is being edited
   const [editable, setEditable] = useState(medicine ? false : true);
 
-  const [name, setName] = useState<string>('');
-  const [desc, setDesc] = useState<string>('');
-  const [doesPerTime, setDoesPerTime] = useState<string>('');
-  const [timesPerDay, setTimesPerDay] = useState<string>('');
+  //shared by both add med and edit med, initialized as med's current state if it is being edited
+  const [name, setName] = useState<string>(medicine ? medicine.name : '');
+  const [desc, setDesc] = useState<string>(
+    medicine ? medicine.description : ''
+  );
+  const [doesPerTime, setDoesPerTime] = useState<string>(
+    medicine ? medicine.dose_per_time.toString() : ''
+  );
+  const [timesPerDay, setTimesPerDay] = useState<string>(
+    medicine ? medicine.times_per_day.toString() : ''
+  );
 
   const inputsAreLegal: () => boolean = () => {
     return (
@@ -53,6 +67,25 @@ function MedDetail({ medicine, setShowAddMed, user }: medDetailProps) {
           Actions.home();
         });
     }
+  };
+
+  const editMedicine = () => {
+    db.collection(COLLECTION)
+      .doc(medicine ? medicine.mid : '')
+      .update({
+        name: name,
+        description: desc,
+        dose_per_time: parseInt(doesPerTime, 10),
+        times_per_day: parseInt(timesPerDay, 10),
+        current_times_remaining: parseInt(timesPerDay, 10),
+        time_updated: moment().format('YYYY-MM-DD'),
+      })
+      .then(fetchData);
+  };
+
+  const handleConfirmEditBtnPress = () => {
+    editMedicine();
+    setShowAddMed(false);
   };
 
   return (
@@ -99,6 +132,7 @@ function MedDetail({ medicine, setShowAddMed, user }: medDetailProps) {
           placeholder={medicine ? '' : 'Enter does per time'}
           onChangeText={(text: string) => {
             setDoesPerTime(text);
+            console.log(doesPerTime);
           }}
         ></TextInput>
       </List>
@@ -111,31 +145,26 @@ function MedDetail({ medicine, setShowAddMed, user }: medDetailProps) {
           placeholder={medicine ? '' : 'Enter times per day'}
           onChangeText={(text: string) => {
             setTimesPerDay(text);
+            console.log(timesPerDay);
           }}
         ></TextInput>
       </List>
       <WhiteSpace size='lg' />
-      {medicine ? (
+      {medicine && (
         <Button
           onPress={() => {
-            editable ? setShowAddMed(false) : setEditable(true);
+            editable ? handleConfirmEditBtnPress() : setEditable(true);
           }}
         >
           {editable ? 'confirm' : 'Edit this medicine'}
         </Button>
-      ) : (
-        <View></View>
       )}
       <WhiteSpace size='lg' />
       <Button type='primary' disabled>
         Add alarms
       </Button>
       <WhiteSpace size='lg' />
-      {medicine ? (
-        <View></View>
-      ) : (
-        <Button onPress={handleAddBtnPress}>Confirm</Button>
-      )}
+      {!medicine && <Button onPress={handleAddBtnPress}>Confirm</Button>}
     </ScrollView>
   );
 }
