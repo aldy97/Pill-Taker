@@ -103,7 +103,7 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
         <Scene
           back
           key='medDetail'
-          title='Medicine Detail'
+          title='Add a new medicine'
           component={MedDetail}
         />
       </Scene>

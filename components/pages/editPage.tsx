@@ -18,6 +18,7 @@ import Provider from '@ant-design/react-native/lib/provider';
 import moment from 'moment';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
+import MedDetail from './medDetail';
 
 const styles = StyleSheet.create({
   textInput: {
@@ -55,6 +56,8 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
   const [currentMedicine, setCurrentMedicine] = useState<medicineProps>();
 
   const [toastMsg, setToastMsg] = useState<String>();
+
+  const [showAddMed, setShowAddMed] = useState(false);
 
   const onClose = () => {
     setVisible(false);
@@ -236,8 +239,8 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setVisible(true);
             setCurrentMedicine(item);
+            setShowAddMed(true);
           }}
         >
           <ItemEditor medicine={item} style={{ height: 400 }}></ItemEditor>
@@ -246,7 +249,13 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
     );
   };
 
-  return (
+  return showAddMed ? (
+    <MedDetail
+      medicine={currentMedicine}
+      deleteMedicine={onDelete}
+      setShowAddMed={setShowAddMed}
+    ></MedDetail>
+  ) : (
     <View>
       <FlatList
         data={data}
