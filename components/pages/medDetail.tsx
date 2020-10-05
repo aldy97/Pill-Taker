@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, TextInput } from 'react-native';
 import Button from '@ant-design/react-native/lib/button';
 import InputItem from '@ant-design/react-native/lib/input-item';
