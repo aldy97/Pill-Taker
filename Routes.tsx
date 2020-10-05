@@ -7,7 +7,6 @@ import { handleAddBtnPress } from './components/store/ActionsCreator.js';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
-import Notification from './components/pages/notification';
 import Settings from './components/pages/settings';
 import MedDetail from './components/pages/medDetail';
 import * as Font from 'expo-font';

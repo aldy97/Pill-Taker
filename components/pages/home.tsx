@@ -74,10 +74,6 @@ function Home({ user, addModalOpen }: HomeProps) {
     setTimeout(() => setIsLoading(false), 1000);
   }, [data]);
 
-  useEffect(() => {
-    console.log(addModalOpen);
-  }, [addModalOpen]);
-
   const resetTimesRemaining = (item: medicineProps): void => {
     if (item.time_updated !== moment().format('YYYY-MM-DD')) {
       db.collection(COLLECTION)

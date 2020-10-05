@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, TextInput } from 'react-native';
+import { ScrollView, TextInput, View } from 'react-native';
 import Button from '@ant-design/react-native/lib/button';
 import InputItem from '@ant-design/react-native/lib/input-item';
 import List from '@ant-design/react-native/lib/list';
@@ -152,22 +152,27 @@ function MedDetail({
           }}
         ></TextInput>
       </List>
-      <WhiteSpace size='lg' />
+      <WhiteSpace size='sm' />
       {medicine && (
-        <Button
-          onPress={() => {
-            editable ? handleConfirmEditBtnPress() : setEditable(true);
-          }}
-        >
-          {editable ? 'Confirm edit' : 'Edit this medicine'}
+        <View>
+          <Button
+            type='primary'
+            onPress={() => {
+              editable ? handleConfirmEditBtnPress() : setEditable(true);
+            }}
+          >
+            {editable ? 'Confirm edit' : 'Edit this medicine'}
+          </Button>
+          <WhiteSpace size='xs' />
+          <Button type='warning'>Delete</Button>
+        </View>
+      )}
+      <WhiteSpace size='xs' />
+      {!medicine && (
+        <Button type='primary' onPress={handleAddBtnPress}>
+          Confirm
         </Button>
       )}
-      <WhiteSpace size='lg' />
-      {/* <Button type='primary' disabled>
-        Add alarms
-      </Button> */}
-      <WhiteSpace size='lg' />
-      {!medicine && <Button onPress={handleAddBtnPress}>Confirm</Button>}
     </ScrollView>
   );
 }

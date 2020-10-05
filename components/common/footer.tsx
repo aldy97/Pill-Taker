@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import TabBar from '@ant-design/react-native/lib/tab-bar';
 import { IconFill } from '@ant-design/icons-react-native';
 import * as Font from 'expo-font';
+import { handleAddBtnPress } from '../store/ActionsCreator.js';
+import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { AppLoading } from 'expo';
 
-function Footer() {
+type footerProps = {
+  toogle?: any;
+};
+
+function Footer({ toogle }: footerProps) {
   //default scene is Home, which corresponds to 0-index
   const [scene, setScene] = useState<number>(0);
 
@@ -62,6 +68,7 @@ function Footer() {
             if (scene !== 1) {
               Actions.edit();
               setScene(1);
+              toogle(false);
             }
           }}
         ></TabBar.Item>
@@ -78,6 +85,7 @@ function Footer() {
             if (scene !== 3) {
               Actions.settings();
               setScene(3);
+              toogle(false);
             }
           }}
         ></TabBar.Item>
@@ -88,4 +96,11 @@ function Footer() {
   }
 }
 
-export default Footer;
+const mapDispatch = (dispatch: any) => ({
+  toogle(addModalOpen: boolean) {
+    const action = handleAddBtnPress(addModalOpen);
+    dispatch(action);
+  },
+});
+
+export default connect(null, mapDispatch)(Footer);
