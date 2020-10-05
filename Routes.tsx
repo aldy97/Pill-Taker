@@ -16,9 +16,10 @@ interface RoutesProps {
   user: Google.GoogleUser;
   setUser: any;
   toogle?: any;
+  addModalOpen?: boolean;
 }
 
-const Routes = ({ user, toogle, setUser }: RoutesProps) => {
+const Routes = ({ user, toogle, setUser, addModalOpen }: RoutesProps) => {
   const [isReady, setIsReady] = useState<boolean>(false);
 
   //font loading
@@ -49,7 +50,7 @@ const Routes = ({ user, toogle, setUser }: RoutesProps) => {
           left={() => null}
           key='home'
           component={() => <Home user={user} />}
-          title='Home'
+          title={addModalOpen ? 'Add medicine' : 'Home'}
           initial
           renderRightButton={() => (
             <TouchableOpacity
@@ -107,6 +108,12 @@ const Routes = ({ user, toogle, setUser }: RoutesProps) => {
   );
 };
 
+const mapState = (state: any) => {
+  return {
+    addModalOpen: state.getIn(['reducer', 'addModalOpen']),
+  };
+};
+
 const mapDispatch = (dispatch: any) => ({
   toogle(addModalOpen: boolean) {
     const action = handleAddBtnPress(addModalOpen);
@@ -114,4 +121,4 @@ const mapDispatch = (dispatch: any) => ({
   },
 });
 
-export default connect(null, mapDispatch)(Routes);
+export default connect(mapState, mapDispatch)(Routes);

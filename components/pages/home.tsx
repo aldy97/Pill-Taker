@@ -31,7 +31,6 @@ function Home({ user, addModalOpen }: HomeProps) {
   const COLLECTION = user.name ? user.name : '';
 
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const getDailyReport = async () => {
     const dailyReport = db.collection(COLLECTION).get();
@@ -71,7 +70,6 @@ function Home({ user, addModalOpen }: HomeProps) {
 
   useEffect(() => {
     fetchData();
-    setTimeout(() => setIsLoading(false), 1000);
   }, [data]);
 
   const resetTimesRemaining = (item: medicineProps): void => {
@@ -120,11 +118,7 @@ function Home({ user, addModalOpen }: HomeProps) {
     );
   };
 
-  return isLoading ? (
-    <View style={{ marginTop: 100 }}>
-      <ActivityIndicator text='Loading...'></ActivityIndicator>
-    </View>
-  ) : !addModalOpen ? (
+  return !addModalOpen ? (
     <View>
       <FlatList
         data={data}
