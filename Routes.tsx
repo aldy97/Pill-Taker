@@ -3,11 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import * as Google from 'expo-google-app-auth';
 import { IconFill } from '@ant-design/icons-react-native';
-import {
-  handleAddBtnPress,
-  handleShowTimePickerBtnPress,
-} from './components/store/ActionsCreator.js';
-import { Actions } from 'react-native-router-flux';
+import { handleAddBtnPress } from './components/store/ActionsCreator.js';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
@@ -21,10 +17,9 @@ interface RoutesProps {
   user: Google.GoogleUser;
   setUser: any;
   toogle?: any;
-  toogleTimePicker?: any;
 }
 
-const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
+const Routes = ({ user, toogle, setUser }: RoutesProps) => {
   const [isReady, setIsReady] = useState<boolean>(false);
 
   //font loading
@@ -61,7 +56,7 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
             <TouchableOpacity
               style={{ marginRight: 10 }}
               onPress={() => {
-                Actions.medDetail();
+                toogle(true);
               }}
             >
               <IconFill name='plus-circle' size={30} />
@@ -76,7 +71,7 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
           title='Edit Prescription'
           navigationBarStyle={{ backgroundColor: '#eee' }}
         />
-        <Scene
+        {/* <Scene
           left={() => null}
           key='notification'
           component={() => <Notification user={user} />}
@@ -92,7 +87,7 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
               <IconFill name='plus-circle' size={30} />
             </TouchableOpacity>
           )}
-        />
+        /> */}
         <Scene
           left={() => null}
           key='settings'
@@ -116,11 +111,6 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
 const mapDispatch = (dispatch: any) => ({
   toogle(addModalOpen: boolean) {
     const action = handleAddBtnPress(addModalOpen);
-    dispatch(action);
-  },
-
-  toogleTimePicker(show: boolean) {
-    const action = handleShowTimePickerBtnPress(show);
     dispatch(action);
   },
 });

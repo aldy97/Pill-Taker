@@ -5,8 +5,9 @@ import InputItem from '@ant-design/react-native/lib/input-item';
 import List from '@ant-design/react-native/lib/list';
 import WhiteSpace from '@ant-design/react-native/lib/white-space';
 import { medicineProps } from './home';
-import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import { handleAddBtnPress } from '../store/ActionsCreator.js';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
 
@@ -14,15 +15,19 @@ import * as Google from 'expo-google-app-auth';
 type medDetailProps = {
   user: Google.GoogleUser;
   medicine?: medicineProps;
-  setShowAddMed?: any; //received when a med being editted or viewed in editPage
+  toogle?: any;
+  setShowEditMed?: any;
   fetchData?: any;
+  fetchHomeData?: any;
 };
 
 function MedDetail({
   medicine,
-  setShowAddMed,
   user,
+  toogle,
+  setShowEditMed,
   fetchData,
+  fetchHomeData,
 }: medDetailProps) {
   const db = firebase.firestore();
   const COLLECTION = user.name ? user.name : '';
@@ -50,6 +55,7 @@ function MedDetail({
 
   const handleAddBtnPress = () => {
     console.log([name, desc, doesPerTime, timesPerDay, COLLECTION]);
+    toogle(false);
     if (inputsAreLegal() && COLLECTION) {
       db.collection(COLLECTION)
         .add({
@@ -64,7 +70,7 @@ function MedDetail({
           db.collection(COLLECTION).doc(snap.id).update({ mid: snap.id });
         })
         .then(() => {
-          Actions.home();
+          fetchHomeData;
         });
     }
   };
@@ -84,8 +90,8 @@ function MedDetail({
   };
 
   const handleConfirmEditBtnPress = () => {
+    setShowEditMed(false);
     editMedicine();
-    setShowAddMed(false);
   };
 
   return (
@@ -97,7 +103,6 @@ function MedDetail({
     >
       <List renderHeader='Name:'>
         <InputItem
-          clear
           editable={editable}
           onChange={(value: string) => {
             console.log(value);
@@ -111,7 +116,6 @@ function MedDetail({
       </List>
       <List renderHeader='Description:'>
         <InputItem
-          clear
           editable={editable}
           onChange={(value: string) => {
             console.log(value);
@@ -156,17 +160,24 @@ function MedDetail({
             editable ? handleConfirmEditBtnPress() : setEditable(true);
           }}
         >
-          {editable ? 'confirm' : 'Edit this medicine'}
+          {editable ? 'Confirm edit' : 'Edit this medicine'}
         </Button>
       )}
       <WhiteSpace size='lg' />
-      <Button type='primary' disabled>
+      {/* <Button type='primary' disabled>
         Add alarms
-      </Button>
+      </Button> */}
       <WhiteSpace size='lg' />
       {!medicine && <Button onPress={handleAddBtnPress}>Confirm</Button>}
     </ScrollView>
   );
 }
 
-export default MedDetail;
+const mapDispatch = (dispatch: any) => ({
+  toogle(addModalOpen: boolean) {
+    const action = handleAddBtnPress(addModalOpen);
+    dispatch(action);
+  },
+});
+
+export default connect(null, mapDispatch)(MedDetail);

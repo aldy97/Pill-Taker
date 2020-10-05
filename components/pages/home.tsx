@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import MedDetail from './medDetail';
 import Button from '@ant-design/react-native/lib/button';
 import Provider from '@ant-design/react-native/lib/provider';
 import moment from 'moment';
 import * as Google from 'expo-google-app-auth';
 import Card from '@ant-design/react-native/lib/card';
 import { FlatList, View, Text } from 'react-native';
+import { connect } from 'react-redux';
 import ActivityIndicator from '@ant-design/react-native/lib/activity-indicator';
 import * as firebase from 'firebase';
 
@@ -21,9 +23,10 @@ export type medicineProps = {
 
 type HomeProps = {
   user: Google.GoogleUser;
+  addModalOpen?: any;
 };
 
-function Home({ user }: HomeProps) {
+function Home({ user, addModalOpen }: HomeProps) {
   const db = firebase.firestore();
   const COLLECTION = user.name ? user.name : '';
 
@@ -70,6 +73,10 @@ function Home({ user }: HomeProps) {
     fetchData();
     setTimeout(() => setIsLoading(false), 1000);
   }, [data]);
+
+  useEffect(() => {
+    console.log(addModalOpen);
+  }, [addModalOpen]);
 
   const resetTimesRemaining = (item: medicineProps): void => {
     if (item.time_updated !== moment().format('YYYY-MM-DD')) {
@@ -121,7 +128,7 @@ function Home({ user }: HomeProps) {
     <View style={{ marginTop: 100 }}>
       <ActivityIndicator text='Loading...'></ActivityIndicator>
     </View>
-  ) : (
+  ) : !addModalOpen ? (
     <View>
       <FlatList
         data={data}
@@ -136,11 +143,22 @@ function Home({ user }: HomeProps) {
         keyExtractor={(item: any) => item.key}
       ></FlatList>
     </View>
+  ) : (
+    <MedDetail user={user} fetchHomeData={fetchData}></MedDetail>
   );
 }
 
-export default ({ user }: HomeProps) => (
+const mapState = (state: any) => {
+  return {
+    addModalOpen: state.getIn(['reducer', 'addModalOpen']),
+  };
+};
+
+export default connect(
+  mapState,
+  null
+)(({ user, addModalOpen }: HomeProps) => (
   <Provider>
-    <Home user={user}></Home>
+    <Home user={user} addModalOpen={addModalOpen}></Home>
   </Provider>
-);
+));

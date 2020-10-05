@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ItemEditor from '../itemEditor';
-import { handleAddBtnPress } from '../store/ActionsCreator.js';
 import { FlatList, View, TouchableOpacity } from 'react-native';
 import { medicineProps } from './home';
 import Swipeout from 'react-native-swipeout';
@@ -20,7 +19,7 @@ const EditPage = ({ user }: EditPageProps) => {
 
   const [currentMedicine, setCurrentMedicine] = useState<medicineProps>();
 
-  const [showAddMed, setShowAddMed] = useState(false);
+  const [showEditMed, setShowEditMed] = useState(false);
 
   const fetchData = async () => {
     db.collection(COLLECTION)
@@ -33,6 +32,10 @@ const EditPage = ({ user }: EditPageProps) => {
         setData(array);
       });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handelDeletBtnPress = (mid: string) => {
     db.collection(COLLECTION).doc(mid).delete().then(fetchData);
@@ -47,10 +50,6 @@ const EditPage = ({ user }: EditPageProps) => {
       },
     },
   ];
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const renderItem = (obj: any) => {
     const item: medicineProps = obj.item;
@@ -67,7 +66,7 @@ const EditPage = ({ user }: EditPageProps) => {
         <TouchableOpacity
           onPress={() => {
             setCurrentMedicine(item);
-            setShowAddMed(true);
+            setShowEditMed(true);
           }}
         >
           <ItemEditor medicine={item} style={{ height: 400 }}></ItemEditor>
@@ -76,11 +75,11 @@ const EditPage = ({ user }: EditPageProps) => {
     );
   };
 
-  return showAddMed ? (
+  return showEditMed ? (
     <MedDetail
       medicine={currentMedicine}
       fetchData={fetchData}
-      setShowAddMed={setShowAddMed}
+      setShowEditMed={setShowEditMed}
       user={user}
     ></MedDetail>
   ) : (
@@ -93,18 +92,5 @@ const EditPage = ({ user }: EditPageProps) => {
     </View>
   );
 };
-
-const mapState = (state: any) => {
-  return {
-    addModalOpen: state.getIn(['reducer', 'addModalOpen']),
-  };
-};
-
-const mapDispatch = (dispatch) => ({
-  toogle(addModalOpen: boolean) {
-    const action = handleAddBtnPress(addModalOpen);
-    dispatch(action);
-  },
-});
 
 export default EditPage;

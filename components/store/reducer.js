@@ -2,7 +2,6 @@ import * as constants from '../store/Constants';
 const defaultState = {
   addModalOpen: false,
   showTimePicker: false,
-  userName: '',
 };
 
 export default (state = defaultState, action) => {
