@@ -254,6 +254,7 @@ const EditPage = ({ addModalOpen, user, toogle }: EditPageProps) => {
       medicine={currentMedicine}
       deleteMedicine={onDelete}
       setShowAddMed={setShowAddMed}
+      user={user}
     ></MedDetail>
   ) : (
     <View>

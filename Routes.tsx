@@ -57,14 +57,6 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
           component={() => <Home user={user} />}
           title='Home'
           initial
-          navigationBarStyle={{ backgroundColor: '#eee' }}
-        />
-        <Scene
-          left={() => null}
-          key='edit'
-          component={() => <EditPage user={user}></EditPage>}
-          title='Edit Prescription'
-          navigationBarStyle={{ backgroundColor: '#eee' }}
           renderRightButton={() => (
             <TouchableOpacity
               style={{ marginRight: 10 }}
@@ -75,6 +67,14 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
               <IconFill name='plus-circle' size={30} />
             </TouchableOpacity>
           )}
+          navigationBarStyle={{ backgroundColor: '#eee' }}
+        />
+        <Scene
+          left={() => null}
+          key='edit'
+          component={() => <EditPage user={user}></EditPage>}
+          title='Edit Prescription'
+          navigationBarStyle={{ backgroundColor: '#eee' }}
         />
         <Scene
           left={() => null}
@@ -104,7 +104,7 @@ const Routes = ({ user, toogle, setUser, toogleTimePicker }: RoutesProps) => {
           back
           key='medDetail'
           title='Add a new medicine'
-          component={MedDetail}
+          component={() => <MedDetail user={user} />}
         />
       </Scene>
     </Router>
