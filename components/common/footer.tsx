@@ -66,22 +66,6 @@ function Footer() {
           }}
         ></TabBar.Item>
         <TabBar.Item
-          title='Notification'
-          icon={
-            <IconFill
-              name='notification'
-              color={scene === 2 ? '#0e9dec' : '#949494'}
-            />
-          }
-          selected={scene === 2}
-          onPress={() => {
-            if (scene !== 2) {
-              Actions.medDetail();
-              setScene(2);
-            }
-          }}
-        ></TabBar.Item>
-        <TabBar.Item
           title='Settings'
           icon={
             <IconFill

@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Button from '@ant-design/react-native/lib/button';
 import Provider from '@ant-design/react-native/lib/provider';
 import moment from 'moment';
-import { handleAddNewMedBtnPress } from '../store/ActionsCreator.js';
 import * as Google from 'expo-google-app-auth';
 import Card from '@ant-design/react-native/lib/card';
 import { FlatList, View, Text } from 'react-native';
 import ActivityIndicator from '@ant-design/react-native/lib/activity-indicator';
 import * as firebase from 'firebase';
-import { connect } from 'react-redux';
 
 export type medicineProps = {
   description: string;
@@ -23,9 +21,8 @@ export type medicineProps = {
 
 type HomeProps = {
   user: Google.GoogleUser;
-  setUserName?: any;
 };
-function Home({ user, setUserName }: HomeProps) {
+function Home({ user }: HomeProps) {
   const db = firebase.firestore();
   const COLLECTION = user.name ? user.name : '';
 
@@ -141,7 +138,7 @@ function Home({ user, setUserName }: HomeProps) {
   );
 }
 
-export default ({ user, setUserName }: HomeProps) => (
+export default ({ user }: HomeProps) => (
   <Provider>
     <Home user={user}></Home>
   </Provider>
