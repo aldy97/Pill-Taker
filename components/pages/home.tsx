@@ -7,7 +7,6 @@ import * as Google from 'expo-google-app-auth';
 import Card from '@ant-design/react-native/lib/card';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import ActivityIndicator from '@ant-design/react-native/lib/activity-indicator';
 import * as firebase from 'firebase';
 
 export type medicineProps = {

@@ -1,6 +1,7 @@
 import * as constants from '../store/Constants';
 const defaultState = {
   addModalOpen: false,
+  editMedicineOpen: false,
   showTimePicker: false,
 };
 
@@ -10,6 +11,7 @@ export default (state = defaultState, action) => {
     newState.addModalOpen = action.addModalOpen;
     return newState;
   }
+
   if (action.type === constants.TOOGLE_SHOW_TIME_PICKER) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.showTimePicker = action.showTimePicker;

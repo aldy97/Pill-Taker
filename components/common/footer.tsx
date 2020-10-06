@@ -53,6 +53,7 @@ function Footer({ toogle }: footerProps) {
           selected={scene === 0}
           onPress={() => {
             if (scene !== 0) {
+              toogle(false);
               Actions.home();
               setScene(0);
             }
@@ -68,7 +69,6 @@ function Footer({ toogle }: footerProps) {
             if (scene !== 1) {
               Actions.edit();
               setScene(1);
-              toogle(false);
             }
           }}
         ></TabBar.Item>
@@ -85,7 +85,6 @@ function Footer({ toogle }: footerProps) {
             if (scene !== 3) {
               Actions.settings();
               setScene(3);
-              toogle(false);
             }
           }}
         ></TabBar.Item>

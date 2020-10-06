@@ -54,7 +54,6 @@ function MedDetail({
   };
 
   const handleAddBtnPress = () => {
-    console.log([name, desc, doesPerTime, timesPerDay, COLLECTION]);
     toogle(false);
     if (inputsAreLegal() && COLLECTION) {
       db.collection(COLLECTION)
@@ -75,27 +74,43 @@ function MedDetail({
   };
 
   const editMedicine = () => {
+    if (inputsAreLegal()) {
+      db.collection(COLLECTION)
+        .doc(medicine ? medicine.mid : '')
+        .update({
+          name: name,
+          description: desc,
+          dose_per_time: parseInt(doesPerTime, 10),
+          times_per_day: parseInt(timesPerDay, 10),
+          current_times_remaining: parseInt(timesPerDay, 10),
+          time_updated: moment().format('YYYY-MM-DD'),
+        })
+        .then(fetchData)
+        .then(() => {
+          setShowEditMed(false);
+        });
+    } else {
+      console.warn('illegal');
+    }
+  };
+
+  const deleteMedicine = () => {
     db.collection(COLLECTION)
       .doc(medicine ? medicine.mid : '')
-      .update({
-        name: name,
-        description: desc,
-        dose_per_time: parseInt(doesPerTime, 10),
-        times_per_day: parseInt(timesPerDay, 10),
-        current_times_remaining: parseInt(timesPerDay, 10),
-        time_updated: moment().format('YYYY-MM-DD'),
-      })
-      .then(fetchData);
+      .delete()
+      .then(fetchData)
+      .then(() => {
+        setShowEditMed(false);
+      });
   };
 
   const handleConfirmEditBtnPress = () => {
-    setShowEditMed(false);
     editMedicine();
   };
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: '#eee' }}
       automaticallyAdjustContentInsets={false}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
@@ -157,14 +172,30 @@ function MedDetail({
         <View>
           <Button
             type='primary'
+            style={{ borderRadius: 0 }}
             onPress={() => {
               editable ? handleConfirmEditBtnPress() : setEditable(true);
             }}
           >
             {editable ? 'Confirm edit' : 'Edit this medicine'}
           </Button>
+          <WhiteSpace size='sm' />
+          <Button
+            style={{ borderRadius: 0 }}
+            onPress={() => {
+              setShowEditMed(false);
+            }}
+          >
+            Cancel
+          </Button>
           <WhiteSpace size='xs' />
-          <Button type='warning'>Delete</Button>
+          <Button
+            type='warning'
+            style={{ borderRadius: 0 }}
+            onPress={deleteMedicine}
+          >
+            Delete
+          </Button>
         </View>
       )}
       <WhiteSpace size='xs' />
