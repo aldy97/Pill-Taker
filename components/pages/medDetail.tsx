@@ -6,6 +6,8 @@ import List from '@ant-design/react-native/lib/list';
 import WhiteSpace from '@ant-design/react-native/lib/white-space';
 import { medicineProps } from './home';
 import moment from 'moment';
+import Modal from '@ant-design/react-native/lib/modal';
+import Provider from '@ant-design/react-native/lib/provider';
 import { connect } from 'react-redux';
 import { handleAddBtnPress } from '../store/ActionsCreator.js';
 import * as firebase from 'firebase';
@@ -32,6 +34,9 @@ function MedDetail({
   const db = firebase.firestore();
   const COLLECTION = user.name ? user.name : '';
 
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+  const [showDeleteWarningModal, setShowDeleteWarningModal] = useState(false);
+
   //only used when a medicine is being edited
   const [editable, setEditable] = useState(medicine ? false : true);
 
@@ -47,10 +52,9 @@ function MedDetail({
     medicine ? medicine.times_per_day.toString() : ''
   );
 
+  //except for description, every single field of med can not be null
   const inputsAreLegal: () => boolean = () => {
-    return (
-      name !== '' && desc !== '' && doesPerTime !== '' && timesPerDay !== ''
-    );
+    return name !== '' && doesPerTime !== '' && timesPerDay !== '';
   };
 
   const handleAddBtnPress = () => {
@@ -90,7 +94,7 @@ function MedDetail({
           setShowEditMed(false);
         });
     } else {
-      console.warn('illegal');
+      setShowErrorModal(true);
     }
   };
 
@@ -108,6 +112,30 @@ function MedDetail({
     editMedicine();
   };
 
+  const deleteWarningModalButtons = [
+    {
+      text: 'Cancel',
+      onPress: () => {
+        setShowDeleteWarningModal(false);
+      },
+    },
+    {
+      text: 'Confirm',
+      onPress: () => {
+        deleteMedicine();
+      },
+    },
+  ];
+
+  const errorModalButtons = [
+    {
+      text: 'Ok',
+      onPress: () => {
+        setShowErrorModal(false);
+      },
+    },
+  ];
+
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: '#eee' }}
@@ -115,6 +143,22 @@ function MedDetail({
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
     >
+      <Modal
+        title='Please fill missing fields'
+        transparent
+        maskClosable
+        visible={showErrorModal}
+        closable={false}
+        footer={errorModalButtons}
+      ></Modal>
+      <Modal
+        title='Sure you want to delete this?'
+        transparent
+        maskClosable
+        visible={showDeleteWarningModal}
+        closable={false}
+        footer={deleteWarningModalButtons}
+      ></Modal>
       <List renderHeader='Name:'>
         <InputItem
           editable={editable}
@@ -192,7 +236,9 @@ function MedDetail({
           <Button
             type='warning'
             style={{ borderRadius: 0 }}
-            onPress={deleteMedicine}
+            onPress={() => {
+              setShowDeleteWarningModal(true);
+            }}
           >
             Delete
           </Button>
@@ -215,4 +261,27 @@ const mapDispatch = (dispatch: any) => ({
   },
 });
 
-export default connect(null, mapDispatch)(MedDetail);
+export default connect(
+  null,
+  mapDispatch
+)(
+  ({
+    medicine,
+    user,
+    toogle,
+    setShowEditMed,
+    fetchData,
+    fetchHomeData,
+  }: medDetailProps) => (
+    <Provider>
+      <MedDetail
+        user={user}
+        medicine={medicine}
+        toogle={toogle}
+        setShowEditMed={setShowEditMed}
+        fetchData={fetchData}
+        fetchHomeData={fetchHomeData}
+      />
+    </Provider>
+  )
+);
