@@ -57,22 +57,18 @@ const Routes = ({ user, toogle, setUser, addModalOpen }: RoutesProps) => {
           left={() => null}
           key='home'
           component={() => <Home user={user} />}
-          title={addModalOpen ? 'Add medicine' : 'Home'}
+          title={'Home'}
           initial
-          renderRightButton={() =>
-            !addModalOpen ? (
-              <TouchableOpacity
-                style={{ marginRight: 10 }}
-                onPress={() => {
-                  toogle(true);
-                }}
-              >
-                <IconFill name='plus-circle' size={30} />
-              </TouchableOpacity>
-            ) : (
-              <View></View>
-            )
-          }
+          renderRightButton={() => (
+            <TouchableOpacity
+              style={{ marginRight: 10 }}
+              onPress={() => {
+                Actions.medDetail();
+              }}
+            >
+              <IconFill name='plus-circle' size={30} />
+            </TouchableOpacity>
+          )}
           navigationBarStyle={{ backgroundColor: '#eee' }}
         />
         <Scene
@@ -88,6 +84,12 @@ const Routes = ({ user, toogle, setUser, addModalOpen }: RoutesProps) => {
           component={() => <Settings user={user} setUser={setUser}></Settings>}
           title='Settings'
           navigationBarStyle={{ backgroundColor: '#eee' }}
+        />
+        <Scene
+          back
+          key='medDetail'
+          title='Add a medicine'
+          component={() => <MedDetail user={user} />}
         />
         <Scene
           back

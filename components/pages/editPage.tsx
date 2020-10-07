@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import ItemEditor from '../itemEditor';
 import { FlatList, View, TouchableOpacity } from 'react-native';
 import { medicineProps } from './home';
-import Swipeout from 'react-native-swipeout';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
 import { Actions } from 'react-native-router-flux';
@@ -20,8 +19,6 @@ const EditPage = ({ user, handleItemPress }: EditPageProps) => {
 
   const [data, setData] = useState([]);
 
-  const [currentMedicine, setCurrentMedicine] = useState<medicineProps>();
-
   const fetchData = async () => {
     db.collection(COLLECTION)
       .get()
@@ -38,41 +35,17 @@ const EditPage = ({ user, handleItemPress }: EditPageProps) => {
     fetchData();
   }, []);
 
-  const handelDeletBtnPress = (mid: string) => {
-    db.collection(COLLECTION).doc(mid).delete().then(fetchData);
-  };
-
-  const swipeoutBtns = [
-    {
-      text: 'delete',
-      backgroundColor: 'red',
-      onPress: () => {
-        handelDeletBtnPress(currentMedicine ? currentMedicine.mid : 'error');
-      },
-    },
-  ];
-
   const renderItem = (obj: any) => {
     const item: medicineProps = obj.item;
     return (
-      <Swipeout
-        right={swipeoutBtns}
-        backgroundColor='#fff'
-        close={currentMedicine ? currentMedicine.mid !== item.mid : false}
-        autoClose
-        onOpen={() => {
-          setCurrentMedicine(item);
+      <TouchableOpacity
+        onPress={() => {
+          handleItemPress(item);
+          Actions.editOneMed();
         }}
       >
-        <TouchableOpacity
-          onPress={() => {
-            handleItemPress(item);
-            Actions.editOneMed();
-          }}
-        >
-          <ItemEditor medicine={item} style={{ height: 400 }}></ItemEditor>
-        </TouchableOpacity>
-      </Swipeout>
+        <ItemEditor medicine={item} style={{ height: 400 }}></ItemEditor>
+      </TouchableOpacity>
     );
   };
 

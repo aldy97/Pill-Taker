@@ -35,6 +35,8 @@ function EditOneMed({ user, medicine }: editOneMedProps) {
     medicine ? medicine.times_per_day.toString() : ''
   );
 
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
   //except for description, every single field of med can not be null
   const inputsAreLegal: () => boolean = () => {
     return name !== '' && doesPerTime !== '' && timesPerDay !== '';
@@ -55,6 +57,8 @@ function EditOneMed({ user, medicine }: editOneMedProps) {
         .then(() => {
           Actions.edit();
         });
+    } else {
+      setShowErrorModal(true);
     }
   };
 
@@ -67,6 +71,15 @@ function EditOneMed({ user, medicine }: editOneMedProps) {
       });
   };
 
+  const errorModalButtons = [
+    {
+      text: 'Ok',
+      onPress: () => {
+        setShowErrorModal(false);
+      },
+    },
+  ];
+
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: '#eee' }}
@@ -74,6 +87,14 @@ function EditOneMed({ user, medicine }: editOneMedProps) {
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
     >
+      <Modal
+        title='Please fill missing fields'
+        transparent
+        maskClosable
+        visible={showErrorModal}
+        closable={false}
+        footer={errorModalButtons}
+      ></Modal>
       <List renderHeader='Name:'>
         <InputItem
           editable={editable}
@@ -159,4 +180,11 @@ const mapState = (state: any) => {
   };
 };
 
-export default connect(mapState, null)(EditOneMed);
+export default connect(
+  mapState,
+  null
+)(({ user, medicine }: editOneMedProps) => (
+  <Provider>
+    <EditOneMed user={user} medicine={medicine} />
+  </Provider>
+));
