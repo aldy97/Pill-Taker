@@ -12,35 +12,19 @@ import { connect } from 'react-redux';
 import { handleAddBtnPress } from '../store/ActionsCreator.js';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
+import { Actions } from 'react-native-router-flux';
 
-//when the component is mounted due to add a new one, medicine props wont be received.
-type medDetailProps = {
+type editOneMedProps = {
   user: Google.GoogleUser;
-  medicine?: medicineProps;
-  toogle?: any;
-  setShowEditMed?: any;
-  fetchData?: any;
-  fetchHomeData?: any;
+  medicine?: medicineProps; //medicine is received from redux
 };
 
-function MedDetail({
-  medicine,
-  user,
-  toogle,
-  setShowEditMed,
-  fetchData,
-  fetchHomeData,
-}: medDetailProps) {
+function EditOneMed({ user, medicine }: editOneMedProps) {
   const db = firebase.firestore();
   const COLLECTION = user.name ? user.name : '';
 
-  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
-  const [showDeleteWarningModal, setShowDeleteWarningModal] = useState(false);
+  const [editable, setEditable] = useState(false);
 
-  //only used when a medicine is being edited
-  const [editable, setEditable] = useState(medicine ? false : true);
-
-  //shared by both add med and edit med, initialized as med's current state if it is being edited
   const [name, setName] = useState<string>(medicine ? medicine.name : '');
   const [desc, setDesc] = useState<string>(
     medicine ? medicine.description : ''
@@ -57,27 +41,7 @@ function MedDetail({
     return name !== '' && doesPerTime !== '' && timesPerDay !== '';
   };
 
-  const handleAddBtnPress = () => {
-    toogle(false);
-    if (inputsAreLegal() && COLLECTION) {
-      db.collection(COLLECTION)
-        .add({
-          name: name,
-          description: desc,
-          dose_per_time: parseInt(doesPerTime, 10),
-          times_per_day: parseInt(timesPerDay, 10),
-          current_times_remaining: parseInt(timesPerDay, 10),
-          time_created: moment().format('YYYY-MM-DD'),
-          time_updated: moment().format('YYYY-MM-DD'),
-        })
-        .then((snap) => {
-          db.collection(COLLECTION).doc(snap.id).update({ mid: snap.id });
-        })
-        .then(fetchHomeData);
-    }
-  };
-
-  const editMedicine = () => {
+  const handleConfirmEditBtnPress = () => {
     if (inputsAreLegal()) {
       db.collection(COLLECTION)
         .doc(medicine ? medicine.mid : '')
@@ -89,12 +53,9 @@ function MedDetail({
           current_times_remaining: parseInt(timesPerDay, 10),
           time_updated: moment().format('YYYY-MM-DD'),
         })
-        .then(fetchData)
         .then(() => {
-          setShowEditMed(false);
+          Actions.edit();
         });
-    } else {
-      setShowErrorModal(true);
     }
   };
 
@@ -102,39 +63,10 @@ function MedDetail({
     db.collection(COLLECTION)
       .doc(medicine ? medicine.mid : '')
       .delete()
-      .then(fetchData)
       .then(() => {
-        setShowEditMed(false);
+        Actions.edit();
       });
   };
-
-  const handleConfirmEditBtnPress = () => {
-    editMedicine();
-  };
-
-  const deleteWarningModalButtons = [
-    {
-      text: 'Cancel',
-      onPress: () => {
-        setShowDeleteWarningModal(false);
-      },
-    },
-    {
-      text: 'Confirm',
-      onPress: () => {
-        deleteMedicine();
-      },
-    },
-  ];
-
-  const errorModalButtons = [
-    {
-      text: 'Ok',
-      onPress: () => {
-        setShowErrorModal(false);
-      },
-    },
-  ];
 
   return (
     <ScrollView
@@ -143,22 +75,6 @@ function MedDetail({
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}
     >
-      <Modal
-        title='Please fill missing fields'
-        transparent
-        maskClosable
-        visible={showErrorModal}
-        closable={false}
-        footer={errorModalButtons}
-      ></Modal>
-      <Modal
-        title='Sure you want to delete this?'
-        transparent
-        maskClosable
-        visible={showDeleteWarningModal}
-        closable={false}
-        footer={deleteWarningModalButtons}
-      ></Modal>
       <List renderHeader='Name:'>
         <InputItem
           editable={editable}
@@ -212,76 +128,30 @@ function MedDetail({
         ></TextInput>
       </List>
       <WhiteSpace size='sm' />
-      {medicine && (
-        <View>
-          <Button
-            type='primary'
-            style={{ borderRadius: 0 }}
-            onPress={() => {
-              editable ? handleConfirmEditBtnPress() : setEditable(true);
-            }}
-          >
-            {editable ? 'Confirm edit' : 'Edit this medicine'}
-          </Button>
-          <WhiteSpace size='sm' />
-          <Button
-            style={{ borderRadius: 0 }}
-            onPress={() => {
-              setShowEditMed(false);
-            }}
-          >
-            Cancel
-          </Button>
-          <WhiteSpace size='xs' />
-          <Button
-            type='warning'
-            style={{ borderRadius: 0 }}
-            onPress={() => {
-              setShowDeleteWarningModal(true);
-            }}
-          >
-            Delete
-          </Button>
-        </View>
-      )}
-      <WhiteSpace size='xs' />
-      {!medicine && (
-        <Button type='primary' onPress={handleAddBtnPress}>
-          Confirm
+      <View>
+        <Button
+          type='primary'
+          style={{ borderRadius: 0 }}
+          onPress={() => {
+            editable ? handleConfirmEditBtnPress() : setEditable(true);
+          }}
+        >
+          {editable ? 'Confirm edit' : 'Edit this medicine'}
         </Button>
-      )}
+        <WhiteSpace size='sm' />
+
+        <WhiteSpace size='xs' />
+        <Button
+          type='warning'
+          style={{ borderRadius: 0 }}
+          onPress={deleteMedicine}
+        >
+          Delete
+        </Button>
+      </View>
+      <WhiteSpace size='xs' />
     </ScrollView>
   );
 }
 
-const mapDispatch = (dispatch: any) => ({
-  toogle(addModalOpen: boolean) {
-    const action = handleAddBtnPress(addModalOpen);
-    dispatch(action);
-  },
-});
-
-export default connect(
-  null,
-  mapDispatch
-)(
-  ({
-    medicine,
-    user,
-    toogle,
-    setShowEditMed,
-    fetchData,
-    fetchHomeData,
-  }: medDetailProps) => (
-    <Provider>
-      <MedDetail
-        user={user}
-        medicine={medicine}
-        toogle={toogle}
-        setShowEditMed={setShowEditMed}
-        fetchData={fetchData}
-        fetchHomeData={fetchHomeData}
-      />
-    </Provider>
-  )
-);
+export default EditOneMed;

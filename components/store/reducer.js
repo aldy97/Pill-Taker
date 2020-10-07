@@ -1,8 +1,9 @@
 import * as constants from '../store/Constants';
+import { medicineProps } from '../pages/home.tsx';
 const defaultState = {
   addModalOpen: false,
-  editMedicineOpen: false,
   showTimePicker: false,
+  medicine: {},
 };
 
 export default (state = defaultState, action) => {

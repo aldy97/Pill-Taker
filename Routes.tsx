@@ -9,6 +9,7 @@ import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
 import Settings from './components/pages/settings';
 import MedDetail from './components/pages/medDetail';
+import EditOneMed from './components/pages/editOneMed';
 import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 import { Actions } from 'react-native-router-flux';
@@ -90,9 +91,9 @@ const Routes = ({ user, toogle, setUser, addModalOpen }: RoutesProps) => {
         />
         <Scene
           back
-          key='medDetail'
-          title='Add a new medicine'
-          component={() => <MedDetail user={user} />}
+          key='editOneMed'
+          title='Edit this medicine'
+          component={() => <EditOneMed user={user} />}
         />
       </Scene>
     </Router>

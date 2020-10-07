@@ -5,7 +5,8 @@ import { medicineProps } from './home';
 import Swipeout from 'react-native-swipeout';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
-import MedDetail from './medDetail';
+import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
 
 type EditPageProps = {
   user: Google.GoogleUser;
@@ -18,8 +19,6 @@ const EditPage = ({ user }: EditPageProps) => {
   const [data, setData] = useState([]);
 
   const [currentMedicine, setCurrentMedicine] = useState<medicineProps>();
-
-  const [showEditMed, setShowEditMed] = useState(false);
 
   const fetchData = async () => {
     db.collection(COLLECTION)
@@ -66,7 +65,7 @@ const EditPage = ({ user }: EditPageProps) => {
         <TouchableOpacity
           onPress={() => {
             setCurrentMedicine(item);
-            setShowEditMed(true);
+            Actions.editOneMed();
           }}
         >
           <ItemEditor medicine={item} style={{ height: 400 }}></ItemEditor>
@@ -75,14 +74,7 @@ const EditPage = ({ user }: EditPageProps) => {
     );
   };
 
-  return showEditMed ? (
-    <MedDetail
-      medicine={currentMedicine}
-      fetchData={fetchData}
-      setShowEditMed={setShowEditMed}
-      user={user}
-    ></MedDetail>
-  ) : (
+  return (
     <View>
       <FlatList
         data={data}
@@ -93,4 +85,6 @@ const EditPage = ({ user }: EditPageProps) => {
   );
 };
 
-export default EditPage;
+const mapDispatch = (dispatch: any) => ({});
+
+export default connect(null, mapDispatch)(EditPage);
