@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TabBar from '@ant-design/react-native/lib/tab-bar';
 import { IconFill } from '@ant-design/icons-react-native';
 import * as Font from 'expo-font';
-import { handleAddBtnPress } from '../store/ActionsCreator.js';
+import { handleAddBtnPress } from '../store/ActionsCreator';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { AppLoading } from 'expo';

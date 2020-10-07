@@ -7,12 +7,14 @@ import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
+import { setMedicine } from '../store/ActionsCreator';
 
 type EditPageProps = {
   user: Google.GoogleUser;
+  handleItemPress?: any;
 };
 
-const EditPage = ({ user }: EditPageProps) => {
+const EditPage = ({ user, handleItemPress }: EditPageProps) => {
   const db = firebase.firestore();
   const COLLECTION = user.name ? user.name : '';
 
@@ -64,7 +66,7 @@ const EditPage = ({ user }: EditPageProps) => {
       >
         <TouchableOpacity
           onPress={() => {
-            setCurrentMedicine(item);
+            handleItemPress(item);
             Actions.editOneMed();
           }}
         >
@@ -85,6 +87,11 @@ const EditPage = ({ user }: EditPageProps) => {
   );
 };
 
-const mapDispatch = (dispatch: any) => ({});
+const mapDispatch = (dispatch: any) => ({
+  handleItemPress(medicine: medicineProps) {
+    const action = setMedicine(medicine);
+    dispatch(action);
+  },
+});
 
 export default connect(null, mapDispatch)(EditPage);

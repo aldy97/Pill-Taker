@@ -9,7 +9,7 @@ import moment from 'moment';
 import Modal from '@ant-design/react-native/lib/modal';
 import Provider from '@ant-design/react-native/lib/provider';
 import { connect } from 'react-redux';
-import { handleAddBtnPress } from '../store/ActionsCreator.js';
+import { handleAddBtnPress } from '../store/ActionsCreator';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
 

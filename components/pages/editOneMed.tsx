@@ -9,7 +9,6 @@ import moment from 'moment';
 import Modal from '@ant-design/react-native/lib/modal';
 import Provider from '@ant-design/react-native/lib/provider';
 import { connect } from 'react-redux';
-import { handleAddBtnPress } from '../store/ActionsCreator.js';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
 import { Actions } from 'react-native-router-flux';
@@ -154,4 +153,10 @@ function EditOneMed({ user, medicine }: editOneMedProps) {
   );
 }
 
-export default EditOneMed;
+const mapState = (state: any) => {
+  return {
+    medicine: state.getIn(['reducer', 'medicine']),
+  };
+};
+
+export default connect(mapState, null)(EditOneMed);

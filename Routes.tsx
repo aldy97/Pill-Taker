@@ -3,7 +3,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import * as Google from 'expo-google-app-auth';
 import { IconFill } from '@ant-design/icons-react-native';
-import { handleAddBtnPress } from './components/store/ActionsCreator.js';
+import { handleAddBtnPress } from './components/store/ActionsCreator';
 import { Router, Scene } from 'react-native-router-flux';
 import Home from './components/pages/home';
 import EditPage from './components/pages/editPage';
