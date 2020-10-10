@@ -18,7 +18,7 @@ type medDetailProps = {
 //scene for adding new med
 function MedDetail({ user }: medDetailProps) {
   const db = firebase.firestore();
-  const COLLECTION = user.name ? user.name : '';
+  const COLLECTION = user.id ? user.id : '';
 
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
 

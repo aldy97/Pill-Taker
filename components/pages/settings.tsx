@@ -32,12 +32,12 @@ function Settings({ user, setUser }: SettingsProps) {
           thumb={user.photoUrl}
         />
       </Card>
-      <Text style={{ marginTop: 10 }}>Today's process:</Text>
+      <Text style={{ marginTop: 10, marginLeft: 10 }}>Today's process:</Text>
       <View style={styles.style}>
-        <View style={{ marginRight: 10, height: 4, flex: 1 }}>
+        <View style={{ marginRight: 10, marginLeft: 10, height: 4, flex: 1 }}>
           <Progress percent={percent} />
         </View>
-        <Text>{percent}%</Text>
+        <Text style={{ marginRight: 10 }}>{percent}%</Text>
       </View>
       <Button
         style={{ marginTop: 10 }}
@@ -46,7 +46,7 @@ function Settings({ user, setUser }: SettingsProps) {
           setUser();
         }}
       >
-        Sign out!
+        Sign out
       </Button>
     </View>
   );

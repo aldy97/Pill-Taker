@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AwesomeProject",
-    "slug": "AwesomeProject",
+    "name": "PillTaker",
+    "slug": "PillTaker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,13 +13,11 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.medhacks.medicinechecker",
       "supportsTablet": true,
-      "config" : {
+      "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.925656945499-1ivkjq336kg6mjo74da338ibbv8vhnne"
         }
@@ -33,8 +31,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      
-    }
+    "extra": {}
   }
 }

@@ -3,9 +3,9 @@ import { Text } from 'react-native';
 import store from './store/index.js';
 import { Provider } from 'react-redux';
 import { AppRegistry, View } from 'react-native';
-import { IconFill } from '@ant-design/icons-react-native';
 import * as firebase from 'firebase';
 import * as Google from 'expo-google-app-auth';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import Button from '@ant-design/react-native/lib/button';
 import Routes from './Routes';
 import Footer from './components/common/footer';
@@ -14,7 +14,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
 function App() {
-  const [user, setUser] = useState<Google.GoogleUser>();
+  const [user, setUser] = useState<string>();
 
   const [isReady, setIsReady] = useState<boolean>(false);
 
@@ -46,12 +46,23 @@ function App() {
 
     if (result.type === 'success') {
       // Then you can use the Google REST API
-      setUser(result.user);
+      setUser(result.user.id);
     }
   };
 
   const onPress = () => {
     signInAsync();
+  };
+
+  const onSignInWithAppleBtnPress = async () => {
+    const credential = await AppleAuthentication.signInAsync({
+      requestedScopes: [
+        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.EMAIL,
+      ],
+    });
+    console.log(credential.user);
+    setUser(credential.user ? credential.user : '');
   };
 
   if (user) {
@@ -95,6 +106,13 @@ function App() {
         >
           Keep track of your daily pill-taking plan
         </Text>
+        <AppleAuthentication.AppleAuthenticationButton
+          buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+          buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+          cornerRadius={5}
+          style={{ width: '100%', height: 44, marginBottom: 10 }}
+          onPress={onSignInWithAppleBtnPress}
+        />
         <Button type='primary' onPress={onPress}>
           Sign in With Google
         </Button>

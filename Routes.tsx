@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import * as Google from 'expo-google-app-auth';
 import { IconFill } from '@ant-design/icons-react-native';
@@ -15,7 +15,7 @@ import { AppLoading } from 'expo';
 import { Actions } from 'react-native-router-flux';
 
 interface RoutesProps {
-  user: Google.GoogleUser;
+  user: string;
   setUser: any;
   toogle?: any;
   addModalOpen?: boolean;

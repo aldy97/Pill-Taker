@@ -15,7 +15,7 @@ type EditPageProps = {
 
 const EditPage = ({ user, handleItemPress }: EditPageProps) => {
   const db = firebase.firestore();
-  const COLLECTION = user.name ? user.name : '';
+  const COLLECTION = user.id ? user.id : '';
 
   const [data, setData] = useState([]);
 

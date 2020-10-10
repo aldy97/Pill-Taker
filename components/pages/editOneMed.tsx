@@ -20,7 +20,7 @@ type editOneMedProps = {
 
 function EditOneMed({ user, medicine }: editOneMedProps) {
   const db = firebase.firestore();
-  const COLLECTION = user.name ? user.name : '';
+  const COLLECTION = user.id ? user.id : '';
 
   const [editable, setEditable] = useState(false);
 

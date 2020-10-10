@@ -4,7 +4,7 @@ import * as Google from 'expo-google-app-auth';
 
 function useProgress(user: Google.GoogleUser): number {
   const db = firebase.firestore();
-  const COLLECTION: string = user.name ? user.name : '';
+  const COLLECTION: string = user.id ? user.id : '';
 
   const [result, setResult] = useState(0);
 

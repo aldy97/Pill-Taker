@@ -8,6 +8,7 @@ import Card from '@ant-design/react-native/lib/card';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import * as firebase from 'firebase';
+import { AppleAuthenticationCredential } from 'expo-apple-authentication';
 
 export type medicineProps = {
   description: string;
@@ -21,13 +22,13 @@ export type medicineProps = {
 };
 
 type HomeProps = {
-  user: Google.GoogleUser;
+  user: Google.GoogleUser | AppleAuthenticationCredential;
   addModalOpen?: any;
 };
 
 function Home({ user, addModalOpen }: HomeProps) {
   const db = firebase.firestore();
-  const COLLECTION = user.name ? user.name : '';
+  const COLLECTION = user.id ? user.id : '';
 
   const [data, setData] = useState([]);
 
@@ -133,7 +134,7 @@ function Home({ user, addModalOpen }: HomeProps) {
       ></FlatList>
     </View>
   ) : (
-    <MedDetail user={user} fetchHomeData={fetchData}></MedDetail>
+    <MedDetail user={user}></MedDetail>
   );
 }
 
