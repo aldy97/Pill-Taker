@@ -3,12 +3,10 @@ import MedDetail from './medDetail';
 import Button from '@ant-design/react-native/lib/button';
 import Provider from '@ant-design/react-native/lib/provider';
 import moment from 'moment';
-import * as Google from 'expo-google-app-auth';
 import Card from '@ant-design/react-native/lib/card';
 import { FlatList, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import * as firebase from 'firebase';
-import { AppleAuthenticationCredential } from 'expo-apple-authentication';
 
 export type medicineProps = {
   description: string;
@@ -22,13 +20,13 @@ export type medicineProps = {
 };
 
 type HomeProps = {
-  user: Google.GoogleUser | AppleAuthenticationCredential;
+  user: string;
   addModalOpen?: any;
 };
 
 function Home({ user, addModalOpen }: HomeProps) {
   const db = firebase.firestore();
-  const COLLECTION = user.id ? user.id : '';
+  const COLLECTION = user ? user : '';
 
   const [data, setData] = useState([]);
 

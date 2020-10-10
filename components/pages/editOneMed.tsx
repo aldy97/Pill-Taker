@@ -10,17 +10,16 @@ import Modal from '@ant-design/react-native/lib/modal';
 import Provider from '@ant-design/react-native/lib/provider';
 import { connect } from 'react-redux';
 import * as firebase from 'firebase';
-import * as Google from 'expo-google-app-auth';
 import { Actions } from 'react-native-router-flux';
 
 type editOneMedProps = {
-  user: Google.GoogleUser;
+  user: string;
   medicine?: medicineProps; //medicine is received from redux
 };
 
 function EditOneMed({ user, medicine }: editOneMedProps) {
   const db = firebase.firestore();
-  const COLLECTION = user.id ? user.id : '';
+  const COLLECTION = user ? user : '';
 
   const [editable, setEditable] = useState(false);
 

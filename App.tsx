@@ -15,6 +15,8 @@ import { AppLoading } from 'expo';
 
 function App() {
   const [user, setUser] = useState<string>();
+  const [userName, setUserName] = useState<string>();
+  const [userIconUrl, setUserIconUrl] = useState<string>();
 
   const [isReady, setIsReady] = useState<boolean>(false);
 
@@ -45,8 +47,9 @@ function App() {
     });
 
     if (result.type === 'success') {
-      // Then you can use the Google REST API
       setUser(result.user.id);
+      setUserName(result.user.name);
+      setUserIconUrl(result.user.photoUrl);
     }
   };
 
@@ -61,15 +64,21 @@ function App() {
         AppleAuthentication.AppleAuthenticationScope.EMAIL,
       ],
     });
-    console.log(credential.user);
+    //photoUrl wont be set because Apple does not provide such
     setUser(credential.user ? credential.user : '');
+    setUserName(credential.email ? credential.email : '');
   };
 
   if (user) {
     return (
       <Provider store={store}>
         <View style={{ flex: 1 }}>
-          <Routes user={user} setUser={setUser} />
+          <Routes
+            user={user}
+            userName={userName ? userName : ''}
+            userIconUrl={userIconUrl ? userIconUrl : ''}
+            setUser={setUser}
+          />
           <View style={{ height: 70 }}>
             <Footer />
           </View>
@@ -110,7 +119,7 @@ function App() {
           buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
           buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
           cornerRadius={5}
-          style={{ width: '100%', height: 44, marginBottom: 10 }}
+          style={{ width: '100%', height: 46, marginBottom: 10 }}
           onPress={onSignInWithAppleBtnPress}
         />
         <Button type='primary' onPress={onPress}>

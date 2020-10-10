@@ -3,19 +3,18 @@ import ItemEditor from '../itemEditor';
 import { FlatList, View, TouchableOpacity } from 'react-native';
 import { medicineProps } from './home';
 import * as firebase from 'firebase';
-import * as Google from 'expo-google-app-auth';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { setMedicine } from '../store/ActionsCreator';
 
 type EditPageProps = {
-  user: Google.GoogleUser;
+  user: string;
   handleItemPress?: any;
 };
 
 const EditPage = ({ user, handleItemPress }: EditPageProps) => {
   const db = firebase.firestore();
-  const COLLECTION = user.id ? user.id : '';
+  const COLLECTION = user ? user : '';
 
   const [data, setData] = useState([]);
 

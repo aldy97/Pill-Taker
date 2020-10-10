@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import * as Google from 'expo-google-app-auth';
 import { IconFill } from '@ant-design/icons-react-native';
 import { handleAddBtnPress } from './components/store/ActionsCreator';
 import { Router, Scene } from 'react-native-router-flux';
@@ -16,12 +15,21 @@ import { Actions } from 'react-native-router-flux';
 
 interface RoutesProps {
   user: string;
+  userName: string;
+  userIconUrl: string;
   setUser: any;
   toogle?: any;
   addModalOpen?: boolean;
 }
 
-const Routes = ({ user, toogle, setUser, addModalOpen }: RoutesProps) => {
+const Routes = ({
+  user,
+  userName,
+  userIconUrl,
+  toogle,
+  setUser,
+  addModalOpen,
+}: RoutesProps) => {
   const [isReady, setIsReady] = useState<boolean>(false);
 
   //font loading
@@ -81,7 +89,14 @@ const Routes = ({ user, toogle, setUser, addModalOpen }: RoutesProps) => {
         <Scene
           left={() => null}
           key='settings'
-          component={() => <Settings user={user} setUser={setUser}></Settings>}
+          component={() => (
+            <Settings
+              user={user}
+              userName={userName}
+              userIconUrl={userIconUrl}
+              setUser={setUser}
+            ></Settings>
+          )}
           title='Settings'
           navigationBarStyle={{ backgroundColor: '#eee' }}
         />

@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import * as firebase from 'firebase';
-import * as Google from 'expo-google-app-auth';
 
-function useProgress(user: Google.GoogleUser): number {
+function useProgress(user: string): number {
   const db = firebase.firestore();
-  const COLLECTION: string = user.id ? user.id : '';
+  const COLLECTION: string = user ? user : '';
 
   const [result, setResult] = useState(0);
 

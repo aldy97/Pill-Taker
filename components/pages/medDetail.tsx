@@ -8,17 +8,16 @@ import moment from 'moment';
 import Modal from '@ant-design/react-native/lib/modal';
 import Provider from '@ant-design/react-native/lib/provider';
 import * as firebase from 'firebase';
-import * as Google from 'expo-google-app-auth';
 import { Actions } from 'react-native-router-flux';
 
 type medDetailProps = {
-  user: Google.GoogleUser;
+  user: string;
 };
 
 //scene for adding new med
 function MedDetail({ user }: medDetailProps) {
   const db = firebase.firestore();
-  const COLLECTION = user.id ? user.id : '';
+  const COLLECTION = user ? user : '';
 
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
 

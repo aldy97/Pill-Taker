@@ -5,10 +5,11 @@ import Button from '@ant-design/react-native/lib/button';
 import Provider from '@ant-design/react-native/lib/provider';
 import Card from '@ant-design/react-native/lib/card';
 import Progress from '@ant-design/react-native/lib/progress';
-import * as Google from 'expo-google-app-auth';
 
 type SettingsProps = {
-  user: Google.GoogleUser;
+  user: string;
+  userName: string;
+  userIconUrl: string;
   setUser: any;
 };
 
@@ -21,17 +22,24 @@ const styles = StyleSheet.create({
   },
 });
 
-function Settings({ user, setUser }: SettingsProps) {
+function Settings({ user, userName, userIconUrl, setUser }: SettingsProps) {
   const percent = useProgress(user);
+  const showAccountInfo = (show: boolean) => {
+    if (show) {
+      return (
+        <Card>
+          <Card.Header
+            extra={userName}
+            thumbStyle={{ width: 30, height: 30 }}
+            thumb={userIconUrl}
+          />
+        </Card>
+      );
+    }
+  };
   return (
     <View>
-      <Card>
-        <Card.Header
-          extra={user.name}
-          thumbStyle={{ width: 30, height: 30 }}
-          thumb={user.photoUrl}
-        />
-      </Card>
+      {showAccountInfo(userName !== '')}
       <Text style={{ marginTop: 10, marginLeft: 10 }}>Today's process:</Text>
       <View style={styles.style}>
         <View style={{ marginRight: 10, marginLeft: 10, height: 4, flex: 1 }}>
@@ -52,8 +60,13 @@ function Settings({ user, setUser }: SettingsProps) {
   );
 }
 
-export default ({ user, setUser }: SettingsProps) => (
+export default ({ user, userName, userIconUrl, setUser }: SettingsProps) => (
   <Provider>
-    <Settings user={user} setUser={setUser} />
+    <Settings
+      user={user}
+      userName={userName}
+      userIconUrl={userIconUrl}
+      setUser={setUser}
+    />
   </Provider>
 );
