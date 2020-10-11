@@ -128,7 +128,11 @@ function MedDetail({ user }: medDetailProps) {
         ></TextInput>
       </List>
       <WhiteSpace size='xs' />
-      <Button type='primary' onPress={handleAddBtnPress}>
+      <Button
+        type='primary'
+        style={{ borderRadius: 0 }}
+        onPress={handleAddBtnPress}
+      >
         Confirm
       </Button>
     </ScrollView>

@@ -64,6 +64,7 @@ function App() {
         AppleAuthentication.AppleAuthenticationScope.EMAIL,
       ],
     });
+    console.log(credential);
     //photoUrl wont be set because Apple does not provide such
     setUser(credential.user ? credential.user : '');
     setUserName(credential.email ? credential.email : '');

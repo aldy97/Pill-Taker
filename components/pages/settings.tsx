@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
 
 function Settings({ user, userName, userIconUrl, setUser }: SettingsProps) {
   const percent = useProgress(user);
+
   const showAccountInfo = (show: boolean) => {
     if (show) {
       return (
@@ -35,8 +36,19 @@ function Settings({ user, userName, userIconUrl, setUser }: SettingsProps) {
           />
         </Card>
       );
+    } else {
+      return (
+        <Card>
+          <Card.Header
+            extra='Apple User'
+            thumbStyle={{ width: 30, height: 30 }}
+            thumb='https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg'
+          />
+        </Card>
+      );
     }
   };
+
   return (
     <View>
       {showAccountInfo(userName !== '')}
