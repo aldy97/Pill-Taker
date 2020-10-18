@@ -51,7 +51,6 @@ function Settings({ user, userName, userIconUrl, setUser }: SettingsProps) {
 
   return (
     <View>
-      {showAccountInfo(userName !== '')}
       <Text style={{ marginTop: 10, marginLeft: 10 }}>Today's process:</Text>
       <View style={styles.style}>
         <View style={{ marginRight: 10, marginLeft: 10, height: 4, flex: 1 }}>

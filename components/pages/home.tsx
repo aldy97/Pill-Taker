@@ -95,6 +95,7 @@ function Home({ user, addModalOpen }: HomeProps) {
       >
         <Card.Header
           title={item.name}
+          key={item.time_created}
           extra={
             <Button
               disabled={item.current_times_remaining === 0}

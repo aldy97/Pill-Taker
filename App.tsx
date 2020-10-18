@@ -4,7 +4,6 @@ import store from './store/index.js';
 import { Provider } from 'react-redux';
 import { AppRegistry, View } from 'react-native';
 import * as firebase from 'firebase';
-import * as Google from 'expo-google-app-auth';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import Button from '@ant-design/react-native/lib/button';
 import Routes from './Routes';
@@ -21,7 +20,7 @@ function App() {
   const [isReady, setIsReady] = useState<boolean>(false);
 
   //font loading
-  async function prep() {
+  async function prepForFont() {
     await Font.loadAsync(
       'antoutline',
       require('@ant-design/icons-react-native/fonts/antoutline.ttf')
@@ -34,28 +33,8 @@ function App() {
   }
 
   useEffect(() => {
-    prep();
+    prepForFont();
   }, []);
-
-  const signInAsync = async () => {
-    const result = await Google.logInAsync({
-      iosClientId:
-        '925656945499-1tn3go9b8995su8t3kalk7lbb1kh27qj.apps.googleusercontent.com',
-      androidClientId:
-        '925656945499-k93quothhqfmogq7tnglhatn4m9unhul.apps.googleusercontent.com',
-      scopes: ['profile', 'email'],
-    });
-
-    if (result.type === 'success') {
-      setUser(result.user.id);
-      setUserName(result.user.name);
-      setUserIconUrl(result.user.photoUrl);
-    }
-  };
-
-  const onPress = () => {
-    signInAsync();
-  };
 
   const onSignInWithAppleBtnPress = async () => {
     const credential = await AppleAuthentication.signInAsync({
@@ -118,14 +97,13 @@ function App() {
         </Text>
         <AppleAuthentication.AppleAuthenticationButton
           buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-          buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-          cornerRadius={5}
-          style={{ width: '100%', height: 46, marginBottom: 10 }}
+          buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
+          style={{
+            width: '100%',
+            height: 46,
+          }}
           onPress={onSignInWithAppleBtnPress}
         />
-        <Button type='primary' onPress={onPress}>
-          Sign in With Google
-        </Button>
       </View>
     ) : (
       <AppLoading></AppLoading>
