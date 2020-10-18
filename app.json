@@ -17,6 +17,7 @@
     "ios": {
       "bundleIdentifier": "com.medhacks.medicinechecker",
       "supportsTablet": true,
+      "usesAppleSignIn": true,
       "config": {
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.925656945499-1ivkjq336kg6mjo74da338ibbv8vhnne"
