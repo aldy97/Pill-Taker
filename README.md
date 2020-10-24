@@ -1,5 +1,6 @@
 ## Pill Taker
-An iOS app that tracks your personalized, daily pill-taking plan
+[![HitCount](http://hits.dwyl.com/aldy97/Covid-19-Canada.svg)](http://hits.dwyl.com/aldy97/Pill-Taker)
+<br>An iOS app that tracks your personalized, daily pill-taking plan
 
 ### Features
 - Allows users to log in with their apple IDs or google accounts
